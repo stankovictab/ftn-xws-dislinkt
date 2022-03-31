@@ -8,10 +8,32 @@ body {
 	--yellow2: #FFBE7A;
 	--yellow3: #FFA177;
 	--yellow4: #FF7170;
-	background: linear-gradient(90deg, #0E1623, #05080E);
 	color: var(--text1);
 	font-family: 'Montserrat';
 	margin: 0;
+
+	/* background: linear-gradient(90deg, #0E1623, #05080E);
+	 */
+	/* Animated background */
+	background: linear-gradient(45deg, #05080E, #0E1623, #05080E, #0E1623);
+	background-size: 400% 400%;
+	animation: gradient 20s ease infinite;
+	height: 100vh;
+}
+
+/* Animated background */
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+
+	50% {
+		background-position: 100% 50%;
+	}
+
+	100% {
+		background-position: 0% 50%;
+	}
 }
 
 h1 {
