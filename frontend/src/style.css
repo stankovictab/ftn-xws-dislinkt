@@ -3,6 +3,7 @@ body {
 	--text1: #329DFF;
 	--text2: #173755;
 	--text3: #427EB5;
+	--backdrop: #0E1623;
 	--button: #0D418C;
 	--yellow1: #FFE57F;
 	--yellow2: #FFBE7A;
@@ -12,8 +13,6 @@ body {
 	font-family: 'Montserrat';
 	margin: 0;
 
-	/* background: linear-gradient(90deg, #0E1623, #05080E);
-	 */
 	/* Animated background */
 	background: linear-gradient(45deg, #05080E, #16243b, #05080E, #16243b);
 	background-size: 400% 400%;
@@ -36,15 +35,37 @@ body {
 	}
 }
 
+/* Scrollbar */
+
+::-webkit-scrollbar {
+	width: 5px;
+	height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: #000000;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: rgb(37, 50, 77);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: rgb(82, 113, 180);
+}
+
 h1 {
 	font-weight: 700;
-	font-size: 130px;
+	font-size: 7.5vw;
 	margin: 0;
 }
 
 h2 {
 	font-weight: 500;
-	font-size: 64px;
+	font-size: 3vw;
 	margin: 0;
 	color: var(--text3);
 }
@@ -52,14 +73,15 @@ h2 {
 h3 {
 	font-weight: 500;
 	font-size: 48px;
+	font-size: 2.6vw;
 	margin: 0;
 	text-align: center;
 	color: var(--text3);
 }
 
 h4 {
-	font-weight: 400;
-	font-size: 32px;
+	font-weight: 500;
+	font-size: 30px;
 	margin: 0;
 	text-align: center;
 	color: var(--text3);
@@ -67,22 +89,21 @@ h4 {
 
 p {
 	font-weight: 500;
-	font-size: 32px;
+	font-size: 30px;
 	margin: 0;
 	color: var(--text2);
 }
 
 button {
 	font-family: 'Montserrat';
-	font-size: 30px;
-	font-weight: 700;
-	width: 220px;
-	height: 70px;
-	border-radius: 6px;
+	font-size: 18px;
+	font-weight: 600;
 	color: white;
 	background-color: var(--button);
+	width: 90px;
+	height: 40px;
+	border-radius: 6px;
 	border: none;
-	box-shadow: 0px 7px 4px rgba(0, 0, 0, 0.4);
 	/* Hover off */
 	transition: all 0.2s ease;
 }
@@ -110,24 +131,38 @@ a:hover {
 button a {
 	color: white;
 }
+
 button a:hover {
 	color: white;
 }
 
-.withlove {
-	font-weight: normal;
-	font-size: 18px;
+label {
+	font-weight: 600;
+	font-size: 20px;
+	margin: 0;
+	color: white;
 }
 
-.landing-left {
-	margin-top: 200px;
-	margin-left: 100px;
+input {
+	height: 26px;
+	width: 220px;
+	border: none;
+	border-radius: 5px;
+	font-family: 'Montserrat';
+	font-weight: 500;
+	font-size: 16px;
+	padding: 0px 7px 0px 7px;
+	border: 2px solid white;
+	transition: all 0.2s ease;
 }
 
-.landing-right {
-	display: flex;
-	flex-direction: column;
-	margin-top: 350px;
-	margin-right: 50px;
-	align-items: center;
+input:hover {
+	border: 2px solid var(--text2);
+	transition: all 0.2s ease;
+}
+
+input:focus {
+	border: 2px solid var(--text2);
+	outline: none;
+	transition: all 0.2s ease;
 }

@@ -9,7 +9,7 @@
 				<h3>
 					Start your professional career <br />by creating an account.
 				</h3>
-				<button style="margin: 30px 0px" href="#/register">
+				<button class="cta-large-button" href="#/register">
 					<router-link to="/register"> Sign Up </router-link>
 				</button>
 				<p>
@@ -18,7 +18,7 @@
 				</p>
 			</div>
 		</div>
-		<div style="margin-top: 220px"></div>
+		<div style="margin-top: 250px"></div>
 		<div style="display: flex; justify-content: center">
 			<p class="withlove">
 				Made by
@@ -38,3 +38,29 @@ export default {
 };
 import "../style.css";
 </script>
+
+<style scoped>
+.landing-left {
+	margin-top: 180px;
+	margin-left: 90px;
+}
+
+.landing-right {
+	display: flex;
+	flex-direction: column;
+	margin-top: 330px;
+	margin-right: 90px;
+	align-items: center;
+}
+.withlove {
+	font-weight: normal;
+	font-size: 18px;
+}
+.cta-large-button {
+	font-size: 30px;
+	width: 220px;
+	height: 70px;
+	box-shadow: 0px 7px 4px rgba(0, 0, 0, 0.4);
+	margin: 30px 0px;
+}
+</style>

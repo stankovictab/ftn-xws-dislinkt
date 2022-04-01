@@ -9,16 +9,15 @@
 			style="display: flex; flex-direction: column; align-items: center"
 		>
 			<h4>Welcome back!</h4>
-			<div style="margin-top: 20px"></div>
+			<!-- <div style="margin-top: 20px"></div> -->
 			<div class="input-div">
-				<label for="username">Username</label>
+				<label>Username</label>
 				<input id="username" />
 			</div>
 			<div class="input-div">
-				<label for="password">Password</label>
+				<label>Password</label>
 				<input id="password" type="password" />
 			</div>
-			<div style="margin-top: 40px"></div>
 			<button @click="login">Sign in</button>
 		</div>
 	</div>
@@ -48,18 +47,25 @@ import "../style.css";
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-bottom: 20px;
+	margin-bottom: 60px;
 }
 .login-bottom {
-	background-color: #0e1c31;
-	padding: 20px 50px 30px 50px;
+	/* backdrop-filter: blur(4px) invert(0.05);*/
+	background-color: var(--backdrop);
+	padding: 20px 35px 30px 35px;
 	border-radius: 20px;
-}
-input {
-	border: none;
+	gap: 15px;
 }
 .input-div {
 	display: flex;
 	flex-direction: column;
+}
+input {
+	margin-top: 2px;
+	height: 32px;
+	width: 280px;
+}
+button {
+	margin-top: 15px;
 }
 </style>
