@@ -15,7 +15,7 @@ body {
 	/* background: linear-gradient(90deg, #0E1623, #05080E);
 	 */
 	/* Animated background */
-	background: linear-gradient(45deg, #05080E, #0E1623, #05080E, #0E1623);
+	background: linear-gradient(45deg, #05080E, #16243b, #05080E, #16243b);
 	background-size: 400% 400%;
 	animation: gradient 20s ease infinite;
 	height: 100vh;
@@ -36,10 +36,6 @@ body {
 	}
 }
 
-router-link {
-	color:pink !important;
-}
-
 h1 {
 	font-weight: 700;
 	font-size: 130px;
@@ -56,6 +52,14 @@ h2 {
 h3 {
 	font-weight: 500;
 	font-size: 48px;
+	margin: 0;
+	text-align: center;
+	color: var(--text3);
+}
+
+h4 {
+	font-weight: 400;
+	font-size: 32px;
 	margin: 0;
 	text-align: center;
 	color: var(--text3);
@@ -126,10 +130,4 @@ button a:hover {
 	margin-top: 350px;
 	margin-right: 50px;
 	align-items: center;
-}
-
-.bg-light {
-	background-color: #0E1C31;
-	padding: 50px;
-	border-radius: 20px;
 }
