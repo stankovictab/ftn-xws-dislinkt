@@ -36,6 +36,10 @@ body {
 	}
 }
 
+router-link {
+	color:pink !important;
+}
+
 h1 {
 	font-weight: 700;
 	font-size: 130px;
@@ -64,37 +68,6 @@ p {
 	color: var(--text2);
 }
 
-a {
-	text-decoration: none;
-	color: var(--text1);
-	/* Hover off */
-	transition: all 0.2s ease;
-}
-
-a:hover {
-	color: var(--yellow4);
-	/* Hover on */
-	transition: all 0.2s ease;
-}
-
-.withlove {
-	font-weight: normal;
-	font-size: 18px;
-}
-
-.landing-left {
-	margin-top: 200px;
-	margin-left: 100px;
-}
-
-.landing-right {
-	display: flex;
-	flex-direction: column;
-	margin-top: 350px;
-	margin-right: 50px;
-	align-items: center;
-}
-
 button {
 	font-family: 'Montserrat';
 	font-size: 30px;
@@ -115,6 +88,44 @@ button:hover {
 	background-color: var(--yellow4);
 	/* Hover on */
 	transition: all 0.2s ease;
+}
+
+a {
+	text-decoration: none;
+	color: var(--text1);
+	/* Hover off */
+	transition: all 0.2s ease;
+}
+
+a:hover {
+	color: var(--yellow4);
+	/* Hover on */
+	transition: all 0.2s ease;
+}
+
+button a {
+	color: white;
+}
+button a:hover {
+	color: white;
+}
+
+.withlove {
+	font-weight: normal;
+	font-size: 18px;
+}
+
+.landing-left {
+	margin-top: 200px;
+	margin-left: 100px;
+}
+
+.landing-right {
+	display: flex;
+	flex-direction: column;
+	margin-top: 350px;
+	margin-right: 50px;
+	align-items: center;
 }
 
 .bg-light {
