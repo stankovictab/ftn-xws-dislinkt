@@ -9,12 +9,19 @@
 				<h3>
 					Start your professional career <br />by creating an account.
 				</h3>
-				<button class="cta-large-button" href="#/register">
-					<router-link to="/register"> Sign Up </router-link>
-				</button>
+				<router-link to="/register"
+					><button class="cta-large-button" href="#/register">
+						Sign Up
+					</button></router-link
+				>
+				<p>
+					Or,
+					<router-link to="/homepage">continue as guest</router-link>.
+				</p>
+				<div style="margin-top: 20px"></div>
 				<p>
 					Already have an account?
-					<router-link to="/login">Login</router-link>
+					<router-link to="/login">Login</router-link>.
 				</p>
 			</div>
 		</div>
@@ -57,9 +64,9 @@ import "../style.css";
 	font-size: 18px;
 }
 .cta-large-button {
-	font-size: 30px;
-	width: 220px;
-	height: 70px;
+	font-size: 1.8vw;
+	width: 13vw;
+	height: 7vh;
 	box-shadow: 0px 7px 4px rgba(0, 0, 0, 0.4);
 	margin: 30px 0px;
 }

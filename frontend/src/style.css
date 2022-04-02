@@ -9,7 +9,7 @@ body {
 	--yellow2: #FFBE7A;
 	--yellow3: #FFA177;
 	--yellow4: #FF7170;
-	color: var(--text1);
+	color: white;
 	font-family: 'Montserrat';
 	margin: 0;
 
@@ -59,8 +59,9 @@ body {
 
 h1 {
 	font-weight: 700;
-	font-size: 7.5vw;
+	font-size: 7.4vw;
 	margin: 0;
+	color: var(--text1);
 }
 
 h2 {
@@ -84,6 +85,13 @@ h4 {
 	font-size: 30px;
 	margin: 0;
 	text-align: center;
+	color: var(--text1);
+}
+
+h5 {
+	font-weight: 300;
+	font-size: 26px;
+	margin: 0;
 	color: var(--text3);
 }
 
@@ -100,9 +108,9 @@ button {
 	font-weight: 600;
 	color: white;
 	background-color: var(--button);
-	width: 90px;
+	width: 110px;
 	height: 40px;
-	border-radius: 6px;
+	border-radius: 5px;
 	border: none;
 	/* Hover off */
 	transition: all 0.2s ease;
@@ -165,4 +173,61 @@ input:focus {
 	border: 2px solid var(--text2);
 	outline: none;
 	transition: all 0.2s ease;
+}
+
+select {
+	height: 26px;
+	/* For some reason select and input with the same width aren't the same in the browser */
+	width: 220px;
+	border: none;
+	border-radius: 5px;
+	font-family: 'Montserrat';
+	font-weight: 500;
+	font-size: 16px;
+	padding: 0px 7px 0px 7px;
+	border: 2px solid white;
+	transition: all 0.2s ease;
+}
+
+select:hover {
+	border: 2px solid var(--text2);
+	transition: all 0.2s ease;
+}
+
+select:focus {
+	border: 2px solid var(--text2);
+	outline: none;
+	transition: all 0.2s ease;
+}
+
+textarea {
+	border: none;
+	border-radius: 5px;
+	font-family: 'Montserrat';
+	font-weight: 500;
+	font-size: 16px;
+	padding: 7px;
+	border: 2px solid white;
+}
+
+.register-and-login {
+	margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.register-and-login-top {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 50px;
+}
+
+.register-and-login-bottom {
+	background-color: var(--backdrop);
+	padding: 20px 35px 30px 35px;
+	border-radius: 20px;
+	gap: 15px;
+	margin-bottom: 200px;
 }

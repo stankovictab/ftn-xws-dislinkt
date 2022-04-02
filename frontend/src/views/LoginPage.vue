@@ -1,15 +1,16 @@
 <template>
-	<div class="login">
-		<div class="login-top">
-			<h1>Dislinkt</h1>
+	<div class="register-and-login">
+		<div class="register-and-login-top">
+			<h1>
+				<router-link to="/"> Dislinkt </router-link>
+			</h1>
 			<p>The place to connect.</p>
 		</div>
 		<div
-			class="login-bottom"
+			class="register-and-login-bottom"
 			style="display: flex; flex-direction: column; align-items: center"
 		>
 			<h4>Welcome back!</h4>
-			<!-- <div style="margin-top: 20px"></div> -->
 			<div class="input-div">
 				<label>Username</label>
 				<input id="username" />
@@ -18,7 +19,7 @@
 				<label>Password</label>
 				<input id="password" type="password" />
 			</div>
-			<button @click="login">Sign in</button>
+			<button @click="login">Log In</button>
 		</div>
 	</div>
 </template>
@@ -36,26 +37,7 @@ export default {
 import "../style.css";
 </script>
 
-<style>
-.login {
-	margin-top: 50px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-.login-top {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin-bottom: 60px;
-}
-.login-bottom {
-	/* backdrop-filter: blur(4px) invert(0.05);*/
-	background-color: var(--backdrop);
-	padding: 20px 35px 30px 35px;
-	border-radius: 20px;
-	gap: 15px;
-}
+<style scoped>
 .input-div {
 	display: flex;
 	flex-direction: column;
