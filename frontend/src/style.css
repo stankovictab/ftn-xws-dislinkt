@@ -177,7 +177,7 @@ input:focus {
 
 select {
 	height: 26px;
-	/* For some reason select and input with the same width aren't the same in the browser */
+	background-color: white;
 	width: 220px;
 	border: none;
 	border-radius: 5px;

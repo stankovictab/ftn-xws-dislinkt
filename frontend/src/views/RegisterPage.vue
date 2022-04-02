@@ -58,7 +58,7 @@
 				<div class="input-div">
 					<label>Gender</label>
 					<select id="gender">
-						<option value="" disabled selected></option>
+						<!-- <option value="" selected></option> -->
 						<option value="male">Male</option>
 						<option value="female">Female</option>
 					</select>
