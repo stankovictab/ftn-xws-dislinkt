@@ -16,12 +16,12 @@
 				>
 				<p>
 					Or,
-					<router-link to="/homepage">continue as guest</router-link>.
+					<a @click="guestMode">continue as guest</a>.
 				</p>
 				<div style="margin-top: 20px"></div>
 				<p>
 					Already have an account?
-					<router-link to="/login">Login</router-link>.
+					<router-link to="/login">Log in</router-link>.
 				</p>
 			</div>
 		</div>
@@ -42,6 +42,12 @@
 export default {
 	name: "App",
 	components: {},
+	methods:{
+		guestMode(){
+			this.$store.commit("setUser", {"role": "Guest"});
+			this.$router.push("/");
+		},
+	},
 };
 import "../style.css";
 </script>

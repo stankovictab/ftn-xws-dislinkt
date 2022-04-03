@@ -1,10 +1,18 @@
-<template>Hi!</template>
+<template>
+	Hi User!
+</template>
 
 <script>
 export default {
 	name: "HomePage",
 	components: {},
-	methods: {},
+	methods: {
+		logout(){
+			this.$store.commit("setToken", "");
+			this.$store.commit("setUser", {"username": "", "role": ""});
+			this.$router.push("/");
+		},
+	},
 };
 import "../style.css";
 </script>

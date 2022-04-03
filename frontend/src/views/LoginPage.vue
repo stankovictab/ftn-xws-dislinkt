@@ -13,11 +13,13 @@
 			<h4>Welcome back!</h4>
 			<div class="input-div">
 				<label>Username</label>
-				<input id="username" />
+				<input id="username" v-model="username"/>
+				Username je 'Admin' ili 'Client'
 			</div>
 			<div class="input-div">
 				<label>Password</label>
-				<input id="password" type="password" />
+				<input id="password" type="password" v-model="password"/>
+				{{password}}
 			</div>
 			<button @click="login">Log In</button>
 		</div>
@@ -25,12 +27,32 @@
 </template>
 
 <script>
+import { login } from "../services/requests";
+import {mapGetters} from "vuex";
+
 export default {
 	name: "LoginPage",
 	components: {},
+	data : function() {
+		return {
+			username: "",
+			password: "",
+		};
+	},
+	computed:{
+		...mapGetters(["hasRole"]),
+	},
+	mounted(){
+		if(this.hasRole){
+			this.$router.push("/");
+		}
+	},
 	methods: {
-		login() {
-			alert("loginujem se mraleee");
+		async login() {
+			const res = await login({ username: this.username, password: this.password });
+			this.$store.commit("setToken", res.data.token);
+			this.$store.commit("setUser", res.data.user);
+			this.$router.push("/");
 		},
 	},
 };
