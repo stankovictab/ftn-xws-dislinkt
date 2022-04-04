@@ -60,7 +60,8 @@ export async function getFeed(){
                 username: "Mateja Miletic",
                 avatar: "Mateja.png",
                 text: "We must secure the existence of our people and a future for white children.",
-                votes: 420
+                votes: 420,
+                comments: []
             },
             {
                 id: 1,

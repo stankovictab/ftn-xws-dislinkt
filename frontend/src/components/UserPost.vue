@@ -11,12 +11,17 @@
             {{post.votes}}
             <button @click="changeVote(-1)" :class="{active: myVote == -1}">👎</button>
         </div>
-        <div>
+        <div class="comment-container">
             <comment-on-post v-for="comment in post.comments" :key="comment.id" :comment="comment"/>
+        </div>
+        <div class="comment-input" v-if="isCommenting">
+            <img class="commenting-avatar" :src="require('../assets/' + user.avatar)"/>
+            <input type="text" v-model="commentText"/>
+            <button @click="postComment">Post comment</button>
         </div>
         <div class="comment-control">
             {{post.comments?.length}}
-            <button>💬</button>
+            <button @click="toggleCommenting">💬</button>
         </div>
     </article> 
 </template>
@@ -24,6 +29,7 @@
 <script>
 
 import CommentOnPost from './CommentOnPost.vue';
+import {mapState} from "vuex";
 
 export default {
 	name: "UserPost",
@@ -35,8 +41,15 @@ export default {
     },
     data: function() {
         return {
-            myVote: 0 // treba da se dobije sa servera
+            myVote: 0, // treba da se dobije sa servera
+            isCommenting: false,
+            commentText: ''
         }
+    },
+    computed: {
+        ...mapState({
+            user: 'user',
+        })
     },
     watch: {
         myVote: function(newVote, oldVote) {
@@ -47,8 +60,20 @@ export default {
         changeVote(newVote){
             this.myVote = this.myVote == newVote ? 0 : newVote;
         },
+        postComment(){
+            this.$emit('post-comment', this.post.id, this.commentText);
+            this.commentText = '';
+            this.isCommenting = false;
+        },
+        toggleCommenting(){
+            this.isCommenting = !this.isCommenting;
+            if(!this.isCommenting) {
+                this.commentText = '';
+            }
+        }
     }
-};
+}
+
 import "../style.css";
 </script>
 
@@ -93,6 +118,19 @@ button.active{
     display: flex;
     align-items: center;
     justify-content: right;
+    width: 100%;
+}
+.commenting-avatar{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.comment-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     width: 100%;
 }
 </style>
