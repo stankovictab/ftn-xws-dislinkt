@@ -15,6 +15,7 @@ export async function login(credentials){
             username: 'Nikocado Fat Fuck',
             jobDesc: 'Professional Mukbang Enjoyer',
             company: 'YouTube',
+            avatar: "Nikocado.jpg"
         },
         'Admin':{
             role: 'Admin',
@@ -30,3 +31,26 @@ export async function login(credentials){
     // return api().post('login', credentials).then();
 }
 
+export async function getFriends(){
+    console.log("requests.ts/getFriends()");
+    return {
+        data: [
+            {
+                username: "Nikocado Fat Fuck",
+                avatar: "Nikocado.jpg"
+            },
+            {
+                username: "Nikocado Fat Fuck",
+                avatar: "Nikocado.jpg"
+            },
+            {
+                username: "Nikocado Fat Fuck",
+                avatar: "Nikocado.jpg"
+            }
+
+        ]
+    }
+    // return api().get('friends', user).then(
+    //     res => { console.log(res) }
+    // );
+}

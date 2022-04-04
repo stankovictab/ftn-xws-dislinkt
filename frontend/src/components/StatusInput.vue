@@ -1,19 +1,15 @@
 <template>
     <div>
         <img :src="require('../assets/' + user.avatar)"/>
-        <p id="username">{{user.username}}</p>
-        <p>{{user.jobDesc}}</p>
-        <p>Working at {{user.company}}</p>
-        <router-link to="/profile">  
-            <button>Profile</button>
-        </router-link>
+        <input placeholder="What's on your mind?"/> 
+        <button>Add Image</button>
     </div>
 </template>
 
 <script>
 import {mapState} from "vuex";
 export default {
-	name: "ProfilePreview",
+	name: "StatusInput",
 	components: {},
 	methods: {},
     computed: {
@@ -31,21 +27,15 @@ div{
 	background-color: var(--backdrop);
     padding: 15px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
 }
 img {
-    width: 80px;
-    height: 80px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
 }
-p{
-    font-size: 20px;
-    margin: 5px 0px;
-}
-#username{
-    color: white;
-    font-size: 25px;
+input {
+    width: 60%;
 }
 </style>
