@@ -36,21 +36,43 @@ export async function getFriends(){
     return {
         data: [
             {
-                username: "Nikocado Fat Fuck",
-                avatar: "Nikocado.jpg"
+                username: "Mateja Miletic",
+                avatar: "Mateja.png",
+                
             },
             {
-                username: "Nikocado Fat Fuck",
-                avatar: "Nikocado.jpg"
-            },
-            {
-                username: "Nikocado Fat Fuck",
-                avatar: "Nikocado.jpg"
+                username: "Aleksandar Vucic",
+                avatar: "Precednik.jpg"
             }
-
         ]
     }
     // return api().get('friends', user).then(
+    //     res => { console.log(res) }
+    // );
+}
+
+export async function getFeed(){
+    console.log("requests.ts/getFeed()");
+    return {
+        data: [
+            {   
+                id: 0,
+                username: "Mateja Miletic",
+                avatar: "Mateja.png",
+                text: "We must secure the existence of our people and a future for white children.",
+                votes: 420,
+            },
+            {
+                id: 1,
+                username: "Aleksandar Vucic",
+                avatar: "Precednik.jpg",
+                text: "Hvala Srbijo!",
+                votes: -5000000
+            },
+
+        ]
+    }
+    // return api().get('feed', user).then(
     //     res => { console.log(res) }
     // );
 }

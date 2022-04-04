@@ -10,7 +10,7 @@ import {getFriends} from '../services/requests';
 import ChatLink from '../components/ChatLink.vue';
 
 export default {
-	name: "StatusInput",
+	name: "ChatLinks",
 	components: { ChatLink },
     data: function() {
         return {

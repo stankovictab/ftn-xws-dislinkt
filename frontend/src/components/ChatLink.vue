@@ -8,7 +8,7 @@
 <script>
 
 export default {
-	name: "StatusInput",
+	name: "ChatLink",
 	components: {},
     props:{
         friend: Object
@@ -20,7 +20,6 @@ import "../style.css";
 <style scoped>
 div{
     display: flex;
-    justify-content: space-around;
     align-items: center;
     margin: 5px 0px;
     width: 100%;
@@ -29,5 +28,6 @@ img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    margin-right: 10px;
 }
 </style>
