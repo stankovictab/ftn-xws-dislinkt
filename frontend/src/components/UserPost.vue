@@ -6,19 +6,30 @@
         </div>
         <p>{{post.text}}</p>
         <div>
-            <button>💬</button>
+            
             <button @click="changeVote(1)" :class="{active: myVote == 1}">👍</button>
             {{post.votes}}
             <button @click="changeVote(-1)" :class="{active: myVote == -1}">👎</button>
+        </div>
+        <div>
+            <comment-on-post v-for="comment in post.comments" :key="comment.id" :comment="comment"/>
+        </div>
+        <div class="comment-control">
+            {{post.comments?.length}}
+            <button>💬</button>
         </div>
     </article> 
 </template>
 
 <script>
 
+import CommentOnPost from './CommentOnPost.vue';
+
 export default {
 	name: "UserPost",
-	components: {},
+	components: {
+        CommentOnPost
+    },
     props:{
         post: Object
     },
@@ -49,7 +60,6 @@ import "../style.css";
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    align-items: center;
     margin: 5px 0px;
     width: 100%;
 }
@@ -78,5 +88,11 @@ button{
 }
 button.active{
     background-color: var(--yellow4);
+}
+.comment-control{
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    width: 100%;
 }
 </style>

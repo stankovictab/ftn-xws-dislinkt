@@ -60,14 +60,21 @@ export async function getFeed(){
                 username: "Mateja Miletic",
                 avatar: "Mateja.png",
                 text: "We must secure the existence of our people and a future for white children.",
-                votes: 420,
+                votes: 420
             },
             {
                 id: 1,
                 username: "Aleksandar Vucic",
                 avatar: "Precednik.jpg",
                 text: "Hvala Srbijo!",
-                votes: -5000000
+                votes: -5000000,
+                comments: [
+                    {
+                        id: 0,
+                        avatar: 'Todor.png',
+                        text: 'Penzionere treba istrebiti !!!',
+                    },
+                ]
             },
 
         ]
