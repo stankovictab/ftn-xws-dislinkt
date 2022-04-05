@@ -1,37 +1,27 @@
 package dislinkt.userservice.Controller;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import dislinkt.userservice.Entity.User;
+import dislinkt.userclient.UserDTO;
+import dislinkt.userclient.UserServiceFeignClient;
 
 @RestController
-public class UserController {
-    
+public class UserController implements UserServiceFeignClient {
 
-    @PostMapping("/user/login")
-    public ResponseEntity<User> userLogin(RequestEntity<User> user1) {
-        
-        
+	@Override
+	public String home() {
+		return "Hello from User Service";
+	}
 
+	@Override
+	public ResponseEntity<UserDTO> userLogin(RequestEntity<UserDTO> user1) {
+		return null;
+	}
 
-
-
-        return null;
-    }
-
-    @PostMapping("/user/register")
-    public ResponseEntity<User> userRegister(RequestEntity<User> user1) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        
-        
-
-
-        
-        return null;
-    }
+	@Override
+	public ResponseEntity<UserDTO> userRegister(RequestEntity<UserDTO> user1) {
+		return null;
+	}
 }
