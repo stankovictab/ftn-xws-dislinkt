@@ -17,6 +17,12 @@ const routes = [
 		name: 'Register',
 		component: () => import('../views/RegisterPage.vue')
 	},
+	{
+		path: '/search/:searchTerm',
+		name: 'Search',
+		component: () => import('../views/SearchPage.vue'),
+		props: true
+	},
 ]
 
 const router = createRouter({

@@ -1,7 +1,9 @@
 <template>
 	<header v-if="hasRole">
-		<input placeholder="Search Dislinkt"/>
-		<button @click="logout">{{isLoggedIn ? "Log Out" : "Sign Up"}}</button>
+		<input placeholder="Search Dislinkt" />
+		<button @click="logout">
+			{{ isLoggedIn ? "Log Out" : "Sign Up" }}
+		</button>
 	</header>
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,12 +21,12 @@ export default {
 	name: "App",
 	components: {},
 	computed: {
-    ...mapGetters(["isLoggedIn", "hasRole"]),
-  },
+		...mapGetters(["isLoggedIn", "hasRole"]),
+	},
 	methods: {
-		logout(){
+		logout() {
 			this.$store.commit("setToken", "");
-			this.$store.commit("setUser", {"username": "", "role": ""});
+			this.$store.commit("setUser", { username: "", role: "" });
 			this.$router.push("/");
 		},
 	},
@@ -34,11 +36,11 @@ import "./style.css";
 
 <style scoped>
 header {
-	background: #0E131C;
+	background: #0e131c;
 	height: 50px;
-	display:flex;
-	justify-content:center;
-	align-items:center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	margin-bottom: 20px;
 }
 header button {
@@ -46,5 +48,4 @@ header button {
 	top: 5px;
 	right: 2%;
 }
-
 </style>
