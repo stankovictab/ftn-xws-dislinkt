@@ -228,7 +228,7 @@ export default {
 					};
 					console.log(newUser);
 					axios
-						.post("/api/user/register/", newUser)
+						.post("/user/register/", newUser)
 						.then(function (response) {
 							if (response.data == "...") {
 								alert("a");
