@@ -3,6 +3,7 @@ package dislinkt.userservice.Service;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Arrays;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -41,7 +42,7 @@ public class UserService {
             byte[] passwordHash;
             try {
                 passwordHash = skf.generateSecret(spec).getEncoded();
-                if (allegedUser.getPasswordHash().equals(passwordHash)) {
+                if (Arrays.equals(passwordHash,allegedUser.getPasswordHash())) {
                     System.out.println("User '" + user.getUsername() + "' has successfully logged in.");
                     return allegedUser;
                 }
@@ -75,11 +76,10 @@ public class UserService {
             skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             PBEKeySpec spec = new PBEKeySpec(user.getPasswordInput().toCharArray(), user.getPasswordSalt(), 65536, 256);
             byte[] passwordHash;
-
             try {
                 passwordHash = skf.generateSecret(spec).getEncoded();
                 user.setPasswordHash(passwordHash);
-
+                user.setPasswordInput("");
                 if (userRepository.save(user) != null) {
                     System.out.println("User was successfully created.");
                     return user;
@@ -99,6 +99,8 @@ public class UserService {
             return null;
         }
     }
+
+    
 
 
 }
