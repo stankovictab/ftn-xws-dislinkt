@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableFeignClients(basePackages = "dislinkt")
-@ComponentScan(basePackages = "archimedes")
+@ComponentScan(basePackages = "dislinkt")
 public class UserServiceApplication {
 
 	public static void main(String[] args) {

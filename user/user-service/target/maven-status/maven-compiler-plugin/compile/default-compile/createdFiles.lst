@@ -1,5 +1,7 @@
 dislinkt/userservice/Repository/UserRepository.class
 dislinkt/userservice/Service/UserService.class
+dislinkt/userservice/Entity/User.class
+dislinkt/userservice/Mapper/UserMapper.class
+dislinkt/userservice/Mapper/UserMapperImpl.class
 dislinkt/userservice/Controller/UserController.class
 dislinkt/userservice/UserServiceApplication.class
-dislinkt/userservice/Entity/User.class

@@ -5,14 +5,17 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.http.RequestEntity;
 
+import dislinkt.userclient.UserDTO;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @Document("users")
 public class User {
     
     @Id 
-    private Long id;
+    private String id;
 
     @Indexed(unique = true)
     private String username;
@@ -34,12 +37,12 @@ public class User {
     private String biography;
     private String workExperience;
     private String studies;
-    private String userSkills;
+    private String skills;
     private String interests;
-    private String privateAccount;
+    private Boolean privateAccount;
 
     // constructor used for registration
-    public User(RequestEntity<User> user) {
+    public User(RequestEntity<UserDTO> user) {
         this.username = user.getBody().getUsername();
         this.passwordInput = user.getBody().getPasswordInput();
         this.email = user.getBody().getEmail();
@@ -51,13 +54,13 @@ public class User {
         this.biography = user.getBody().getBiography();
         this.workExperience = user.getBody().getWorkExperience();
         this.studies = user.getBody().getStudies();
-        this.userSkills = user.getBody().getUserSkills();
+        this.skills = user.getBody().getSkills();
         this.interests = user.getBody().getInterests();
         this.privateAccount = user.getBody().getPrivateAccount();
     }
 
     // constructor used for login
-    public User(RequestEntity<User> user, boolean login) {
+    public User(RequestEntity<UserDTO> user, boolean login) {
         this.username = user.getBody().getUsername();
         this.passwordInput = user.getBody().getPasswordInput();
     }
