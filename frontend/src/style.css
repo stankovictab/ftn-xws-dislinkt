@@ -176,16 +176,15 @@ input:focus {
 }
 
 .search-input {
-	margin-top: 2px;
 	height: 35px;
 	width: 500px;
 	background-color: var(--backdrop);
-	border: none;
-	color: var(--text1);
+	border: 2px solid var(--backdrop);
+	color: white;
 }
 
 .search-input::placeholder {
-	color: var(--text2);
+	color: var(--text3);
 }
 
 select {
@@ -243,4 +242,10 @@ textarea {
 	border-radius: 20px;
 	gap: 15px;
 	margin-bottom: 200px;
+}
+
+.mini-logo {
+	color: var(--text1);
+	font-weight: bold;
+	font-size: 36px;
 }

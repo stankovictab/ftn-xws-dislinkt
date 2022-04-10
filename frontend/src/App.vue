@@ -2,7 +2,8 @@
 	<div>
 		<!-- TODO: Add unregisteredSearch check -->
 		<header v-if="hasRole">
-			<input placeholder="Search Dislinkt" />
+			<p class="mini-logo">Dislinkt</p>
+			<input class="search-input" placeholder="Search Dislinkt" />
 			<button @click="logout">
 				{{ isLoggedIn ? "Log Out" : "Sign Up" }}
 			</button>
@@ -46,9 +47,14 @@ header {
 	align-items: center;
 	margin-bottom: 20px;
 }
+header p {
+	position: absolute;
+	left: 10%;
+}
 header button {
 	position: absolute;
-	top: 5px;
-	right: 2%;
+	right: 10%;
+	height: 35px;
+	width: 125px;
 }
 </style>
