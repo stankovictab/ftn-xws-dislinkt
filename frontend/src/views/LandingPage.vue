@@ -12,7 +12,7 @@
 					"
 				>
 					<input
-						type="text"
+						class="search-input"
 						placeholder="Search Dislinkt"
 						@keyup.enter="search()"
 						v-model="searchTerm"
@@ -98,16 +98,5 @@ export default {
 	height: 7vh;
 	box-shadow: 0px 7px 4px rgba(0, 0, 0, 0.4);
 	margin: 30px 0px;
-}
-input {
-	margin-top: 2px;
-	height: 35px;
-	width: 500px;
-	background-color: var(--backdrop);
-	border: none;
-	color: var(--text1);
-}
-input::placeholder {
-	color: var(--text2);
 }
 </style>

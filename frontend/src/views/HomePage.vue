@@ -14,18 +14,18 @@
 </template>
 
 <script>
-import ProfilePreview from '../components/ProfilePreview.vue';
-import StatusInput from '../components/StatusInput.vue';
-import ChatLinks from '../components/ChatLinks.vue';
-import PostFeed from '../components/PostFeed.vue';
+import ProfilePreview from "../components/ProfilePreview.vue";
+import StatusInput from "../components/StatusInput.vue";
+import ChatLinks from "../components/ChatLinks.vue";
+import PostFeed from "../components/PostFeed.vue";
 
 export default {
 	name: "HomePage",
 	components: {
-		ProfilePreview, 
+		ProfilePreview,
 		StatusInput,
 		ChatLinks,
-		PostFeed
+		PostFeed,
 	},
 };
 import "../style.css";
@@ -37,9 +37,10 @@ import "../style.css";
 	justify-content: space-evenly;
 }
 
-main{
+main {
 	width: 35%;
 }
+
 section {
 	width: 20%;
 }

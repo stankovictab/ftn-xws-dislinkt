@@ -175,6 +175,19 @@ input:focus {
 	transition: all 0.2s ease;
 }
 
+.search-input {
+	margin-top: 2px;
+	height: 35px;
+	width: 500px;
+	background-color: var(--backdrop);
+	border: none;
+	color: var(--text1);
+}
+
+.search-input::placeholder {
+	color: var(--text2);
+}
+
 select {
 	height: 26px;
 	background-color: white;

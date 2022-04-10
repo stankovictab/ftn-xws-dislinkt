@@ -32,6 +32,11 @@
 					/>
 				</div>
 			</div>
+			<div v-if="usernameCheck == false">
+				<p style="color: #ff6a6a; font-size: 20px">
+					Username already exists, please choose another one.
+				</p>
+			</div>
 			<div class="multiple-input-div">
 				<div class="input-div">
 					<label>First Name</label>
@@ -64,7 +69,7 @@
 					<label>Phone Number</label>
 					<input
 						id="phonenumber"
-						type="tel"
+						type="number"
 						placeholder="+381600000000"
 						v-model="number"
 					/>
@@ -158,7 +163,9 @@ export default {
 		var studies = ref(null);
 		var skills = ref(null);
 		var interests = ref(null);
-		var privateAccount = ref(null);
+		var privateAccount = ref(false);
+
+		var usernameCheck = ref(true);
 
 		return {
 			username,
@@ -176,12 +183,21 @@ export default {
 			interests,
 			privateAccount,
 
+			usernameCheck,
+
 			checkUsername() {
 				axios
-					.post("http://localhost:5001/user/checkUsername", this.username, 
-					{ headers: { "Content-Type": "text/plain" } })
+					.post(
+						"http://localhost:5001/user/checkUsername",
+						this.username,
+						{ headers: { "Content-Type": "text/plain" } }
+					)
 					.then(function (response) {
-						console.log(response.data);
+						if (response.data == false) {
+							usernameCheck.value = false;
+						} else {
+							usernameCheck.value = true;
+						}
 					});
 			},
 
@@ -199,13 +215,17 @@ export default {
 					this.workExperience == null ||
 					this.studies == null ||
 					this.skills == null ||
-					this.interests == null ||
-					this.privateAccount == null
+					this.interests == null
 				) {
 					alert("All fields need to be filled, try again.");
 				} else if (!this.checkEmail(this.email)) {
 					alert(
 						"Email isn't in the correct form. Please fill out the form again."
+					);
+					return;
+				} else if (this.usernameCheck == false) {
+					alert(
+						"Username already exists, please choose another one."
 					);
 					return;
 				} else {
@@ -225,11 +245,13 @@ export default {
 						interests: this.interests,
 						privateAccount: this.privateAccount,
 					};
-					console.log(newUser);
+					console.log("Created new user: " + newUser);
 					axios
 						.post("http://localhost:5001/user/register/", newUser)
 						.then(function (response) {
-							alert(response);
+							alert("User created successfully.");
+							console.log(response);
+							// TODO: Redirect to homepage of the registered user
 						});
 				}
 			},
