@@ -32,7 +32,7 @@ public class UserController implements UserServiceFeignClient {
 	}
 
 	@Override
-	public ResponseEntity<Boolean> checkUsername(String username) {
+	public ResponseEntity<Boolean> checkUsername(@RequestBody String username) {
 		return new ResponseEntity<Boolean>(userService.checkUsername(username), HttpStatus.OK);
 	}
 

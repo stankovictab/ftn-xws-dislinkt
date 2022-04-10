@@ -178,7 +178,8 @@ export default {
 
 			checkUsername() {
 				axios
-					.post("http://localhost:5001/user/checkUsername", username)
+					.post("http://localhost:5001/user/checkUsername", this.username, 
+					{ headers: { "Content-Type": "text/plain" } })
 					.then(function (response) {
 						console.log(response.data);
 					});
