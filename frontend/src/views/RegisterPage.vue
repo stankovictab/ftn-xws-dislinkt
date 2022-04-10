@@ -178,7 +178,7 @@ export default {
 
 			checkUsername() {
 				axios
-					.get("https://localhost:5051/user/checkUsername", username)
+					.post("http://localhost:5001/user/checkUsername", username)
 					.then(function (response) {
 						console.log(response.data);
 					});
