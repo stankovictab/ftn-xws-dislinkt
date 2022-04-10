@@ -1,5 +1,7 @@
 package dislinkt.userclient;
 
+import java.util.Map;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +19,7 @@ public interface UserServiceFeignClient {
 	public String home();
 
 	@PostMapping(value = "/user/updateUsername")
-	public ResponseEntity<UserDTO> updateUsername(@RequestBody UserDTO incomingUser, @RequestBody String newUsername);
+	public ResponseEntity<UserDTO> updateUsername(@RequestBody Map<String, String> json);
 
 	@PostMapping("/user/update")
 	public ResponseEntity<UserDTO> userUpdate(@RequestBody UserDTO userDTO);

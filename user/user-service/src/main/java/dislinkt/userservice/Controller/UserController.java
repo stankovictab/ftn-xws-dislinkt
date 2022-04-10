@@ -1,5 +1,7 @@
 package dislinkt.userservice.Controller;
 
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,9 +30,10 @@ public class UserController implements UserServiceFeignClient {
 	}
 
 	@Override 
-	public ResponseEntity<UserDTO> updateUsername(@RequestBody UserDTO incomingUser, @RequestBody String newUsername) {
-		User user = userMapper.dtoToEntity(incomingUser);
-		User allegedUser = userService.updateUsername(user, newUsername);
+	public ResponseEntity<UserDTO> updateUsername(@RequestBody Map<String, String> json) {
+		String oldUsername = json.get("oldUsername");
+		String newUsername = json.get("newUsername");
+		User allegedUser = userService.updateUsername(oldUsername, newUsername);
 
 		if (allegedUser == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

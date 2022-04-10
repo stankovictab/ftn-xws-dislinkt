@@ -10,7 +10,6 @@ import javax.crypto.spec.PBEKeySpec;
 
 import org.springframework.stereotype.Service;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import dislinkt.userclient.UserDTO;
 import dislinkt.userservice.Entity.User;
 import dislinkt.userservice.Mapper.UserMapper;
@@ -25,12 +24,13 @@ public class UserService {
 
     private final UserMapper userMapper;
 
-    public User updateUsername(User user, String username) {
-        if (checkUsername(username)) {
-            user.setUsername(username);
-            if (userRepository.save(user) != null) {
+    public User updateUsername(String oldUsername, String newUsername) {
+        User allegedUser = userRepository.findByUsername(oldUsername);
+        if (checkUsername(newUsername)) {
+            allegedUser.setUsername(newUsername);
+            if (userRepository.save(allegedUser) != null) {
                 System.out.println("Username updated.");
-                return user;
+                return allegedUser;
             }
             System.out.println("Username not updated.");
             return null;
