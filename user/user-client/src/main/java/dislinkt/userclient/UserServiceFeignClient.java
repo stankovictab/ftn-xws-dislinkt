@@ -18,6 +18,9 @@ public interface UserServiceFeignClient {
 	@GetMapping(value = "/actuator/info")
 	public String home();
 
+	@PostMapping(value = "/user/checkUsername")
+	public ResponseEntity<Boolean> checkUsername(String username);
+
 	@PostMapping(value = "/user/updateUsername")
 	public ResponseEntity<UserDTO> updateUsername(@RequestBody Map<String, String> json);
 

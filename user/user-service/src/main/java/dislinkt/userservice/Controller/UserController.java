@@ -30,6 +30,11 @@ public class UserController implements UserServiceFeignClient {
 	}
 
 	@Override 
+	public ResponseEntity<Boolean> checkUsername(String username) {
+		return new ResponseEntity<Boolean>(userService.checkUsername(username), HttpStatus.OK);
+	}
+
+	@Override 
 	public ResponseEntity<UserDTO> updateUsername(@RequestBody Map<String, String> json) {
 		String oldUsername = json.get("oldUsername");
 		String newUsername = json.get("newUsername");

@@ -43,6 +43,7 @@ public class UserService {
         User user = userRepository.findByUsername(userDTO.getUsername());
 
         if (user == null) {
+            System.out.println("User not found.");
             return null;
         }
 
