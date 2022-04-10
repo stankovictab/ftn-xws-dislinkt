@@ -1,10 +1,10 @@
-package archimedes.eurekaserver;
+package dislinkt.eurekaserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ArchimedesEurekaServerApplicationTests {
+class DislinktEurekaServerApplicationTests {
 
 	@Test
 	void contextLoads() {

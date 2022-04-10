@@ -25,10 +25,10 @@
 				<div class="input-div">
 					<label>Password</label>
 					<input
-						id="password"
+						id="passwordInput"
 						type="password"
 						placeholder="•••••••••••••••••"
-						v-model="password"
+						v-model="passwordInput"
 					/>
 				</div>
 			</div>
@@ -113,7 +113,7 @@
 					id="skills"
 					cols="20"
 					rows="3"
-					v-model="userSkills"
+					v-model="skills"
 				></textarea>
 			</div>
 			<div class="input-div-large">
@@ -142,16 +142,11 @@ import axios from "axios";
 export default {
 	name: "RegisterPage",
 	components: {},
-	methods: {
-		register() {
-			alert("registrujem se mraleee");
-		},
-	},
 	setup() {
 		localStorage.clear();
 
 		var username = ref(null);
-		var password = ref(null);
+		var passwordInput = ref(null);
 		var firstName = ref(null);
 		var lastName = ref(null);
 		var email = ref(null);
@@ -161,13 +156,13 @@ export default {
 		var biography = ref(null);
 		var workExperience = ref(null);
 		var studies = ref(null);
-		var userSkills = ref(null);
+		var skills = ref(null);
 		var interests = ref(null);
 		var privateAccount = ref(null);
 
 		return {
 			username,
-			password,
+			passwordInput,
 			firstName,
 			lastName,
 			email,
@@ -177,19 +172,22 @@ export default {
 			biography,
 			workExperience,
 			studies,
-			userSkills,
+			skills,
 			interests,
 			privateAccount,
 
 			checkUsername() {
-				// TODO:
-				axios.get("https://www.google.com/");
+				axios
+					.get("https://localhost:5051/user/checkUsername", username)
+					.then(function (response) {
+						console.log(response.data);
+					});
 			},
 
-			registerUser() {
+			register() {
 				if (
 					this.username == null ||
-					this.password == null ||
+					this.passwordInput == null ||
 					this.firstName == null ||
 					this.lastName == null ||
 					this.email == null ||
@@ -199,7 +197,7 @@ export default {
 					this.biography == null ||
 					this.workExperience == null ||
 					this.studies == null ||
-					this.userSkills == null ||
+					this.skills == null ||
 					this.interests == null ||
 					this.privateAccount == null
 				) {
@@ -212,7 +210,7 @@ export default {
 				} else {
 					var newUser = {
 						username: this.username,
-						password: this.password,
+						passwordInput: this.passwordInput,
 						firstName: this.firstName,
 						lastName: this.lastName,
 						email: this.email,
@@ -222,17 +220,15 @@ export default {
 						biography: this.biography,
 						workExperience: this.workExperience,
 						studies: this.studies,
-						skills: this.userSkills,
+						skills: this.skills,
 						interests: this.interests,
 						privateAccount: this.privateAccount,
 					};
 					console.log(newUser);
 					axios
-						.post("/user/register/", newUser)
+						.post("http://localhost:5001/user/register/", newUser)
 						.then(function (response) {
-							if (response.data == "...") {
-								alert("a");
-							}
+							alert(response);
 						});
 				}
 			},

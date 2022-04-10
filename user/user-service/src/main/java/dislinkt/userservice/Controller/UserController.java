@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class UserController implements UserServiceFeignClient {
 
 	private final UserService userService;
@@ -29,12 +31,12 @@ public class UserController implements UserServiceFeignClient {
 		return "Hello from User Service";
 	}
 
-	@Override 
+	@Override
 	public ResponseEntity<Boolean> checkUsername(String username) {
 		return new ResponseEntity<Boolean>(userService.checkUsername(username), HttpStatus.OK);
 	}
 
-	@Override 
+	@Override
 	public ResponseEntity<UserDTO> updateUsername(@RequestBody Map<String, String> json) {
 		String oldUsername = json.get("oldUsername");
 		String newUsername = json.get("newUsername");
@@ -67,9 +69,9 @@ public class UserController implements UserServiceFeignClient {
 		User allegedUser = userService.login(incomingUser);
 
 		if (allegedUser == null) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-		
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
+
 		UserDTO userDTO = userMapper.entityToDto(allegedUser);
 
 		return new ResponseEntity<>(userDTO, HttpStatus.OK);
