@@ -32,6 +32,25 @@ public class UserController implements UserServiceFeignClient {
 		return "Hello from User Service";
 	}
 
+	@Override 
+	public ResponseEntity<ArrayList<UserDTO>> find(@RequestBody Map<String, String> searchTerm) {
+		String firstName = searchTerm.get("firstName");
+		String lastName = searchTerm.get("lastName");
+
+		ArrayList<UserDTO> users = userService.find(firstName, lastName);
+
+		if (users == null) {
+			System.out.println("Find - No search term");
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		else if (users.isEmpty()) {
+			System.out.println("No users found");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<ArrayList<UserDTO>>(users, HttpStatus.OK);
+	}
+
 	@Override
 	public ResponseEntity<ArrayList<UserDTO>> findByName(@RequestBody Map<String, String> json) {
 		String firstName = json.get("firstName");

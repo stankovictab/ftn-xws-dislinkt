@@ -35,8 +35,8 @@ export default {
 	},
 	mounted() {
 		axios
-			.post("http://localhost:5001/user/findByName", this.searchTerm, {
-				headers: { "Content-Type": "text/plain" },
+			.post("http://localhost:5001/user/find", { "firstName": this.searchTerm.split(' ')[0], "lastName": this.searchTerm.split(' ')[1] }, {
+				headers: { "Content-Type": "application/json" },
 			})
 			.then(function (response) {
 				console.log(response.data);

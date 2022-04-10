@@ -19,6 +19,9 @@ public interface UserServiceFeignClient {
 	@GetMapping(value = "/actuator/info")
 	public String home();
 
+	@PostMapping(value = "/user/find")
+	public ResponseEntity<ArrayList<UserDTO>> find(@RequestBody Map<String, String> searchTerm);
+
 	@PostMapping(value = "/user/findByName")
 	public ResponseEntity<ArrayList<UserDTO>> findByName(@RequestBody Map<String, String> json);
 

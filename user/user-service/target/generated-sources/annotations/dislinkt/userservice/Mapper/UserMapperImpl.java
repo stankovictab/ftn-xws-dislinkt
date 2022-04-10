@@ -2,13 +2,14 @@ package dislinkt.userservice.Mapper;
 
 import dislinkt.userclient.UserDTO;
 import dislinkt.userservice.Entity.User;
+import java.util.ArrayList;
 import java.util.Arrays;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-04-10T17:42:02+0200",
+    date = "2022-04-10T18:31:19+0200",
     comments = "version: 1.4.2.Final, compiler: Eclipse JDT (IDE) 1.4.50.v20210914-1429, environment: Java 17.0.2 (Eclipse Adoptium)"
 )
 @Component
@@ -82,5 +83,19 @@ public class UserMapperImpl implements UserMapper {
         user.setWorkExperience( userDTO.getWorkExperience() );
 
         return user;
+    }
+
+    @Override
+    public ArrayList<UserDTO> toUserDTOList(ArrayList<UserDTO> findByFirstName) {
+        if ( findByFirstName == null ) {
+            return null;
+        }
+
+        ArrayList<UserDTO> arrayList = new ArrayList<UserDTO>();
+        for ( UserDTO userDTO : findByFirstName ) {
+            arrayList.add( userDTO );
+        }
+
+        return arrayList;
     }
 }

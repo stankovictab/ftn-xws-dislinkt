@@ -25,6 +25,57 @@ public class UserService {
 
     private final UserMapper userMapper;
 
+    public ArrayList<UserDTO> find(String firstName, String lastName) {
+        ArrayList<UserDTO> usersDTO1 = new ArrayList<>();
+        ArrayList<UserDTO> usersDTO2 = new ArrayList<>();
+        ArrayList<UserDTO> usersDTO = new ArrayList<>();
+        
+        if (lastName == null) {
+            usersDTO1 = findByFirstName(firstName);
+            usersDTO2 = findByLastName(firstName);
+
+            Boolean flag = false;
+            if (usersDTO1 != null ) {
+                usersDTO.addAll(usersDTO1);
+                for (UserDTO userDTO : usersDTO1) {
+                    for (UserDTO userDTO2 : usersDTO) {
+                        if (userDTO.getId().equals(userDTO2.getId())) {
+                            flag = true;
+                        }
+                    }
+                    if (!flag) {
+                        usersDTO.add(userDTO);
+                        flag = false;
+                    }
+                }
+            }
+            if (usersDTO2 != null) {
+                if (usersDTO.isEmpty()) {
+                    usersDTO.addAll(usersDTO2);
+                }
+                else {
+                    for (UserDTO userDTO: usersDTO2) {
+                        for (UserDTO userDTO1: usersDTO) {
+                            if (userDTO.getId().equals(userDTO1.getId())) {
+                                flag = true;
+                                break;
+                            }
+                        }
+                        if (!flag) {
+                            usersDTO.add(userDTO);
+                        }
+                        flag = false;
+                    }
+                }
+            }
+        }
+        else {
+            usersDTO = findByName(firstName, lastName);
+        }        
+
+        return usersDTO;
+    }
+
     public ArrayList<UserDTO> findByName(String firstName, String lastName) {
         ArrayList<User> users = userRepository.findByFirstName(firstName);
         ArrayList<User> users2 = userRepository.findByLastName(lastName);
@@ -68,8 +119,8 @@ public class UserService {
             }
             if (!flag) {
                 users7.add(user);
-                flag = false;
             }
+            flag = false;
         }
 
         ArrayList<UserDTO> usersDTO = new ArrayList<UserDTO>();
