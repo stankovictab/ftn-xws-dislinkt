@@ -1,5 +1,6 @@
 package dislinkt.userservice.Controller;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,59 @@ public class UserController implements UserServiceFeignClient {
 	@Override
 	public String home() {
 		return "Hello from User Service";
+	}
+
+	@Override
+	public ResponseEntity<ArrayList<UserDTO>> findByName(@RequestBody Map<String, String> json) {
+		String firstName = json.get("firstName");
+		String lastName = json.get("lastName");
+
+		System.out.println(firstName);
+		System.out.println(lastName);
+
+		ArrayList<UserDTO> users = userService.findByName(firstName, lastName);
+		if (users == null) {
+			System.out.println("FindByName: No users found");
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<ArrayList<UserDTO>>(users, HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<ArrayList<UserDTO>> findByFirstName(@RequestBody String firstName) {
+		ArrayList<UserDTO> users = userService.findByFirstName(firstName);
+		if (users.isEmpty()) {
+			System.out.println("FindByFirstName: No users found");
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(users, HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<ArrayList<UserDTO>> findByLastName(@RequestBody String lastName) {
+		ArrayList<UserDTO> users = userService.findByLastName(lastName);
+		if (users.isEmpty()) {
+			System.out.println("FindByLastName: No users found");
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(users, HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<UserDTO> findByUsername(@RequestBody String username) {
+		UserDTO user = userService.findByUsername(username);
+		if (user == null) {
+			System.out.println("FindByUsername: No user found");
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(user, HttpStatus.OK);
+
+	}
+
+	@Override
+	public ResponseEntity<ArrayList<UserDTO>> findAll() {
+		return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
 	}
 
 	@Override

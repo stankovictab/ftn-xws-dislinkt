@@ -3,6 +3,7 @@ package dislinkt.userservice.Service;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.crypto.SecretKeyFactory;
@@ -24,11 +25,137 @@ public class UserService {
 
     private final UserMapper userMapper;
 
+    public ArrayList<UserDTO> findByName(String firstName, String lastName) {
+        ArrayList<User> users = userRepository.findByFirstName(firstName);
+        ArrayList<User> users2 = userRepository.findByLastName(lastName);
+        ArrayList<User> users3 = userRepository.findByFirstName(lastName);
+        ArrayList<User> users4 = userRepository.findByLastName(firstName);
+        ArrayList<User> users5 = new ArrayList<User>();
+        ArrayList<User> users6 = new ArrayList<User>();
+        ArrayList<User> users7 = new ArrayList<User>();
+
+        for (User user : users) {
+            for (User user1 : users2) {
+                if (user.getId().equals(user1.getId())) {
+                    if (!user1.getPrivateAccount()) {
+                        System.out.println("User found: " + user1.getFirstName() + " " + user1.getLastName());
+                        users5.add(user);
+                    }
+                }
+            }
+        }
+
+        for (User user : users3) {
+            for (User user1 : users4) {
+                if (user.getId().equals(user1.getId())) {
+                    if (!user1.getPrivateAccount()) {
+                        System.out.println("User found: " + user1.getFirstName() + " " + user1.getLastName());
+                        users6.add(user);
+                    }
+                }
+            }
+        }
+
+        Boolean flag = false;
+        users7.addAll(users5);
+        
+        for (User user : users6) {
+            for (User user1 : users7) {
+                if (user.getId().equals(user1.getId())) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag) {
+                users7.add(user);
+                flag = false;
+            }
+        }
+
+        ArrayList<UserDTO> usersDTO = new ArrayList<UserDTO>();
+        for (User user : users7) {
+            user.setPasswordSalt(null);
+            user.setPasswordHash(null);
+            usersDTO.add(userMapper.entityToDto(user));
+        }
+        if (usersDTO.isEmpty()) {
+            System.out.println("No users found");
+            return null;
+        } 
+
+        return usersDTO;
+
+    }
+
+    public ArrayList<UserDTO> findByFirstName(String firstName) {
+        ArrayList<User> users = (ArrayList<User>) userRepository.findByFirstName(firstName);
+        ArrayList<UserDTO> userDTOs = new ArrayList<>();
+        for (User user : users) {
+            if (!user.getPrivateAccount()) {
+                user.setPasswordSalt(null);
+                user.setPasswordHash(null);
+                userDTOs.add(userMapper.entityToDto(user));
+            }
+        }
+        if (userDTOs.isEmpty()) {
+            System.out.println("No users found with the first name : '" + firstName + "'.");
+            return null;
+        }
+        return userDTOs;
+    }
+
+    public ArrayList<UserDTO> findByLastName(String lastName) {
+        ArrayList<User> users = userRepository.findByLastName(lastName);
+        ArrayList<UserDTO> userDTOs = new ArrayList<>();
+        for (User user : users) {
+            if (!user.getPrivateAccount()) {
+                user.setPasswordSalt(null);
+                user.setPasswordHash(null);
+                userDTOs.add(userMapper.entityToDto(user));
+            }
+        }
+        if (userDTOs.isEmpty()) {
+            System.out.println("No users found with the last name : '" + lastName + "'.");
+            return null;
+        }
+        return userDTOs;
+    }
+
+    public UserDTO findByUsername(String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            System.out.println("No user found with the username : '" + username + "'.");
+            return null;
+        }
+        if (!user.getPrivateAccount()) {
+            user.setPasswordSalt(null);
+            user.setPasswordHash(null);
+            System.out.println("User found with the username : '" + username + "'.");
+            return userMapper.entityToDto(user);
+        }
+        System.out.println("The user with the username : '" + username + "' is private.");
+        return null;
+    }
+
+    public ArrayList<UserDTO> findAll() {
+        ArrayList<UserDTO> userDTOs = new ArrayList<>();
+
+        for (User user : userRepository.findAll()) {
+            user.setPasswordSalt(null);
+            user.setPasswordHash(null);
+            userDTOs.add(userMapper.entityToDto(user));
+        }
+
+        return userDTOs;
+    }
+
     public User updateUsername(String oldUsername, String newUsername) {
         User allegedUser = userRepository.findByUsername(oldUsername);
         if (checkUsername(newUsername)) {
             allegedUser.setUsername(newUsername);
             if (userRepository.save(allegedUser) != null) {
+                allegedUser.setPasswordSalt(null);
+                allegedUser.setPasswordHash(null);
                 System.out.println("Username updated.");
                 return allegedUser;
             }

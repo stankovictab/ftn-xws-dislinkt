@@ -1,5 +1,6 @@
 package dislinkt.userclient;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.springframework.cloud.openfeign.FeignClient;
@@ -18,8 +19,23 @@ public interface UserServiceFeignClient {
 	@GetMapping(value = "/actuator/info")
 	public String home();
 
+	@PostMapping(value = "/user/findByName")
+	public ResponseEntity<ArrayList<UserDTO>> findByName(@RequestBody Map<String, String> json);
+
+	@PostMapping(value = "/user/findByFirstName")
+	public ResponseEntity<ArrayList<UserDTO>> findByFirstName(@RequestBody String firstName);
+
+	@PostMapping(value = "/user/findByLastName")
+	public ResponseEntity<ArrayList<UserDTO>> findByLastName(@RequestBody String lastName);
+	
+	@PostMapping(value = "/user/findByUsername")
+	public ResponseEntity<UserDTO> findByUsername(@RequestBody String username);
+
+	@PostMapping(value = "/user/findAll")
+	public ResponseEntity<ArrayList<UserDTO>> findAll();
+
 	@PostMapping(value = "/user/checkUsername")
-	public ResponseEntity<Boolean> checkUsername(String username);
+	public ResponseEntity<Boolean> checkUsername(@RequestBody String username);
 
 	@PostMapping(value = "/user/updateUsername")
 	public ResponseEntity<UserDTO> updateUsername(@RequestBody Map<String, String> json);
