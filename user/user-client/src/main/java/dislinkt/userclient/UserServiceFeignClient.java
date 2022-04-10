@@ -16,11 +16,17 @@ public interface UserServiceFeignClient {
 	@GetMapping(value = "/actuator/info")
 	public String home();
 
+	@PostMapping(value = "/user/updateUsername")
+	public ResponseEntity<UserDTO> updateUsername(@RequestBody UserDTO incomingUser, @RequestBody String newUsername);
+
+	@PostMapping("/user/update")
+	public ResponseEntity<UserDTO> userUpdate(@RequestBody UserDTO userDTO);
+
 	@PostMapping("/user/login")
-	public ResponseEntity<UserDTO> userLogin(@RequestBody UserDTO user1);
+	public ResponseEntity<UserDTO> userLogin(@RequestBody UserDTO userDTO);
 
 	@PostMapping("/user/register")
-	public ResponseEntity<UserDTO> userRegister(@RequestBody UserDTO user1);
+	public ResponseEntity<UserDTO> userRegister(@RequestBody UserDTO userDTO);
 
 	// @PostMapping(value = "/create/{title}/{description}")
 	// public String create(@PathVariable("title") String title,

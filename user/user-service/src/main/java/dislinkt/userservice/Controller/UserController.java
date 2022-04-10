@@ -27,9 +27,36 @@ public class UserController implements UserServiceFeignClient {
 		return "Hello from User Service";
 	}
 
+	@Override 
+	public ResponseEntity<UserDTO> updateUsername(@RequestBody UserDTO incomingUser, @RequestBody String newUsername) {
+		User user = userMapper.dtoToEntity(incomingUser);
+		User allegedUser = userService.updateUsername(user, newUsername);
+
+		if (allegedUser == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		UserDTO userDTO = userMapper.entityToDto(allegedUser);
+
+		return new ResponseEntity<>(userDTO, HttpStatus.OK);
+	}
+
 	@Override
-	public ResponseEntity<UserDTO> userLogin(@RequestBody UserDTO user1) {
-		User allegedUser = userService.login(user1);
+	public ResponseEntity<UserDTO> userUpdate(@RequestBody UserDTO incomingUser) {
+		User allegedUser = userService.update(incomingUser);
+
+		if (allegedUser == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		UserDTO userDTO = userMapper.entityToDto(allegedUser);
+
+		return new ResponseEntity<>(userDTO, HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<UserDTO> userLogin(@RequestBody UserDTO incomingUser) {
+		User allegedUser = userService.login(incomingUser);
 
 		if (allegedUser == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -41,8 +68,8 @@ public class UserController implements UserServiceFeignClient {
 	}
 
 	@Override
-	public ResponseEntity<UserDTO> userRegister(@RequestBody UserDTO user1) {
-		User newUser = userService.register(user1);
+	public ResponseEntity<UserDTO> userRegister(@RequestBody UserDTO incomingUser) {
+		User newUser = userService.register(incomingUser);
 
 		if (newUser == null) {
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
