@@ -28,3 +28,11 @@ services:
       build: ./eureka-server/
       ports:
         - 8761:8761
+  user-service: 
+    build: ./user/user-service/
+    ports:
+        - 5001:5001
+  post-service:
+    build: ./post/post-service/
+    ports:
+        - 5002:5002
