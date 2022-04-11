@@ -1,1 +1,9 @@
+/home/stankovictab/Desktop/ftn-xws-dislinkt/post/post-service/src/main/java/dislinkt/postservice/Controller/PostController.java
 /home/stankovictab/Desktop/ftn-xws-dislinkt/post/post-service/src/main/java/dislinkt/postservice/PostServiceApplication.java
+/home/stankovictab/Desktop/ftn-xws-dislinkt/post/post-service/src/main/java/dislinkt/postservice/Repository/CommentRepository.java
+/home/stankovictab/Desktop/ftn-xws-dislinkt/post/post-service/src/main/java/dislinkt/postservice/Controller/CommentController.java
+/home/stankovictab/Desktop/ftn-xws-dislinkt/post/post-service/src/main/java/dislinkt/postservice/Repository/PostRepository.java
+/home/stankovictab/Desktop/ftn-xws-dislinkt/post/post-service/src/main/java/dislinkt/postservice/Entity/Post.java
+/home/stankovictab/Desktop/ftn-xws-dislinkt/post/post-service/src/main/java/dislinkt/postservice/Service/CommentService.java
+/home/stankovictab/Desktop/ftn-xws-dislinkt/post/post-service/src/main/java/dislinkt/postservice/Entity/Comment.java
+/home/stankovictab/Desktop/ftn-xws-dislinkt/post/post-service/src/main/java/dislinkt/postservice/Service/PostService.java
