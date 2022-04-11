@@ -31,5 +31,7 @@ public class UserDTO {
     private String interests;
     private Boolean privateAccount;
 
+    private String role;
+
 
 }

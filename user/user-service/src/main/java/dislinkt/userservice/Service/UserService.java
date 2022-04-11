@@ -315,6 +315,8 @@ public class UserService {
                 passwordHash = skf.generateSecret(spec).getEncoded();
                 if (Arrays.equals(passwordHash,allegedUser.getPasswordHash())) {
                     System.out.println("User '" + user.getUsername() + "' has successfully logged in.");
+                    allegedUser.setPasswordSalt(null);
+                    allegedUser.setPasswordHash(null);
                     return allegedUser;
                 }
                 else {
@@ -336,6 +338,7 @@ public class UserService {
 
     public User register(UserDTO incomingUser) {
         User user = userMapper.dtoToEntity(incomingUser);
+        user.setRole("Client");
         
         // password handling
         byte[] salt = new byte[16];
@@ -357,6 +360,8 @@ public class UserService {
                 }
                 if (userRepository.save(user) != null) {
                     System.out.println("User was successfully created.");
+                    user.setPasswordSalt(null);
+                    user.setPasswordHash(null);
                     return user;
                 }
                 else {

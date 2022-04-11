@@ -41,6 +41,8 @@ public class User {
     private String interests;
     private Boolean privateAccount;
 
+    private String role;
+
     // constructor used for registration
     public User(RequestEntity<UserDTO> user) {
         this.username = user.getBody().getUsername();
@@ -57,6 +59,7 @@ public class User {
         this.skills = user.getBody().getSkills();
         this.interests = user.getBody().getInterests();
         this.privateAccount = user.getBody().getPrivateAccount();
+        this.role = user.getBody().getRole();
     }
 
     // constructor used for login
