@@ -1,6 +1,6 @@
-dislinkt/postservice/Controller/PostController.class
 dislinkt/postservice/Service/PostService.class
 dislinkt/postservice/Entity/Post.class
+dislinkt/postservice/Controller/PostController.class
 dislinkt/postservice/Entity/Comment.class
 dislinkt/postservice/Repository/PostRepository.class
 dislinkt/postservice/Service/CommentService.class

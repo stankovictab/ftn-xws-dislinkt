@@ -36,7 +36,11 @@ public class UserService {
 
             Boolean flag = false;
             if (usersDTO1 != null ) {
-                usersDTO.addAll(usersDTO1);
+                for (UserDTO userDTO: usersDTO1) {
+                    userDTO.setPasswordSalt(null);
+                    userDTO.setPasswordHash(null);
+                    usersDTO.add(userDTO);
+                }
                 for (UserDTO userDTO : usersDTO1) {
                     for (UserDTO userDTO2 : usersDTO) {
                         if (userDTO.getId().equals(userDTO2.getId())) {
@@ -44,6 +48,8 @@ public class UserService {
                         }
                     }
                     if (!flag) {
+                        userDTO.setPasswordSalt(null);
+                        userDTO.setPasswordHash(null);
                         usersDTO.add(userDTO);
                         flag = false;
                     }
@@ -51,7 +57,11 @@ public class UserService {
             }
             if (usersDTO2 != null) {
                 if (usersDTO.isEmpty()) {
-                    usersDTO.addAll(usersDTO2);
+                    for (UserDTO userDTO: usersDTO1) {
+                        userDTO.setPasswordSalt(null);
+                        userDTO.setPasswordHash(null);
+                        usersDTO.add(userDTO);
+                    }
                 }
                 else {
                     for (UserDTO userDTO: usersDTO2) {
@@ -62,6 +72,8 @@ public class UserService {
                             }
                         }
                         if (!flag) {
+                            userDTO.setPasswordSalt(null);
+                            userDTO.setPasswordHash(null);
                             usersDTO.add(userDTO);
                         }
                         flag = false;

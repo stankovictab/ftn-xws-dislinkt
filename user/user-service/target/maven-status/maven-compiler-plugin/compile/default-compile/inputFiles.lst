@@ -1,6 +1,6 @@
-/home/stankovictab/Desktop/ftn-xws-dislinkt/user/user-service/src/main/java/dislinkt/userservice/UserServiceApplication.java
-/home/stankovictab/Desktop/ftn-xws-dislinkt/user/user-service/src/main/java/dislinkt/userservice/Repository/UserRepository.java
-/home/stankovictab/Desktop/ftn-xws-dislinkt/user/user-service/src/main/java/dislinkt/userservice/Entity/User.java
-/home/stankovictab/Desktop/ftn-xws-dislinkt/user/user-service/src/main/java/dislinkt/userservice/Controller/UserController.java
-/home/stankovictab/Desktop/ftn-xws-dislinkt/user/user-service/src/main/java/dislinkt/userservice/Mapper/UserMapper.java
-/home/stankovictab/Desktop/ftn-xws-dislinkt/user/user-service/src/main/java/dislinkt/userservice/Service/UserService.java
+/home/todor/Documents/ftn-xws-dislinkt/user/user-service/src/main/java/dislinkt/userservice/Controller/UserController.java
+/home/todor/Documents/ftn-xws-dislinkt/user/user-service/src/main/java/dislinkt/userservice/Service/UserService.java
+/home/todor/Documents/ftn-xws-dislinkt/user/user-service/src/main/java/dislinkt/userservice/Mapper/UserMapper.java
+/home/todor/Documents/ftn-xws-dislinkt/user/user-service/src/main/java/dislinkt/userservice/Repository/UserRepository.java
+/home/todor/Documents/ftn-xws-dislinkt/user/user-service/src/main/java/dislinkt/userservice/Entity/User.java
+/home/todor/Documents/ftn-xws-dislinkt/user/user-service/src/main/java/dislinkt/userservice/UserServiceApplication.java
