@@ -1,9 +1,0 @@
-/home/todor/Documents/ftn-xws-dislinkt/post/post-service/src/main/java/dislinkt/postservice/Entity/Post.java
-/home/todor/Documents/ftn-xws-dislinkt/post/post-service/src/main/java/dislinkt/postservice/PostServiceApplication.java
-/home/todor/Documents/ftn-xws-dislinkt/post/post-service/src/main/java/dislinkt/postservice/Entity/Comment.java
-/home/todor/Documents/ftn-xws-dislinkt/post/post-service/src/main/java/dislinkt/postservice/Controller/CommentController.java
-/home/todor/Documents/ftn-xws-dislinkt/post/post-service/src/main/java/dislinkt/postservice/Service/PostService.java
-/home/todor/Documents/ftn-xws-dislinkt/post/post-service/src/main/java/dislinkt/postservice/Controller/PostController.java
-/home/todor/Documents/ftn-xws-dislinkt/post/post-service/src/main/java/dislinkt/postservice/Service/CommentService.java
-/home/todor/Documents/ftn-xws-dislinkt/post/post-service/src/main/java/dislinkt/postservice/Repository/PostRepository.java
-/home/todor/Documents/ftn-xws-dislinkt/post/post-service/src/main/java/dislinkt/postservice/Repository/CommentRepository.java
