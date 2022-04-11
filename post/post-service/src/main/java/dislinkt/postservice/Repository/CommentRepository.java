@@ -1,8 +1,8 @@
-package dislinkt.userservice.Repository;
+package dislinkt.postservice.Repository;
 
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class CommentRepository {
-    
+
 }

@@ -1,4 +1,4 @@
-package dislinkt.userservice.Entity;
+package dislinkt.postservice.Entity;
 
 import java.time.LocalTime;
 
@@ -12,22 +12,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Document("posts")
 public class Post {
-    
-    @Id
-    private String id;
 
-    private String title;
-    private String description;
-    private String image;
-    private String userId;
+	@Id
+	private String id;
 
-    private int likes;
-    private int dislikes;
+	private String title;
+	private String description;
+	private String image;
+	private String userId;
 
-    private LocalTime creationDate;
+	private int likes;
+	private int dislikes;
 
-
-
-
+	private LocalTime creationDate;
 
 }

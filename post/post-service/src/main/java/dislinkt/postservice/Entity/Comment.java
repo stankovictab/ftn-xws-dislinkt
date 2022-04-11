@@ -1,4 +1,4 @@
-package dislinkt.userservice.Entity;
+package dislinkt.postservice.Entity;
 
 import java.time.LocalTime;
 
@@ -12,14 +12,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Document("comments")
 public class Comment {
-    
-    @Id
-    private String id;
 
-    private String userId;
-    private String postId;
-    private String comment;
+	@Id
+	private String id;
 
-    private LocalTime creationDate; 
+	private String userId;
+	private String postId;
+	private String comment;
+
+	private LocalTime creationDate;
 
 }
