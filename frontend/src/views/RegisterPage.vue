@@ -147,6 +147,69 @@ import axios from "axios";
 export default {
 	name: "RegisterPage",
 	components: {},
+	methods: {
+		register() {
+			// console.log(this);
+			var me = this;
+			if (
+				this.username == null ||
+				this.passwordInput == null ||
+				this.firstName == null ||
+				this.lastName == null ||
+				this.email == null ||
+				this.number == null ||
+				this.gender == null ||
+				this.dateOfBirth == null ||
+				this.biography == null ||
+				this.workExperience == null ||
+				this.studies == null ||
+				this.skills == null ||
+				this.interests == null
+			) {
+				alert("All fields need to be filled, try again.");
+			} else if (!this.checkEmail(this.email)) {
+				alert(
+					"Email isn't in the correct form. Please fill out the form again."
+				);
+				return;
+			} else if (this.usernameCheck == false) {
+				alert("Username already exists, please choose another one.");
+				return;
+			} else {
+				var newUser = {
+					username: this.username,
+					passwordInput: this.passwordInput,
+					firstName: this.firstName,
+					lastName: this.lastName,
+					email: this.email,
+					number: this.number,
+					gender: this.gender,
+					dateOfBirth: this.dateOfBirth,
+					biography: this.biography,
+					workExperience: this.workExperience,
+					studies: this.studies,
+					skills: this.skills,
+					interests: this.interests,
+					privateAccount: this.privateAccount,
+				};
+				console.log("Created new user: " + newUser);
+				axios
+					.post("http://localhost:5001/user/register/", newUser)
+					.then(function (response) {
+						// TODO: Redirect to homepage of the registered user
+						// TODO: Don't return password hash (Marko)
+						// TODO: Add Role to user (Marko)
+						response.data.role = "Client";
+						console.log(me);
+						console.log(response.data.id);
+						me.$store.commit("setToken", response.data.id);
+						me.$store.commit("setUser", response.data);
+						me.$router.push("/");
+						console.log(response);
+					});
+			}
+		},
+	},
 	setup() {
 		localStorage.clear();
 
@@ -201,60 +264,6 @@ export default {
 					});
 			},
 
-			register() {
-				if (
-					this.username == null ||
-					this.passwordInput == null ||
-					this.firstName == null ||
-					this.lastName == null ||
-					this.email == null ||
-					this.number == null ||
-					this.gender == null ||
-					this.dateOfBirth == null ||
-					this.biography == null ||
-					this.workExperience == null ||
-					this.studies == null ||
-					this.skills == null ||
-					this.interests == null
-				) {
-					alert("All fields need to be filled, try again.");
-				} else if (!this.checkEmail(this.email)) {
-					alert(
-						"Email isn't in the correct form. Please fill out the form again."
-					);
-					return;
-				} else if (this.usernameCheck == false) {
-					alert(
-						"Username already exists, please choose another one."
-					);
-					return;
-				} else {
-					var newUser = {
-						username: this.username,
-						passwordInput: this.passwordInput,
-						firstName: this.firstName,
-						lastName: this.lastName,
-						email: this.email,
-						number: this.number,
-						gender: this.gender,
-						dateOfBirth: this.dateOfBirth,
-						biography: this.biography,
-						workExperience: this.workExperience,
-						studies: this.studies,
-						skills: this.skills,
-						interests: this.interests,
-						privateAccount: this.privateAccount,
-					};
-					console.log("Created new user: " + newUser);
-					axios
-						.post("http://localhost:5001/user/register/", newUser)
-						.then(function (response) {
-							alert("User created successfully.");
-							console.log(response);
-							// TODO: Redirect to homepage of the registered user
-						});
-				}
-			},
 			checkEmail(email) {
 				if (
 					email.includes("@") &&

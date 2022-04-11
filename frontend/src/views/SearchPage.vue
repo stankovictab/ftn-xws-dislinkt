@@ -30,6 +30,7 @@
 </template>
 
 <script>
+// import { ref } from "@vue/reactivity";
 import axios from "axios";
 
 export default {
@@ -49,12 +50,14 @@ export default {
 		},
 	},
 	data() {
-		var searchResults = ref(null);
+		// var searchResults = ref(null);
 		return {
-			searchResults,
+			searchResults: Object,
 		};
 	},
 	mounted() {
+		console.log(this);
+		var me = this;
 		// this.searchResults = "aaaaaaaa";
 		// TODO: Can we call search() here?
 		// TODO: Search only by searchTerm
@@ -73,12 +76,11 @@ export default {
 				// TODO: Add search results into a list
 				console.log(response.data);
 				console.log(response.data[0].username);
-				this.searchResults.value = response.data[0].username;
+				me.searchResults = response.data[0];
 			});
 	},
 };
 import "../style.css";
-import { ref } from "@vue/reactivity";
 </script>
 
 <style scoped>
