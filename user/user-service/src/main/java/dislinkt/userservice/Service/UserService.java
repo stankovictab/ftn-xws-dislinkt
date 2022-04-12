@@ -25,141 +25,68 @@ public class UserService {
 
     private final UserMapper userMapper;
 
-    public ArrayList<UserDTO> find(String firstName, String lastName) {
-        ArrayList<UserDTO> usersDTO1 = new ArrayList<>();
-        ArrayList<UserDTO> usersDTO2 = new ArrayList<>();
-        ArrayList<UserDTO> usersDTO = new ArrayList<>();
-        
+    public ArrayList<UserDTO> find(String firstName, String lastName) {        
         if (lastName == null) {
-            usersDTO1 = findByFirstName(firstName);
-            usersDTO2 = findByLastName(firstName);
-
-            Boolean flag = false;
-            if (usersDTO1 != null ) {
-                for (UserDTO userDTO: usersDTO1) {
-                    userDTO.setPasswordSalt(null);
-                    userDTO.setPasswordHash(null);
-                    usersDTO.add(userDTO);
-                }
-                for (UserDTO userDTO : usersDTO1) {
-                    for (UserDTO userDTO2 : usersDTO) {
-                        if (userDTO.getId().equals(userDTO2.getId())) {
-                            flag = true;
-                        }
-                    }
-                    if (!flag) {
-                        userDTO.setPasswordSalt(null);
-                        userDTO.setPasswordHash(null);
-                        usersDTO.add(userDTO);
-                        flag = false;
-                    }
-                }
-            }
-            if (usersDTO2 != null) {
-                if (usersDTO.isEmpty()) {
-                    for (UserDTO userDTO: usersDTO1) {
-                        userDTO.setPasswordSalt(null);
-                        userDTO.setPasswordHash(null);
-                        usersDTO.add(userDTO);
-                    }
-                }
-                else {
-                    for (UserDTO userDTO: usersDTO2) {
-                        for (UserDTO userDTO1: usersDTO) {
-                            if (userDTO.getId().equals(userDTO1.getId())) {
-                                flag = true;
-                                break;
-                            }
-                        }
-                        if (!flag) {
-                            userDTO.setPasswordSalt(null);
-                            userDTO.setPasswordHash(null);
-                            usersDTO.add(userDTO);
-                        }
-                        flag = false;
-                    }
-                }
-            }
+            return findByOneParam(firstName);
         }
-        else {
-            usersDTO = findByName(firstName, lastName);
-        }        
-
-        return usersDTO;
+        return findByName(firstName, lastName);     
     }
 
+    public ArrayList<UserDTO> findByOneParam(String searchParam) {
+        ArrayList<UserDTO> usersFirstName = findByFirstName(searchParam);
+        ArrayList<UserDTO> usersLastName = findByLastName(searchParam);
+        UserDTO userUsername = findByUsername(searchParam);
+        ArrayList<UserDTO> usersDTO = new ArrayList<>();
+
+        if (usersFirstName == null && usersLastName == null && userUsername == null) {
+            return null;
+        }
+        if (usersFirstName == null && usersLastName == null) {
+            usersDTO.add(userUsername);
+            return usersDTO;
+        }
+        if (usersLastName == null && userUsername == null) {
+            return usersFirstName;
+        }
+        if (usersFirstName == null && userUsername == null) {
+            return usersLastName;
+        }
+        if (userUsername == null) {
+            return mergeArrayLists(usersFirstName, usersLastName);
+        }
+        if (usersLastName == null) {
+            return addOne(usersFirstName, userUsername);
+        }
+        if (usersFirstName == null) {
+            return addOne(usersLastName, userUsername);
+        }
+        return addOne(mergeArrayLists(usersFirstName, usersLastName), userUsername);
+    }
+    
     public ArrayList<UserDTO> findByName(String firstName, String lastName) {
-        ArrayList<User> users = userRepository.findByFirstName(firstName);
-        ArrayList<User> users2 = userRepository.findByLastName(lastName);
-        ArrayList<User> users3 = userRepository.findByFirstName(lastName);
-        ArrayList<User> users4 = userRepository.findByLastName(firstName);
-        ArrayList<User> users5 = new ArrayList<User>();
-        ArrayList<User> users6 = new ArrayList<User>();
-        ArrayList<User> users7 = new ArrayList<User>();
+        ArrayList<UserDTO> usersDTO1 = findByFirstName(firstName);
+        ArrayList<UserDTO> usersDTO2 = findByLastName(lastName);
+        ArrayList<UserDTO> usersDTO3 = findByFirstName(lastName);
+        ArrayList<UserDTO> usersDTO4 = findByLastName(firstName);
 
-        for (User user : users) {
-            for (User user1 : users2) {
-                if (user.getId().equals(user1.getId())) {
-                    if (!user1.getPrivateAccount()) {
-                        System.out.println("User found: " + user1.getFirstName() + " " + user1.getLastName());
-                        users5.add(user);
-                    }
-                }
-            }
-        }
+        ArrayList<UserDTO> usersDTO5 = mergePublic(usersDTO1, usersDTO2);
+        ArrayList<UserDTO> usersDTO6 = mergePublic(usersDTO3, usersDTO4);
+        ArrayList<UserDTO> usersDTO = mergeArrayLists(usersDTO5, usersDTO6);
 
-        for (User user : users3) {
-            for (User user1 : users4) {
-                if (user.getId().equals(user1.getId())) {
-                    if (!user1.getPrivateAccount()) {
-                        System.out.println("User found: " + user1.getFirstName() + " " + user1.getLastName());
-                        users6.add(user);
-                    }
-                }
-            }
-        }
-
-        Boolean flag = false;
-        users7.addAll(users5);
-        
-        for (User user : users6) {
-            for (User user1 : users7) {
-                if (user.getId().equals(user1.getId())) {
-                    flag = true;
-                    break;
-                }
-            }
-            if (!flag) {
-                users7.add(user);
-            }
-            flag = false;
-        }
-
-        ArrayList<UserDTO> usersDTO = new ArrayList<UserDTO>();
-        for (User user : users7) {
+        for (UserDTO user : usersDTO) {
             user.setPasswordSalt(null);
             user.setPasswordHash(null);
-            usersDTO.add(userMapper.entityToDto(user));
         }
         if (usersDTO.isEmpty()) {
             System.out.println("No users found");
             return null;
         } 
-
         return usersDTO;
-
     }
 
     public ArrayList<UserDTO> findByFirstName(String firstName) {
         ArrayList<User> users = (ArrayList<User>) userRepository.findByFirstName(firstName);
-        ArrayList<UserDTO> userDTOs = new ArrayList<>();
-        for (User user : users) {
-            if (!user.getPrivateAccount()) {
-                user.setPasswordSalt(null);
-                user.setPasswordHash(null);
-                userDTOs.add(userMapper.entityToDto(user));
-            }
-        }
+        ArrayList<UserDTO> userDTOs = mapToDTO(users);
         if (userDTOs.isEmpty()) {
             System.out.println("No users found with the first name : '" + firstName + "'.");
             return null;
@@ -169,14 +96,7 @@ public class UserService {
 
     public ArrayList<UserDTO> findByLastName(String lastName) {
         ArrayList<User> users = userRepository.findByLastName(lastName);
-        ArrayList<UserDTO> userDTOs = new ArrayList<>();
-        for (User user : users) {
-            if (!user.getPrivateAccount()) {
-                user.setPasswordSalt(null);
-                user.setPasswordHash(null);
-                userDTOs.add(userMapper.entityToDto(user));
-            }
-        }
+        ArrayList<UserDTO> userDTOs = mapToDTO(users);
         if (userDTOs.isEmpty()) {
             System.out.println("No users found with the last name : '" + lastName + "'.");
             return null;
@@ -208,7 +128,6 @@ public class UserService {
             user.setPasswordHash(null);
             userDTOs.add(userMapper.entityToDto(user));
         }
-
         return userDTOs;
     }
 
@@ -236,7 +155,6 @@ public class UserService {
             System.out.println("User not found.");
             return null;
         }
-
         if (!user.getFirstName().equals(userDTO.getFirstName())) {
             user.setFirstName(userDTO.getFirstName());
             System.out.println("First name updated.");
@@ -286,7 +204,6 @@ public class UserService {
             System.out.println("User '" + user.getUsername() + "' updated.");
             return user;
         }
-
         System.out.println("User '" + user.getUsername() + "' not updated.");
         return null;
     }
@@ -302,6 +219,7 @@ public class UserService {
         if (allegedUser == null) {
             System.out.println("User not found.");
             System.out.println("Attempted username : '" + incomingUser.getUsername() + "'.");
+            return null;
         }
 
         user.setPasswordSalt(allegedUser.getPasswordSalt());
@@ -380,7 +298,61 @@ public class UserService {
         }
     }
 
-    
+    public ArrayList<UserDTO> mapToDTO(ArrayList<User> users) {
+        ArrayList<UserDTO> usersDTO = new ArrayList<UserDTO>();
+        for (User user : users) {
+            if (!user.getPrivateAccount()) {
+                user.setPasswordSalt(null);
+                user.setPasswordHash(null);
+                usersDTO.add(userMapper.entityToDto(user));
+            }
+        }
+        return usersDTO;
+    }
 
+    public ArrayList<UserDTO> mergeArrayLists(ArrayList<UserDTO> usersDTO1, ArrayList<UserDTO> usersDTO2) {
+        ArrayList<UserDTO> usersDTO = new ArrayList<>();
+        usersDTO.addAll(usersDTO1);
+        boolean flag = false;
+        for (UserDTO userDTO : usersDTO2) {
+            for (UserDTO userDTO1 : usersDTO) {
+                if (userDTO.getId().equals(userDTO1.getId())) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag) {
+                usersDTO.add(userDTO);
+            }
+            flag = false;
+        }
+        return usersDTO;
+    }
 
+    public ArrayList<UserDTO> addOne(ArrayList<UserDTO> usersDTO, UserDTO userDTO) {
+        boolean flag = false;
+        for (UserDTO userDTO1 : usersDTO) {
+            if (userDTO1.getId().equals(userDTO.getId())) {
+                flag = true;
+                break;
+            }
+        }
+        if (!flag) {
+            usersDTO.add(userDTO);
+        }
+        return usersDTO;
+    }
+
+    public ArrayList<UserDTO> mergePublic(ArrayList<UserDTO> usersDTO1, ArrayList<UserDTO> usersDTO2) {
+        ArrayList<UserDTO> usersDTO = new ArrayList<>();
+        for (UserDTO user : usersDTO1) {
+            for (UserDTO user1 : usersDTO2) {
+                if (user.getId().equals(user1.getId()) && !user.getPrivateAccount()) {
+                    System.out.println("User found: " + user1.getFirstName() + " " + user1.getLastName());
+                    usersDTO.add(user);
+                }
+            }
+        }
+        return usersDTO;
+    }
 }

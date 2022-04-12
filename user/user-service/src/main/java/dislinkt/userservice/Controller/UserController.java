@@ -39,13 +39,13 @@ public class UserController implements UserServiceFeignClient {
 
 		ArrayList<UserDTO> users = userService.find(firstName, lastName);
 
-		if (users == null) {
+		if (searchTerm.isEmpty()) {
 			System.out.println("Find - No search term");
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		else if (users.isEmpty()) {
-			System.out.println("No users found");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		else if (users == null) {
+			System.out.println("No users found");
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		
 		return new ResponseEntity<ArrayList<UserDTO>>(users, HttpStatus.OK);
