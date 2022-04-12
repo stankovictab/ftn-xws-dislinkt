@@ -17,7 +17,7 @@ export default {
             friends: []
         }
     },
-    mounted() {
+    created() {
       getFriends().then(response => {
         this.friends = response.data;
       });

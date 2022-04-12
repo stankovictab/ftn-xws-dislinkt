@@ -27,7 +27,7 @@ export default {
             user: 'user',
         })
     },
-    mounted() {
+    created() {
       getFeed().then(response => {
         this.posts = response.data;
       });

@@ -42,7 +42,7 @@ export default {
 	computed:{
 		...mapGetters(["hasRole"]),
 	},
-	mounted(){
+	created(){
 		if(this.hasRole){
 			this.$router.push("/");
 		}
