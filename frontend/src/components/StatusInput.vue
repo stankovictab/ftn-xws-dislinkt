@@ -1,6 +1,6 @@
 <template>
     <div>
-        <img :src="require('../assets/' + user.avatar)"/>
+        <img :src="require('../assets/' + avatar)"/>
         <input placeholder="What's on your mind?"/> 
         <button>Add Image</button>
     </div>
@@ -15,7 +15,10 @@ export default {
     computed: {
         ...mapState({
             user: 'user',
-        })
+        }),
+        avatar() {
+            return this.user.avatar || "placeholder.png";
+        },
     }
 };
 import "../style.css";

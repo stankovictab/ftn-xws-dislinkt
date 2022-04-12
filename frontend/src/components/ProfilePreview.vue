@@ -1,9 +1,9 @@
 <template>
     <div>
-        <img :src="require('../assets/' + user.avatar)"/>
+        <img :src="require('../assets/' + avatar)"/>
         <p id="username">{{user.username}}</p>
-        <p>{{user.jobDesc}}</p>
-        <p>Working at {{user.company}}</p>
+        <!-- <p>{{user.jobDesc}}</p> -->
+        <!-- <p>Working at {{user.company}}</p> -->
         <router-link to="/profile">  
             <button>Profile</button>
         </router-link>
@@ -19,7 +19,10 @@ export default {
     computed: {
         ...mapState({
             user: 'user',
-        })
+        }),
+        avatar() {
+            return this.user.avatar || "placeholder.png";
+        },
     }
 };
 import "../style.css";

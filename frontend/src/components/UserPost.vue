@@ -15,7 +15,7 @@
             <comment-on-post v-for="comment in post.comments" :key="comment.id" :comment="comment"/>
         </div>
         <div class="comment-input" v-if="isCommenting">
-            <img class="commenting-avatar" :src="require('../assets/' + user.avatar)"/>
+            <img class="commenting-avatar" :src="require('../assets/' + avatar)"/>
             <input type="text" v-model="commentText"/>
             <button @click="postComment">Post comment</button>
         </div>
@@ -49,7 +49,11 @@ export default {
     computed: {
         ...mapState({
             user: 'user',
-        })
+        }),
+        avatar() {
+            return this.user.avatar || "placeholder.png";
+        },
+        
     },
     watch: {
         myVote: function(newVote, oldVote) {

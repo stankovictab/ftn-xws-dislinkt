@@ -1,6 +1,6 @@
 <template>
     <div>
-        <img :src="require('../assets/' + comment.avatar)"/>
+        <img :src="require('../assets/' + avatar)"/>
         <p>{{comment.text}}</p>
     </div> 
 </template>
@@ -13,6 +13,11 @@ export default {
     props:{
         comment: Object
     },
+    computed:{
+        avatar() {
+            return this.comment.avatar || "placeholder.png";
+        },
+    }
 };
 import "../style.css";
 </script>

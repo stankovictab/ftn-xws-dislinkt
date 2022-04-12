@@ -19,7 +19,6 @@ export default {
 	computed: {
 		...mapGetters(["userRole"]),
 		userHome() {
-			console.log("User Role: " + this.userRole);
 			return `${this.userRole}Home`;
 		},
 	},
