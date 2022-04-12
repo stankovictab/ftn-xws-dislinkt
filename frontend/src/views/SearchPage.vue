@@ -19,11 +19,21 @@
 				<span style="color: var(--yellow3)">{{ searchTerm }}</span>
 			</p>
 			<!-- TODO: Add v-if to list -->
-			<p style="margin-top: 50px; color: var(--text2)">
+			<p
+				style="margin-top: 50px; color: var(--text2)"
+				v-if="searchResults == null"
+			>
 				No results found.
 			</p>
 			<div class="search-results-child">
-				<p>{{ searchResults }}</p>
+				<div class="search-result" v-for="i in searchResults" :key="i">
+					<!-- <p>{{ i }}</p> -->
+					<img src="../assets/placeholder.png" />
+					<h3>{{ i.firstName }} {{ i.lastName }}</h3>
+					<p style="font-size: 20px">@{{ i.username }}</p>
+					<p>{{ i.workExperience }}</p>
+					<button>View Profile</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -56,9 +66,8 @@ export default {
 		};
 	},
 	mounted() {
-		console.log(this);
 		var me = this;
-		// this.searchResults = "aaaaaaaa";
+		this.searchResults = null;
 		// TODO: Can we call search() here?
 		// TODO: Search only by searchTerm
 		axios
@@ -76,7 +85,7 @@ export default {
 				// TODO: Add search results into a list
 				console.log(response.data);
 				console.log(response.data[0].username);
-				me.searchResults = response.data[0];
+				me.searchResults = response.data;
 			});
 	},
 };
@@ -109,5 +118,39 @@ header button {
 }
 .search-results-parent p {
 	color: var(--text1);
+}
+.search-results-child {
+	display: flex;
+	flex-direction: row;
+}
+.search-result {
+	height: 250px;
+	width: 320px;
+	margin: 20px 40px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	background-color: var(--backdrop);
+	border-radius: 20px;
+	padding: 30px 40px;
+}
+.search-result h3 {
+	color: white;
+	font-weight: 600;
+	font-size: 32px;
+}
+.search-result button {
+	width: 200px;
+	height: 40px;
+	border-radius: 20px;
+}
+.search-result p {
+	font-weight: 400;
+}
+.search-result img {
+	width: 75px;
+	height: 75px;
+	border-radius: 50%;
 }
 </style>

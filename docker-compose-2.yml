@@ -5,12 +5,12 @@
 
 version: '3.1'
 services:
-  # user-service: 
-  #   build: ./user/user-service/
-  #   ports:
-  #       - 5001:5001
-  #   restart: always
-  post-service:
-    build: ./post/post-service/
-    ports:
-        - 5002:5002
+    user-service: 
+        build: ./user/user-service/
+        ports:
+            - 5001:5001
+        restart: always
+    post-service:
+        build: ./post/post-service/
+        ports:
+            - 5002:5002

@@ -9,8 +9,9 @@ spring:
             username: root # docker-compose
             password: example # docker-compose
             database: dislinkt
-            host: localhost 
-            # host: mongo # If running from a Docker container, use the service name, not localhost
+            # If running from a Docker container, use the service name, not localhost
+            # host: localhost 
+            host: mongo 
             port: 27017 # default
 
 server:
@@ -19,8 +20,8 @@ server:
 eureka:
     client:
         serviceUrl:
-            defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
-            # defaultZone: ${EUREKA_URI:http://eureka-server:8761/eureka}
-            # If running from a Docker container, use the service name, not localhost
+            # If running from a Docker container, use the service name (eureka-server), not localhost
+            defaultZone: ${EUREKA_URI:http://eureka-server:8761/eureka}
+            # defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
     instance:
         preferIpAddress: true

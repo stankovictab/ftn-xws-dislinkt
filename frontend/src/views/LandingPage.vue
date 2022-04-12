@@ -35,7 +35,7 @@
 				</p>
 			</div>
 		</div>
-		<div style="margin-top: 250px"></div>
+		<div style="margin-top: 300px"></div>
 		<div style="display: flex; justify-content: center">
 			<p class="withlove">
 				Made by
