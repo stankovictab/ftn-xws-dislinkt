@@ -1,6 +1,6 @@
 package dislinkt.postservice.Entity;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -20,6 +20,6 @@ public class Comment {
 	private String postId;
 	private String comment;
 
-	private LocalTime creationDate;
+	private LocalDateTime creationDate;
 
 }

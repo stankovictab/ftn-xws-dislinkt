@@ -25,6 +25,89 @@ public class UserService {
 
     private final UserMapper userMapper;
 
+    public UserDTO viewUser(String userId, String toViewUserId) {
+        User toViewUser = userRepository.findById(toViewUserId).get();
+        if (userId.equals("")) {
+            // unregistered user so he can only view public profiles
+            if (toViewUser.getPrivateAccount()) {
+                System.out.println("User is private");
+                return null;
+            } 
+        }
+        else {
+            User user = userRepository.findById(userId).get();
+            if (toViewUser.getPrivateAccount()) {
+                if (user.getConnectionRequestUserIds().contains(toViewUserId)) {
+                    return userMapper.entityToDto(toViewUser);
+                }
+                else {
+                    System.out.println("User is private and user is not connected");
+                    return null;
+                }
+            }
+        }
+        return userMapper.entityToDto(toViewUser);
+    }
+
+
+    public Boolean approveFollow(String userId, String followerUserId) {
+        User user = userRepository.findById(userId).get();
+        User followerUser = userRepository.findById(followerUserId).get();
+        if (user.getConnectionRequestUserIds() != null && user.getConnectionRequestUserIds().contains(followerUserId)) {
+            user.getConnectionRequestUserIds().remove(followerUserId);
+            followerUser.getPendingRequestUserIds().remove(userId);
+            followerUser.getConnectionUserIds().add(userId);
+            if (userRepository.save(user) != null && userRepository.save(followerUser) != null) {
+                System.out.println("User '" + userId + "' approved follow request from '" + followerUserId + "'.");
+                return true;
+            }
+            System.out.println("User '" + userId + "' failed to approve follow request from '" + followerUserId + "'.");
+            return false;
+        }
+        System.out.println("No such request exists from '" + followerUserId + "' to '" + userId + "'.");
+        return false;
+    }
+
+    public Boolean followUser(String userId, String toFollowUserId) {
+        User user = userRepository.findById(userId).get();
+        User toFollowUser = userRepository.findById(toFollowUserId).get();
+        if (user.getConnectionUserIds() != null && user.getConnectionUserIds().contains(toFollowUserId)) {
+            System.out.println("User '" + userId + "' already follows user '" + toFollowUserId + "'.");
+            return false;
+        }
+        if (toFollowUser.getPrivateAccount()) {
+            System.out.println("User '" + toFollowUserId + "' is private.");
+            if (toFollowUser.getConnectionRequestUserIds() != null && toFollowUser.getConnectionRequestUserIds().contains(userId)) {
+                System.out.println("User '" + userId + "' already requested to follow user '" + toFollowUserId + "'.");
+                return false;
+            }
+            if (toFollowUser.getConnectionRequestUserIds() == null) {
+                toFollowUser.setConnectionRequestUserIds(new ArrayList<>());
+            }
+            if (user.getPendingRequestUserIds() == null) {
+                user.setPendingRequestUserIds(new ArrayList<>());
+            }
+            toFollowUser.getConnectionRequestUserIds().add(userId);
+            user.getPendingRequestUserIds().add(toFollowUserId);
+            if (userRepository.save(toFollowUser) != null && userRepository.save(user) != null) {
+                System.out.println("User '" + userId + "' successfully requested to follow user '" + toFollowUserId + "'.");
+                return true;
+            }
+            System.out.println("User '" + userId + "' could not request to follow user '" + toFollowUserId + "'.");
+            return false;
+        }
+        if (user.getConnectionUserIds() == null) {
+            user.setConnectionUserIds(new ArrayList<>());
+        }
+        user.getConnectionUserIds().add(toFollowUserId);
+        if (userRepository.save(user) != null) {
+            System.out.println("User '" + userId + "' successfully followed user '" + toFollowUserId + "'.");
+            return true;
+        }
+        System.out.println("User '" + userId + "' could not follow user '" + toFollowUserId + "'.");
+        return false;
+    }
+
     public ArrayList<UserDTO> find(String firstName, String lastName) {        
         if (lastName == null) {
             return findByOneParam(firstName);
@@ -257,6 +340,9 @@ public class UserService {
     public User register(UserDTO incomingUser) {
         User user = userMapper.dtoToEntity(incomingUser);
         user.setRole("Client");
+        user.setConnectionUserIds(null);
+        user.setConnectionRequestUserIds(null);
+        user.setPendingRequestUserIds(null);
         
         // password handling
         byte[] salt = new byte[16];
@@ -276,7 +362,8 @@ public class UserService {
                     System.out.println("User '" + user.getUsername() + "' already exists.");
                     return null;
                 }
-                if (userRepository.save(user) != null) {
+                user = userRepository.save(user);
+                if (user != null) {
                     System.out.println("User was successfully created.");
                     user.setPasswordSalt(null);
                     user.setPasswordHash(null);

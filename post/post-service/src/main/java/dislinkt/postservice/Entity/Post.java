@@ -1,6 +1,7 @@
 package dislinkt.postservice.Entity;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -24,6 +25,9 @@ public class Post {
 	private int likes;
 	private int dislikes;
 
-	private LocalTime creationDate;
+	private ArrayList<String> likedUserIds;
+	private ArrayList<String> dislikedUserIds;
+
+	private LocalDateTime creationDate;
 
 }

@@ -8,8 +8,8 @@ printf '\n'
 docker-compose --file docker-compose-2.yml kill
 docker-compose --file docker-compose-1.yml kill
 
-docker-compose --file docker-compose-2.yml rm -f
-docker-compose --file docker-compose-1.yml rm -f
+# docker-compose --file docker-compose-2.yml rm -f
+# docker-compose --file docker-compose-1.yml rm -f
 
 printf '\n'
 echo "Finished!"

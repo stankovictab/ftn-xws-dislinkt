@@ -17,7 +17,18 @@ public interface UserServiceFeignClient {
 
 	// Eureka Dashboard redirects to this URL
 	@GetMapping(value = "/actuator/info")
-	public String home();
+	public String home(); 
+	
+
+
+	@PostMapping(value = "/user/approveFollow/")
+	public ResponseEntity<Boolean> approveFollow(@RequestBody Map<String, String> userIds);
+
+	@PostMapping(value = "/user/follow")
+	public ResponseEntity<Boolean> followUser(@RequestBody Map<String, String> userIds);
+
+	@PostMapping(value = "/user/viewUser")
+	public ResponseEntity<UserDTO> viewUser(@RequestBody Map<String, String> userIds);
 
 	@PostMapping(value = "/user/find")
 	public ResponseEntity<ArrayList<UserDTO>> find(@RequestBody Map<String, String> searchTerm);
@@ -52,7 +63,5 @@ public interface UserServiceFeignClient {
 	@PostMapping("/user/register")
 	public ResponseEntity<UserDTO> userRegister(@RequestBody UserDTO userDTO);
 
-	// @PostMapping(value = "/create/{title}/{description}")
-	// public String create(@PathVariable("title") String title,
-	// @PathVariable("description") String description);
+	
 }

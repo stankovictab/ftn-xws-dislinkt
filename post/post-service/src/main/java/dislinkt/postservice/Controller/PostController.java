@@ -1,13 +1,61 @@
 package dislinkt.postservice.Controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import dislinkt.postclient.CommentDTO;
+import dislinkt.postclient.PostDTO;
+import dislinkt.postclient.PostServiceFeignClient;
+import dislinkt.postservice.Service.CommentService;
+import dislinkt.postservice.Service.PostService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
-public class PostController {
+public class PostController implements PostServiceFeignClient {
+
+    private final PostService postService;
+
+    private final CommentService commentService;
+
+    @Override
+    public String home() {
+        return "Hello from Post Service";
+    }
+
+    @Override
+    public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO) {        
+        PostDTO createdPost = postService.create(postDTO);
+        if (createdPost == null) {
+            System.out.println("Create: No post created.");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<PostDTO>(createdPost, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<CommentDTO> createComment(@RequestBody CommentDTO commentDTO) {
+        CommentDTO createdComment = commentService.create(commentDTO);
+        if (createdComment == null) {
+            System.out.println("Create: No comment created.");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<CommentDTO>(createdComment, HttpStatus.OK);
+    }
+
+    @Override
+	public void likePost(@PathVariable String postId, @PathVariable String userId) {
+        postService.likePost(postId, userId);
+    }
+
+    @Override
+    public void dislikePost(@PathVariable String postId, @PathVariable String userId) {
+        postService.dislikePost(postId, userId);
+    }    
 
 }
