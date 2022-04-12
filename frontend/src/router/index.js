@@ -22,7 +22,13 @@ const routes = [
 		name: 'Profile',
 		component: () => import('../views/ProfilePage.vue'),
 		props: true
-	}
+	},
+	{
+		path: '/search/:searchTerm',
+		name: 'Search',
+		component: () => import('../views/SearchPage.vue'),
+		props: true
+	},
 ]
 
 const router = createRouter({

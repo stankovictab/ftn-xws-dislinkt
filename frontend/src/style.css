@@ -175,6 +175,18 @@ input:focus {
 	transition: all 0.2s ease;
 }
 
+.search-input {
+	height: 35px;
+	width: 500px;
+	background-color: var(--backdrop);
+	border: 2px solid var(--backdrop);
+	color: white;
+}
+
+.search-input::placeholder {
+	color: var(--text3);
+}
+
 select {
 	height: 26px;
 	background-color: white;
@@ -230,4 +242,10 @@ textarea {
 	border-radius: 20px;
 	gap: 15px;
 	margin-bottom: 200px;
+}
+
+.mini-logo {
+	color: var(--text1);
+	font-weight: bold;
+	font-size: 36px;
 }

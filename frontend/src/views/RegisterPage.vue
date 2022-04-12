@@ -15,25 +15,44 @@
 			<div class="multiple-input-div">
 				<div class="input-div">
 					<label>Username</label>
-					<input id="username" placeholder="johnjohnson" />
+					<input
+						id="username"
+						placeholder="johnjohnson"
+						@change="checkUsername()"
+						v-model="username"
+					/>
 				</div>
 				<div class="input-div">
 					<label>Password</label>
 					<input
-						id="password"
+						id="passwordInput"
 						type="password"
 						placeholder="•••••••••••••••••"
+						v-model="passwordInput"
 					/>
 				</div>
+			</div>
+			<div v-if="usernameCheck == false">
+				<p style="color: #ff6a6a; font-size: 20px">
+					Username already exists, please choose another one.
+				</p>
 			</div>
 			<div class="multiple-input-div">
 				<div class="input-div">
 					<label>First Name</label>
-					<input id="firstname" placeholder="John" />
+					<input
+						id="firstname"
+						placeholder="John"
+						v-model="firstName"
+					/>
 				</div>
 				<div class="input-div">
 					<label>Last Name</label>
-					<input id="lastname" placeholder="Johnson" />
+					<input
+						id="lastname"
+						placeholder="Johnson"
+						v-model="lastName"
+					/>
 				</div>
 			</div>
 			<div class="multiple-input-div">
@@ -43,21 +62,23 @@
 						id="email"
 						type="email"
 						placeholder="johnjohnson@gmail.com"
+						v-model="email"
 					/>
 				</div>
 				<div class="input-div">
 					<label>Phone Number</label>
 					<input
 						id="phonenumber"
-						type="tel"
+						type="number"
 						placeholder="+381600000000"
+						v-model="number"
 					/>
 				</div>
 			</div>
 			<div class="multiple-input-div">
 				<div class="input-div">
 					<label>Gender</label>
-					<select id="gender">
+					<select id="gender" v-model="gender">
 						<!-- <option value="" selected></option> -->
 						<option value="male">Male</option>
 						<option value="female">Female</option>
@@ -65,34 +86,54 @@
 				</div>
 				<div class="input-div">
 					<label>Date of Birth</label>
-					<input id="dateofbirth" type="date" />
+					<input id="dateofbirth" type="date" v-model="dateOfBirth" />
 				</div>
 			</div>
 			<h5>Biography & Work Experience</h5>
 			<div class="input-div-large">
 				<label>Biography</label>
-				<textarea id="biography" cols="20" rows="3"></textarea>
+				<textarea
+					id="biography"
+					cols="20"
+					rows="3"
+					v-model="biography"
+				></textarea>
 			</div>
 			<div class="input-div-large">
 				<label>Work Experience</label>
-				<textarea id="workexperience" cols="20" rows="3"></textarea>
+				<textarea
+					id="workexperience"
+					cols="20"
+					rows="3"
+					v-model="workExperience"
+				></textarea>
 			</div>
 			<div class="input-div-large">
 				<label>Studies</label>
-				<input id="studies" />
+				<input id="studies" v-model="studies" />
 			</div>
 			<div class="input-div-large">
 				<label>Skills</label>
-				<textarea id="skills" cols="20" rows="3"></textarea>
+				<textarea
+					id="skills"
+					cols="20"
+					rows="3"
+					v-model="skills"
+				></textarea>
 			</div>
 			<div class="input-div-large">
 				<label>Interests</label>
-				<textarea id="interests" cols="20" rows="3"></textarea>
+				<textarea
+					id="interests"
+					cols="20"
+					rows="3"
+					v-model="interests"
+				></textarea>
 			</div>
 			<h5>Privacy</h5>
 			<div id="privacy-radio-buttons" class="input-div-large">
 				<div class="checkbox-div">
-					<input type="checkbox" />
+					<input type="checkbox" v-model="privateAccount" />
 					<label for="public">Private Account</label>
 				</div>
 			</div>
@@ -101,13 +142,140 @@
 	</div>
 </template>
 <script>
+import { ref } from "vue";
+import axios from "axios";
 export default {
 	name: "RegisterPage",
 	components: {},
 	methods: {
 		register() {
-			alert("registrujem se mraleee");
+			// console.log(this);
+			var me = this;
+			if (
+				this.username == null ||
+				this.passwordInput == null ||
+				this.firstName == null ||
+				this.lastName == null ||
+				this.email == null ||
+				this.number == null ||
+				this.gender == null ||
+				this.dateOfBirth == null ||
+				this.biography == null ||
+				this.workExperience == null ||
+				this.studies == null ||
+				this.skills == null ||
+				this.interests == null
+			) {
+				alert("All fields need to be filled, try again.");
+			} else if (!this.checkEmail(this.email)) {
+				alert(
+					"Email isn't in the correct form. Please fill out the form again."
+				);
+				return;
+			} else if (this.usernameCheck == false) {
+				alert("Username already exists, please choose another one.");
+				return;
+			} else {
+				var newUser = {
+					username: this.username,
+					passwordInput: this.passwordInput,
+					firstName: this.firstName,
+					lastName: this.lastName,
+					email: this.email,
+					number: this.number,
+					gender: this.gender,
+					dateOfBirth: this.dateOfBirth,
+					biography: this.biography,
+					workExperience: this.workExperience,
+					studies: this.studies,
+					skills: this.skills,
+					interests: this.interests,
+					privateAccount: this.privateAccount,
+				};
+				console.log("Created new user: " + newUser);
+				axios
+					.post("http://localhost:5001/user/register/", newUser)
+					.then(function (response) {
+						// TODO: Redirect to homepage of the registered user
+						// TODO: Don't return password hash (Marko)
+						// TODO: Add Role to user (Marko)
+						response.data.role = "Client";
+						console.log(me);
+						console.log(response.data.id);
+						me.$store.commit("setToken", response.data.id);
+						me.$store.commit("setUser", response.data);
+						me.$router.push("/");
+						console.log(response);
+					});
+			}
 		},
+	},
+	setup() {
+		localStorage.clear();
+
+		var username = ref(null);
+		var passwordInput = ref(null);
+		var firstName = ref(null);
+		var lastName = ref(null);
+		var email = ref(null);
+		var number = ref(null);
+		var gender = ref(null);
+		var dateOfBirth = ref(null);
+		var biography = ref(null);
+		var workExperience = ref(null);
+		var studies = ref(null);
+		var skills = ref(null);
+		var interests = ref(null);
+		var privateAccount = ref(false);
+
+		var usernameCheck = ref(true);
+
+		return {
+			username,
+			passwordInput,
+			firstName,
+			lastName,
+			email,
+			number,
+			gender,
+			dateOfBirth,
+			biography,
+			workExperience,
+			studies,
+			skills,
+			interests,
+			privateAccount,
+
+			usernameCheck,
+
+			checkUsername() {
+				axios
+					.post(
+						"http://localhost:5001/user/checkUsername",
+						this.username,
+						{ headers: { "Content-Type": "text/plain" } }
+					)
+					.then(function (response) {
+						if (response.data == false) {
+							usernameCheck.value = false;
+						} else {
+							usernameCheck.value = true;
+						}
+					});
+			},
+
+			checkEmail(email) {
+				if (
+					email.includes("@") &&
+					email.indexOf("@") != email.length - 1 &&
+					email.indexOf("@") != 0 &&
+					email.indexOf(".") != email.length - 1 &&
+					email.indexOf("@") + 1 != email.indexOf(".")
+				)
+					// email is in correct form !!!
+					return true;
+			},
+		};
 	},
 };
 import "../style.css";

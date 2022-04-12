@@ -1,5 +1,5 @@
 <template>
-  <component :is="userHome" />
+	<component :is="userHome" />
 </template>
 
 <script>
@@ -9,19 +9,20 @@ import AdminHome from "./AdminHome.vue";
 import ClientHome from "./HomePage.vue";
 
 export default {
-  name: "HomeJuncture",
-  components: {
-    Home,
-    AdminHome,
-    ClientHome,
-  },
-  props: {},
-  computed: {
-    ...mapGetters(["userRole"]),
-    userHome() {
-      return `${this.userRole}Home`;
-    },
-  },
+	name: "HomeJuncture",
+	components: {
+		Home,
+		AdminHome,
+		ClientHome,
+	},
+	props: {},
+	computed: {
+		...mapGetters(["userRole"]),
+		userHome() {
+			console.log("User Role: " + this.userRole);
+			return `${this.userRole}Home`;
+		},
+	},
 };
 </script>
 

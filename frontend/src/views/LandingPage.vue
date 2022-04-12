@@ -4,6 +4,20 @@
 			<div class="landing-left">
 				<h1>Dislinkt</h1>
 				<h2>The place to connect.</h2>
+				<div
+					style="
+						display: flex;
+						justify-content: center;
+						margin-top: 50px;
+					"
+				>
+					<input
+						class="search-input"
+						placeholder="Search Dislinkt"
+						@keyup.enter="search()"
+						v-model="searchTerm"
+					/>
+				</div>
 			</div>
 			<div class="landing-right">
 				<h3>
@@ -14,10 +28,6 @@
 						Sign Up
 					</button></router-link
 				>
-				<p>
-					Or,
-					<a @click="guestMode">continue as guest</a>.
-				</p>
 				<div style="margin-top: 20px"></div>
 				<p>
 					Already have an account?
@@ -39,17 +49,30 @@
 </template>
 
 <script>
+import "../style.css";
 export default {
 	name: "App",
 	components: {},
-	methods:{
-		guestMode(){
-			this.$store.commit("setUser", {"role": "Guest"});
+	data() {
+		return {
+			searchTerm: "",
+		};
+	},
+	methods: {
+		search() {
+			this.$router.push({
+				name: "Search",
+				params: {
+					searchTerm: this.searchTerm,
+				},
+			});
+		},
+		guestMode() {
+			this.$store.commit("setUser", { role: "Guest" });
 			this.$router.push("/");
 		},
 	},
 };
-import "../style.css";
 </script>
 
 <style scoped>
