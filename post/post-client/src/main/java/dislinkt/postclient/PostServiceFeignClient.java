@@ -1,9 +1,10 @@
 package dislinkt.postclient;
 
+import java.util.Map;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -23,10 +24,10 @@ public interface PostServiceFeignClient {
 	@PostMapping(value = "/comment/create")
 	public ResponseEntity<CommentDTO> createComment(@RequestBody CommentDTO commentDTO);
 
-	@PostMapping(value = "/post/like/{postId}/{userId}")
-	public void likePost(@PathVariable String postId, @PathVariable String userId);
+	@PostMapping(value = "/post/like")
+	public void likePost(@RequestBody Map<String, String> json);
 
-	@PostMapping(value = "/post/unlike/{postId}/{userId}")
-	public void dislikePost(@PathVariable String postId, @PathVariable String userId);
+	@PostMapping(value = "/post/unlike")
+	public void dislikePost(@RequestBody Map<String, String> json);
 	
 }

@@ -1,9 +1,10 @@
 package dislinkt.postservice.Controller;
 
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -49,13 +50,13 @@ public class PostController implements PostServiceFeignClient {
     }
 
     @Override
-	public void likePost(@PathVariable String postId, @PathVariable String userId) {
-        postService.likePost(postId, userId);
+	public void likePost(@RequestBody Map<String, String> json) {
+        postService.likePost(json.get("postId"), json.get("userId"));
     }
 
     @Override
-    public void dislikePost(@PathVariable String postId, @PathVariable String userId) {
-        postService.dislikePost(postId, userId);
+    public void dislikePost(@RequestBody Map<String, String> json) {
+        postService.dislikePost(json.get("postId"), json.get("userId"));
     }    
 
 }

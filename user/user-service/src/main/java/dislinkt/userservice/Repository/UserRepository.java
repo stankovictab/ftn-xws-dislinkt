@@ -13,7 +13,7 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     // $options: 'i' for case insensitive
     @Query("{'username': {$regex: ?0, $options: 'i'}}")
-    User findByUsername(String username);
+    ArrayList<User> findByUsername(String username);
 
     @Query("{'firstName': {$regex: ?0, $options: 'i'}}")
     ArrayList<User> findByFirstName(String firstName);

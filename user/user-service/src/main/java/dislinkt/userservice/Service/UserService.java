@@ -118,32 +118,32 @@ public class UserService {
     public ArrayList<UserDTO> findByOneParam(String searchParam) {
         ArrayList<UserDTO> usersFirstName = findByFirstName(searchParam);
         ArrayList<UserDTO> usersLastName = findByLastName(searchParam);
-        UserDTO userUsername = findByUsername(searchParam);
+        ArrayList<UserDTO> usersUsername = findByUsername(searchParam);
         ArrayList<UserDTO> usersDTO = new ArrayList<>();
 
-        if (usersFirstName == null && usersLastName == null && userUsername == null) {
+        if (usersFirstName == null && usersLastName == null && usersUsername == null) {
             return null;
         }
         if (usersFirstName == null && usersLastName == null) {
-            usersDTO.add(userUsername);
+            usersDTO.addAll(usersUsername);
             return usersDTO;
         }
-        if (usersLastName == null && userUsername == null) {
+        if (usersLastName == null && usersUsername == null) {
             return usersFirstName;
         }
-        if (usersFirstName == null && userUsername == null) {
+        if (usersFirstName == null && usersUsername == null) {
             return usersLastName;
         }
-        if (userUsername == null) {
+        if (usersUsername == null) {
             return mergeArrayLists(usersFirstName, usersLastName);
         }
         if (usersLastName == null) {
-            return addOne(usersFirstName, userUsername);
+            return mergeArrayLists(usersFirstName, usersUsername);
         }
         if (usersFirstName == null) {
-            return addOne(usersLastName, userUsername);
+            return mergeArrayLists(usersLastName, usersUsername);
         }
-        return addOne(mergeArrayLists(usersFirstName, usersLastName), userUsername);
+        return mergeArrayLists(mergeArrayLists(usersFirstName, usersLastName), usersUsername);
     }
     
     public ArrayList<UserDTO> findByName(String firstName, String lastName) {
@@ -187,17 +187,23 @@ public class UserService {
         return userDTOs;
     }
 
-    public UserDTO findByUsername(String username) {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
+    public ArrayList<UserDTO> findByUsername(String username) {
+        ArrayList<User> users = userRepository.findByUsername(username);
+        ArrayList<UserDTO> userDTOs = new ArrayList<>();
+        if (users == null) {
             System.out.println("No user found with the username : '" + username + "'.");
             return null;
         }
-        if (!user.getPrivateAccount()) {
-            user.setPasswordSalt(null);
-            user.setPasswordHash(null);
-            System.out.println("User found with the username : '" + username + "'.");
-            return userMapper.entityToDto(user);
+        for (User user : users) {
+            if (!user.getPrivateAccount()) {
+                user.setPasswordSalt(null);
+                user.setPasswordHash(null);
+                System.out.println("User found with the username : '" + username + "'.");
+                userDTOs.add(userMapper.entityToDto(user));
+            }
+        }
+        if (!userDTOs.isEmpty()) {
+            return userDTOs;
         }
         System.out.println("The user with the username : '" + username + "' is private.");
         return null;
@@ -215,7 +221,17 @@ public class UserService {
     }
 
     public User updateUsername(String oldUsername, String newUsername) {
-        User allegedUser = userRepository.findByUsername(oldUsername);
+        ArrayList<User> users = userRepository.findByUsername(oldUsername);
+        User allegedUser = null;
+        for (User user : users) {
+            if (user.getUsername().equals(oldUsername)) {
+                allegedUser = user;
+            }
+        }
+        if (allegedUser == null) {
+            System.out.println("No user found with the username : '" + oldUsername + "'.");
+            return null;
+        }
         if (checkUsername(newUsername)) {
             allegedUser.setUsername(newUsername);
             if (userRepository.save(allegedUser) != null) {
@@ -232,8 +248,13 @@ public class UserService {
     }
 
     public User update(UserDTO userDTO) {
-        User user = userRepository.findByUsername(userDTO.getUsername());
-
+        ArrayList<User> users = userRepository.findByUsername(userDTO.getUsername());
+        User user = null;
+        for (User user2 : users) {
+            if (user2.getUsername().equals(userDTO.getUsername())) {
+                user = user2;
+            }
+        }       
         if (user == null) {
             System.out.println("User not found.");
             return null;
@@ -297,8 +318,13 @@ public class UserService {
 
     public User login(UserDTO incomingUser) {
         User user = userMapper.dtoToEntity(incomingUser);
-        User allegedUser = userRepository.findByUsername(user.getUsername());
-
+        ArrayList<User> users = userRepository.findByUsername(user.getUsername());
+        User allegedUser = null;
+        for (User user2 : users) {
+            if (user2.getUsername().equals(user.getUsername())) {
+                allegedUser = user2;
+            }
+        }
         if (allegedUser == null) {
             System.out.println("User not found.");
             System.out.println("Attempted username : '" + incomingUser.getUsername() + "'.");

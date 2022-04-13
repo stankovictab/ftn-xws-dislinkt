@@ -105,13 +105,13 @@ public class UserController implements UserServiceFeignClient {
 	}
 
 	@Override
-	public ResponseEntity<UserDTO> findByUsername(@RequestBody String username) {
-		UserDTO user = userService.findByUsername(username);
-		if (user == null) {
+	public ResponseEntity<ArrayList<UserDTO>> findByUsername(@RequestBody String username) {
+		ArrayList<UserDTO> users = userService.findByUsername(username);
+		if (users == null) {
 			System.out.println("FindByUsername: No user found");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(user, HttpStatus.OK);
+		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 
 	@Override
