@@ -1,5 +1,6 @@
 package dislinkt.postservice.Controller;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,15 @@ public class PostController implements PostServiceFeignClient {
     @Override
     public String home() {
         return "Hello from Post Service";
+    }
+
+    @Override
+    public ResponseEntity<ArrayList<PostDTO>> getAllByUser(String userId) {
+        ArrayList<PostDTO> postDTOs = postService.getAllByUser(userId);    
+        if (postDTOs == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(postDTOs, HttpStatus.OK);
     }
 
     @Override

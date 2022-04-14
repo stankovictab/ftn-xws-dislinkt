@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -19,9 +20,16 @@ public interface UserServiceFeignClient {
 	@GetMapping(value = "/actuator/info")
 	public String home(); 
 	
+	@PostMapping(value = "/user/blockUser")
+	public ResponseEntity<Boolean> blockUser(@RequestBody Map<String, String> userIds);
 
+	// TODO: ovo sranje ne radi iz nekog razloga
+	// @PostMapping(value = "/user/updatePrivacy")
+	// public ResponseEntity<Boolean> updatePrivacy(@RequestBody String userId);
+	@PostMapping(value = "/user/updatePrivacy/{userId}")
+	public ResponseEntity<Boolean> updatePrivacy(@PathVariable String userId);
 
-	@PostMapping(value = "/user/approveFollow/")
+	@PostMapping(value = "/user/approveFollow")
 	public ResponseEntity<Boolean> approveFollow(@RequestBody Map<String, String> userIds);
 
 	@PostMapping(value = "/user/follow")

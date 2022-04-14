@@ -25,6 +25,51 @@ public class UserService {
 
     private final UserMapper userMapper;
 
+
+    public Boolean blockUser(String userId, String toBlockUserId) {
+        User user = userRepository.findById(userId).get();
+        User toBlockUser = userRepository.findById(toBlockUserId).get();
+        if (user.getBlockedUserIds() == null) {
+            user.setBlockedUserIds(new ArrayList<>());
+        }
+        else if (user.getBlockedUserIds().contains(toBlockUserId)) {
+            System.out.println("User is already blocked");
+            return false;
+        }
+        if (user.getConnectionRequestUserIds() != null && user.getConnectionUserIds().contains(toBlockUserId)) {
+            user.getConnectionUserIds().remove(toBlockUserId);
+        }
+        if (user.getConnectionRequestUserIds() != null && user.getConnectionRequestUserIds().contains(toBlockUserId)) {
+            user.getConnectionRequestUserIds().remove(toBlockUserId);
+            toBlockUser.getPendingRequestUserIds().remove(userId);
+        }
+        if (toBlockUser.getConnectionUserIds() != null && toBlockUser.getConnectionUserIds().contains(userId)) {
+            toBlockUser.getConnectionUserIds().remove(userId);
+        }
+        if (toBlockUser.getConnectionRequestUserIds() != null && toBlockUser.getConnectionRequestUserIds().contains(userId)) {
+            toBlockUser.getConnectionRequestUserIds().remove(userId);
+            user.getPendingRequestUserIds().remove(toBlockUserId);
+        }
+        user.getBlockedUserIds().add(toBlockUserId);
+        if (userRepository.save(user) != null && userRepository.save(toBlockUser) != null) {
+            System.out.println("User blocked successfully");
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean updatePrivacy(String userId) {
+        User user = userRepository.findById(userId).get();
+        System.out.println("User: " + user.getId());
+        user.setPrivateAccount(!user.getPrivateAccount());
+        if (userRepository.save(user) != null) {
+            System.out.println("User privacy updated.");
+            return true;
+        }
+        System.out.println("User privacy update failed.");
+        return false;
+    }
+
     public UserDTO viewUser(String userId, String toViewUserId) {
         User toViewUser = userRepository.findById(toViewUserId).get();
         if (userId.equals("")) {
@@ -49,7 +94,6 @@ public class UserService {
         return userMapper.entityToDto(toViewUser);
     }
 
-
     public Boolean approveFollow(String userId, String followerUserId) {
         User user = userRepository.findById(userId).get();
         User followerUser = userRepository.findById(followerUserId).get();
@@ -73,6 +117,10 @@ public class UserService {
         User toFollowUser = userRepository.findById(toFollowUserId).get();
         if (user.getConnectionUserIds() != null && user.getConnectionUserIds().contains(toFollowUserId)) {
             System.out.println("User '" + userId + "' already follows user '" + toFollowUserId + "'.");
+            return false;
+        }
+        if (toFollowUser.getBlockedUserIds() != null && toFollowUser.getBlockedUserIds().contains(userId)) {
+            System.out.println("User '" + userId + "' cannot follow user '" + toFollowUserId + "' because user '" + toFollowUserId + "' has blocked user '" + userId + "'.");
             return false;
         }
         if (toFollowUser.getPrivateAccount()) {
@@ -369,6 +417,7 @@ public class UserService {
         user.setConnectionUserIds(null);
         user.setConnectionRequestUserIds(null);
         user.setPendingRequestUserIds(null);
+        user.setBlockedUserIds(null);
         
         // password handling
         byte[] salt = new byte[16];

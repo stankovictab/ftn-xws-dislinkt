@@ -1,5 +1,6 @@
 package dislinkt.postclient;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.springframework.cloud.openfeign.FeignClient;
@@ -17,6 +18,9 @@ public interface PostServiceFeignClient {
 	// Eureka Dashboard redirects to this URL
 	@GetMapping(value = "/actuator/info")
 	public String home();
+
+	@PostMapping(value = "/post/getAll")
+	public ResponseEntity<ArrayList<PostDTO>> getAllByUser(String userId);
 
 	@PostMapping(value = "/post/create")
 	public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO);

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,21 +34,35 @@ public class UserController implements UserServiceFeignClient {
 	}
 
 	@Override
-	public ResponseEntity<Boolean> approveFollow(@RequestBody Map<String, String> userIds) {
-		boolean retVal = userService.approveFollow(userIds.get("userId"), userIds.get("followerUserId"));
-		if (!retVal) {
-			return new ResponseEntity<>(retVal, HttpStatus.BAD_REQUEST);
+	public ResponseEntity<Boolean> blockUser(@RequestBody Map<String, String> userIds) {
+		if (userService.blockUser(userIds.get("userId"), userIds.get("toBlockUserId"))) {
+			return new ResponseEntity<>(true, HttpStatus.OK);
 		}
-		return new ResponseEntity<>(retVal, HttpStatus.OK);
+		return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+	}
+
+	@Override
+	public ResponseEntity<Boolean> updatePrivacy(@PathVariable String userId) {
+		if (userService.updatePrivacy(userId)) {
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+	}
+
+	@Override
+	public ResponseEntity<Boolean> approveFollow(@RequestBody Map<String, String> userIds) {
+		if (userService.approveFollow(userIds.get("userId"), userIds.get("followerUserId"))) {
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
 	}
 
 	@Override	
 	public ResponseEntity<Boolean> followUser(@RequestBody Map<String, String> userIds) {
-		boolean retVal = userService.followUser(userIds.get("userId"), userIds.get("toFollowUserId"));
-		if (!retVal) {
-			return new ResponseEntity<>(retVal, HttpStatus.BAD_REQUEST);
+		if (userService.followUser(userIds.get("userId"), userIds.get("toFollowUserId"))) {
+			return new ResponseEntity<>(true, HttpStatus.OK);
 		}
-		return new ResponseEntity<>(retVal, HttpStatus.OK);
+		return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
 	}
 
 	@Override

@@ -19,6 +19,19 @@ public class PostService {
 
     private final PostMapper postMapper;
 
+    public ArrayList<PostDTO> getAllByUser(String userId) {
+        ArrayList<Post> posts = postRepository.findAllByUserId(userId);
+        ArrayList<PostDTO> postDTOs = new ArrayList<>();
+        if (posts == null) {
+            System.out.println("GetAllByUser: No posts found.");
+            return null;
+        }
+        for (Post post : posts) {
+            postDTOs.add(postMapper.entityToDto(post));
+        }
+        return postDTOs;
+    }
+
     public PostDTO create(PostDTO postDTO) {
         Post post = postMapper.dtoToEntity(postDTO);
         LocalDateTime now = LocalDateTime.now();

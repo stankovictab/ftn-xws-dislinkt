@@ -47,6 +47,8 @@ public class User {
     private ArrayList<String> connectionRequestUserIds;
     // ids of users that the user has requested to follow
     private ArrayList<String> pendingRequestUserIds;
+    // ids of users that the user has blocked
+    private ArrayList<String> blockedUserIds;
 
     private String role;
 
