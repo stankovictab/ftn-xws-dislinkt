@@ -13,3 +13,7 @@ services:
         build: ./post/
         ports:
             - 5002:5002
+    grpc:
+        build: ./grpc/
+        ports:
+            - 9090:9090
