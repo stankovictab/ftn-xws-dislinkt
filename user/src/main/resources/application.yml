@@ -18,6 +18,6 @@ server:
 grpc: 
     client:
         user: 
-            address: static://localhost:9090
+            address: static://grpc:9090
             # address: static://localhost:5003
             negotiationType: plaintext
