@@ -1,0 +1,13 @@
+spring:
+    application:
+        name: user # Name in Eureka Dashboard
+    
+
+server:
+    port: 5001
+
+grpc: 
+    client:
+        user-service: 
+            address: static://localhost:5003
+            negotiationType: plaintext

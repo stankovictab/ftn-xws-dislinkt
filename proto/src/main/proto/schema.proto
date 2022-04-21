@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package dislinkt;
+
+option java_multiple_files = true;
+
+message UserCredentials {
+    string username = 1;
+    string password = 2;
+    string userId = 3;
+}
+
+message Post {
+    string title = 1;
+    string content = 2;
+    string authorId = 3;
+    int64 timestamp = 4;
+}
+
+message UserId {
+    string id = 1;
+}
+ 
+service UserService {
+    rpc getUser(UserCredentials) returns (UserId) {}
+    rpc getUserCredentials(UserId) returns (UserCredentials) {}
+}

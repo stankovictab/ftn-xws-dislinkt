@@ -1,16 +1,15 @@
 # Use root/example as user/password credentials
 
-# Adding user-service is optional, 
 # this docker-compose is used only as a backbone for easier development
 
 version: '3.1'
 services:
-    # user-service: 
-    #     build: ./user/user-service/
-    #     ports:
-    #         - 5001:5001
-    #     restart: always
-    post-service:
-        build: ./post/post-service/
+    user: 
+        build: ./user/
+        ports:
+            - 5001:5001
+        restart: always
+    post:
+        build: ./post/
         ports:
             - 5002:5002
