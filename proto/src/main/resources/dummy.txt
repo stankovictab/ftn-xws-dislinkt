@@ -1,0 +1,1 @@
+This file is used only to push the resources folder to git.
