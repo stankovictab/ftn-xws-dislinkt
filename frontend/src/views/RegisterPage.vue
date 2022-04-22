@@ -32,7 +32,7 @@
 					/>
 				</div>
 			</div>
-			<div v-if="usernameCheck == false">
+			<div v-if="!usernameCheck">
 				<p style="color: #ff6a6a; font-size: 20px">
 					Username already exists, please choose another one.
 				</p>
@@ -193,11 +193,12 @@ export default {
 						{ headers: { "Content-Type": "text/plain" } }
 					)
 					.then(function (response) {
-						if (response.data == false) {
-							usernameCheck.value = false;
-						} else {
-							usernameCheck.value = true;
-						}
+						usernameCheck.value = response.data;
+						// if (response.data == false) {
+						// 	usernameCheck.value = false;
+						// } else {
+						// 	usernameCheck.value = true;
+						// }
 					});
 			},
 

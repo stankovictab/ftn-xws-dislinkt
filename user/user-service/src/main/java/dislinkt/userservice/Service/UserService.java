@@ -361,7 +361,7 @@ public class UserService {
     }
 
     public Boolean checkUsername(String username) {
-        return userRepository.findByUsername(username) == null;
+        return userRepository.findByUsername(username).isEmpty();
     }
 
     public User login(UserDTO incomingUser) {
@@ -433,9 +433,12 @@ public class UserService {
                 passwordHash = skf.generateSecret(spec).getEncoded();
                 user.setPasswordHash(passwordHash);
                 user.setPasswordInput("");
-                if (userRepository.findByUsername(user.getUsername()) != null) {
-                    System.out.println("User '" + user.getUsername() + "' already exists.");
-                    return null;
+                ArrayList<User> users = userRepository.findByUsername(user.getUsername());
+                for (User user1 : users) {
+                    if (user1.getUsername().equalsIgnoreCase(user.getUsername())) {
+                        System.out.println("User '" + user.getUsername() + "' already exists.");
+                        return null;
+                    }
                 }
                 user = userRepository.save(user);
                 if (user != null) {

@@ -14,3 +14,6 @@ services:
         build: ./post/post-service/
         ports:
             - 5002:5002
+    frontend:
+        build: ./frontend/
+        network_mode: host
