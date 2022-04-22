@@ -124,8 +124,8 @@ header button {
 	flex-direction: row;
 }
 .search-result {
-	height: 250px;
-	width: 320px;
+	height: 270px;
+	width: 370px;
 	margin: 20px 40px;
 	display: flex;
 	flex-direction: column;

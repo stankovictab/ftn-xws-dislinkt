@@ -1,6 +1,5 @@
 # Use root/example as user/password credentials
 
-# Adding user-service is optional, 
 # this docker-compose is used only as a backbone for easier development
 
 version: '3.1'
@@ -23,8 +22,3 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
-
-  eureka-server:
-      build: ./eureka-server/
-      ports:
-        - 8761:8761

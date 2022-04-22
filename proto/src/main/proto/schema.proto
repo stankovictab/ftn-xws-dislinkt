@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package dislinkt;
+
+option java_multiple_files = true;
+
+message User {
+    string id = 1;
+    string username = 2;
+    // password == passwordInput
+    string password = 3;
+    // question is, do i even need the passwordSalt and the passwordHash fields? 
+    // guess not    
+    string email = 4;
+    string number = 5;
+    // name = firstName + lastName i dont want it any other way, its stupid to store it seperately
+    string name = 6; 
+    enum Gender {
+        MALE = 0;
+        FEMALE = 1;
+    }
+    Gender gender = 7;
+    string dateOfBirht = 8;
+    string biography = 9; 
+    string workExpirience = 10;
+    string studies = 11;
+    repeated string skills = 12; 
+    repeated string interests = 13;
+    // now about the arrays of user ids, i dont think that should be in the User message; 
+    // that can a totaly different message and can still be stored inside the user document in the db 
+    // thing is i think i dont need those arrays when im sending a user message
+    // and when i need to access it or store new info about those arrays i can still store it in the user document
+    // yeah, thats how its gonna be
+
+    string role = 14;
+}
+
+message UserConnections {
+    string userId = 1;
+    repeated string followingUserIds = 2;
+    repeated string connectionRequestUserIds = 3;
+    repeated string pendingRequestUserIds = 4;
+    repeated string blockedUserIds = 5;
+}
+
+message UserCredentials {
+    string username = 1;
+    string password = 2;
+    string userId = 3;
+}
+
+message Post {
+    string title = 1;
+    string content = 2;
+    string authorId = 3;
+    int64 timestamp = 4;
+}
+
+message UserId {
+    string id = 1;
+}
+ 
+service UserService {
+    // these two were basically just tests
+    rpc getUser(UserCredentials) returns (UserId) {}
+    rpc getUserCredentials(UserId) returns (UserCredentials) {}
+
+    rpc login(UserCredentials) returns (User) {}
+    rpc register(User) returns (User) {}
+}
