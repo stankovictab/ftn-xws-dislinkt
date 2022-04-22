@@ -20,6 +20,17 @@ public class UserServerService extends UserServiceGrpc.UserServiceImplBase {
 	private MongoDatabase mangoDatabase = mangoClient.getDatabase("dislinkt");
 	private MongoCollection<Document> mangoCollection = mangoDatabase.getCollection("users");
 
+	@Override 
+	public void login(UserCredentials request, StreamObserver<User> responseObserver) {
+		System.out.println("login");
+
+		String username = request.getUsername();
+		String password = request.getPassword();
+
+		
+	}
+
+
 	@Override
 	public void getUser(UserCredentials request, StreamObserver<UserId> responseObserver) {
 		System.out.println("getUser");
@@ -31,7 +42,6 @@ public class UserServerService extends UserServiceGrpc.UserServiceImplBase {
 	@Override
 	public void getUserCredentials(UserId request, StreamObserver<UserCredentials> responseObserver) {
 		System.out.println("getUserCredentials");
-		System.out.println("request.getId(): " + request.getId());
 		
 		mangoCollection.find().forEach((result) -> {
 			System.out.println("result: " + result);
@@ -39,7 +49,11 @@ public class UserServerService extends UserServiceGrpc.UserServiceImplBase {
 		
 		Bson filter = eq("userId", request.getId());
 		Document document = mangoCollection.find(filter).first();
-		UserCredentials response = UserCredentials.newBuilder().setUserId(document.getString("userId")).setPassword(document.getString("password")).setUsername(document.getString("username")).build();
+		UserCredentials response = UserCredentials.newBuilder()
+													.setUserId(document.getString("userId"))
+													.setPassword(document.getString("password"))
+													.setUsername(document.getString("username"))
+													.build();
 		responseObserver.onNext(response);
 		responseObserver.onCompleted();
 	}
