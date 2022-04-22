@@ -37,9 +37,7 @@ public class UserService {
 
 	public Map<FieldDescriptor, Object> getUserCrededntials(String userId) {
 		UserId userIdRequest = UserId.newBuilder().setId(userId).build();
-		System.out.println("test1");
 		UserCredentials userCredentialsResponse = synchrnousClient.getUserCredentials(userIdRequest);
-		System.out.println("test2");
 		return userCredentialsResponse.getAllFields();
 	}
 
