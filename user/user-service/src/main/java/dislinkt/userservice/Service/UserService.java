@@ -3,6 +3,7 @@ package dislinkt.userservice.Service;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -24,6 +25,48 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final UserMapper userMapper;
+
+    public void generateUsers() {
+        for (int i = 0; i < 1; i++) {
+            User user = new User();
+            user.setUsername("auser" + i);
+            user.setPasswordInput("password" + i);
+            user.setEmail("email" + i + "@email.com");
+            user.setNumber("number" + i);
+            user.setFirstName("firstName" + i);
+            user.setLastName("lastName" + i);
+            if (i % 2 == 0) {
+                user.setGender("Male");
+            }
+            else {
+                user.setGender("Female");
+            }
+            LocalDateTime dob = LocalDateTime.now();
+            dob.minusDays(10 + i);
+            user.setDateOfBirth(dob);
+            user.setBiography("user: " + i + " biography");
+            user.setWorkExperience("user: " + i + " work experience");
+            user.setStudies("user: " + i + " studies");
+            user.setSkills("user: " + i + " skills");
+            user.setInterests("user: " + i + " interests");
+            if (i % 3 == 0) {
+                user.setPrivateAccount(true);
+            }
+            else {
+                user.setPrivateAccount(false);
+            }
+            user.setConnectionUserIds(new ArrayList<String>());
+            user.setConnectionRequestUserIds(new ArrayList<String>());
+            user.setPendingRequestUserIds(new ArrayList<String>());
+            user.setBlockedUserIds(new ArrayList<String>());
+
+            user.setRole("Client");
+
+            
+            register(userMapper.entityToDto(user));
+        }
+
+    }
 
 
     public Boolean blockUser(String userId, String toBlockUserId) {
@@ -327,10 +370,6 @@ public class UserService {
             user.setGender(userDTO.getGender());
             System.out.println("Gender updated.");
         }
-        if (!user.getDateOfBirth().equals(userDTO.getDateOfBirth())) {
-            user.setDateOfBirth(userDTO.getDateOfBirth());
-            System.out.println("Date of birth updated.");
-        }
         if (!user.getBiography().equals(userDTO.getBiography())) {
             user.setBiography(userDTO.getBiography());
             System.out.println("Biography updated.");
@@ -354,6 +393,9 @@ public class UserService {
 
         if (userRepository.save(user) != null) {
             System.out.println("User '" + user.getUsername() + "' updated.");
+            user.setPasswordInput("");
+            user.setPasswordSalt(null);
+            user.setPasswordHash(null);
             return user;
         }
         System.out.println("User '" + user.getUsername() + "' not updated.");

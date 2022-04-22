@@ -19,6 +19,9 @@ public interface UserServiceFeignClient {
 	// Eureka Dashboard redirects to this URL
 	@GetMapping(value = "/actuator/info")
 	public String home(); 
+
+	@PostMapping(value = "/user/generateUsers")
+	public void generateUsers();
 	
 	@PostMapping(value = "/user/blockUser")
 	public ResponseEntity<Boolean> blockUser(@RequestBody Map<String, String> userIds);

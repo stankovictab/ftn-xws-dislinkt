@@ -1,5 +1,6 @@
 package dislinkt.userservice.Entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import org.springframework.data.annotation.Id;
@@ -33,7 +34,7 @@ public class User {
     private String lastName;
 
     private String gender;
-    private String dateOfBirth;
+    private LocalDateTime dateOfBirth;
     private String biography;
     private String workExperience;
     private String studies;

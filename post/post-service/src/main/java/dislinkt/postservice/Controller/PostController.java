@@ -31,7 +31,17 @@ public class PostController implements PostServiceFeignClient {
     }
 
     @Override
-    public ResponseEntity<ArrayList<PostDTO>> getAllByUser(String userId) {
+    public void generatePosts() {
+        postService.generatePosts();
+    }
+
+    @Override
+    public ResponseEntity<ArrayList<PostDTO>> getFeed(@RequestBody String userId) {
+        return new ResponseEntity<>(postService.getFeed(userId), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<ArrayList<PostDTO>> getAllByUser(@RequestBody String userId) {
         ArrayList<PostDTO> postDTOs = postService.getAllByUser(userId);    
         if (postDTOs == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

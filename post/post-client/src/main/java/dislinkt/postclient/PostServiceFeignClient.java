@@ -19,8 +19,14 @@ public interface PostServiceFeignClient {
 	@GetMapping(value = "/actuator/info")
 	public String home();
 
+	@PostMapping(value = "/post/generatePosts")
+	public void generatePosts();
+
+	@PostMapping(value = "/post/getFeed") 
+	public ResponseEntity<ArrayList<PostDTO>> getFeed(@RequestBody String userId);
+
 	@PostMapping(value = "/post/getAll")
-	public ResponseEntity<ArrayList<PostDTO>> getAllByUser(String userId);
+	public ResponseEntity<ArrayList<PostDTO>> getAllByUser(@RequestBody String userId);
 
 	@PostMapping(value = "/post/create")
 	public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO);

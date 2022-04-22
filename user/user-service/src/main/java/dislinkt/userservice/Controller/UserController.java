@@ -34,6 +34,11 @@ public class UserController implements UserServiceFeignClient {
 	}
 
 	@Override
+	public void generateUsers() {
+		userService.generateUsers();
+	}
+
+	@Override
 	public ResponseEntity<Boolean> blockUser(@RequestBody Map<String, String> userIds) {
 		if (userService.blockUser(userIds.get("userId"), userIds.get("toBlockUserId"))) {
 			return new ResponseEntity<>(true, HttpStatus.OK);

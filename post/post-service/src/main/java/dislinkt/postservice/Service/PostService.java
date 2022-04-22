@@ -2,6 +2,7 @@ package dislinkt.postservice.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import org.springframework.stereotype.Service;
 
@@ -19,14 +20,75 @@ public class PostService {
 
     private final PostMapper postMapper;
 
+    public void generatePosts() {
+
+        // TODO: cant be hardcoded user id, need to change this for demonstration
+
+        // TODO: Moze ove dve funckije u ./up.sh
+        for (int i = 0; i < 33; i++) {
+            Post post = new Post();
+            post.setTitle("Post " + i);
+            post.setDescription("Description " + i);
+            post.setUserId("6262f8cf6fb35f07e47d155b");
+            create(postMapper.entityToDto(post));
+        }
+        for (int i = 0; i < 33; i++) {
+            Post post = new Post();
+            post.setTitle("Post " + i);
+            post.setDescription("Description " + i);
+            post.setUserId("6262f8cf6fb35f07e47d155c");
+            create(postMapper.entityToDto(post));
+        }
+        for (int i = 0; i < 33; i++) {
+            Post post = new Post();
+            post.setTitle("Post " + i);
+            post.setDescription("Description " + i);
+            post.setUserId("6262f8cf6fb35f07e47d155d");
+            create(postMapper.entityToDto(post));
+        }
+    }
+
+    public ArrayList<PostDTO> getFeed(String userId) {
+        ArrayList<String> followingUserIds = new ArrayList<>();
+        ArrayList<PostDTO> postDTOs = new ArrayList<>();
+        // TODO: dobavi iz user service-a
+
+
+        for (String followingUserId : followingUserIds) {
+            ArrayList<Post> posts = postRepository.findAllByUserId(followingUserId);
+            for (Post post : posts) {
+                postDTOs.add(postMapper.entityToDto(post));
+            }
+        }
+        if (postDTOs.isEmpty()) {
+            System.out.println("GetFeed: No posts found.");
+            return null;
+        }
+        postDTOs.sort(Comparator.comparing( 
+                        ( PostDTO postDTO ) -> postDTO
+                            .getCreationDate()
+                            .toLocalDate())
+                        .reversed()
+                        .thenComparing(Comparator.comparing( 
+                            ( PostDTO postDTO ) -> postDTO
+                                .getCreationDate()
+                                .toLocalTime())
+        ));
+        return postDTOs;
+    }
+
     public ArrayList<PostDTO> getAllByUser(String userId) {
+        System.out.println(userId);
+        // TODO: Provera da li je korisnik privatan 
         ArrayList<Post> posts = postRepository.findAllByUserId(userId);
         ArrayList<PostDTO> postDTOs = new ArrayList<>();
         if (posts == null) {
             System.out.println("GetAllByUser: No posts found.");
             return null;
         }
+        System.out.println(posts.size());
         for (Post post : posts) {
+            System.out.println(post.getTitle());
             postDTOs.add(postMapper.entityToDto(post));
         }
         return postDTOs;
