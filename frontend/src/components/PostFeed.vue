@@ -28,8 +28,10 @@ export default {
         })
     },
     created() {
-      getFeed(this.user.id).then(response => {
-        this.posts = response.data;
+      getFeed(this.user.id).then(function (response) {
+        console.log(response);
+        this.posts = response;
+        
       });
     },
 	methods: {

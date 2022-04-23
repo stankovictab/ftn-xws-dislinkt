@@ -23,7 +23,7 @@ public interface UserServiceFeignClient {
 	public void generateUsers();
 
 	@PostMapping(value = "/user/getConnectionUserIds")
-	public ResponseEntity<ArrayList<String>> getConnectionUserIds(@RequestBody  String userId);
+	public ResponseEntity<ArrayList<String>> getConnectionUserIds(@RequestBody String userId);
 	
 	@PostMapping(value = "/user/blockUser")
 	public ResponseEntity<Boolean> blockUser(@RequestBody Map<String, String> userIds);

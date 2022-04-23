@@ -6,7 +6,6 @@ import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Optional;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -70,9 +69,13 @@ public class UserService {
     }
 
     public ArrayList<String> getConnectionUserIds(String userId) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isPresent()) {
-            return user.get().getConnectionUserIds();
+        User user = userRepository.findById(userId).get();
+        if (user != null) {
+            System.out.println("user found");
+            for (String id: user.getConnectionUserIds()) {
+                System.out.println(id);
+            }
+            return user.getConnectionUserIds();
         }
         return null;
     }
