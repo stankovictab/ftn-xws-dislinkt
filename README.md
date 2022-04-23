@@ -37,7 +37,7 @@ Payload:
 ```
 http post localhost:5002/post/getAll
 ```
-Payload: id of the user whose posts are to be seen
+Payload: id of the user whose posts are to be seen (plaintext)
 ```plaintext
 userId
 
@@ -73,7 +73,7 @@ Payload: UserDTO object
 ```
 http post localhost:5002/post/getFeed
 ```
-Payload: id of the user who is logged in
+Payload: id of the user who is logged in (plaintext)
 ```plaintext
 userId
 ```
@@ -81,7 +81,7 @@ userId
 ```
 http post localhost:5002/post/getAll
 ```
-Payload: id of the user whos posts are to be seen
+Payload: id of the user whos posts are to be seen (plaintext)
 ```plaintext
 userId
 ```
