@@ -68,6 +68,13 @@
             <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
         </dependency>
+
+		<!-- TODO:  -->
+		<dependency>
+			<groupId>dislinkt</groupId>
+			<artifactId>user-client</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

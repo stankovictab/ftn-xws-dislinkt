@@ -26,6 +26,13 @@ docker-compose --file docker-compose-2.yml up --build --detach
 # To take the containers down, either run ./down, or do it from VSCode
 
 printf '\n'
+echo "Waiting for 6 seconds, please wait ..."
+printf '\n'
+
+sleep 6s
+docker-compose --file docker-compose-3.yml up --build --detach
+
+printf '\n'
 echo "Finished!"
 echo "Run ./down.sh to stop the application."
 printf '\n'

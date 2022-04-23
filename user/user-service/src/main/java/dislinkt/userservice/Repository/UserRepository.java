@@ -1,6 +1,7 @@
 package dislinkt.userservice.Repository;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
@@ -20,5 +21,9 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     @Query("{'lastName': {$regex: ?0, $options: 'i'}}")
     ArrayList<User> findByLastName(String lastName);
+    
+    ArrayList<String> getConnectionUserIdsById(String id);
+
+    Optional<User> findById(String id);
     
 }

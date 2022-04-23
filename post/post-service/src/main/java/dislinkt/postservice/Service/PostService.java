@@ -1,12 +1,15 @@
 package dislinkt.postservice.Service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import dislinkt.postclient.PostDTO;
+import dislinkt.postservice.Entity.Image;
 import dislinkt.postservice.Entity.Post;
 import dislinkt.postservice.Mapper.PostMapper;
 import dislinkt.postservice.Repository.PostRepository;
@@ -20,6 +23,8 @@ public class PostService {
 
     private final PostMapper postMapper;
 
+    private final ImageService imageService;
+    
     public void generatePosts() {
 
         // TODO: cant be hardcoded user id, need to change this for demonstration
@@ -30,31 +35,28 @@ public class PostService {
             post.setTitle("Post " + i);
             post.setDescription("Description " + i);
             post.setUserId("6262f8cf6fb35f07e47d155b");
-            create(postMapper.entityToDto(post));
+            create(postMapper.entityToDto(post), null);
         }
         for (int i = 0; i < 33; i++) {
             Post post = new Post();
             post.setTitle("Post " + i);
             post.setDescription("Description " + i);
             post.setUserId("6262f8cf6fb35f07e47d155c");
-            create(postMapper.entityToDto(post));
+            create(postMapper.entityToDto(post), null);
         }
         for (int i = 0; i < 33; i++) {
             Post post = new Post();
             post.setTitle("Post " + i);
             post.setDescription("Description " + i);
             post.setUserId("6262f8cf6fb35f07e47d155d");
-            create(postMapper.entityToDto(post));
+            create(postMapper.entityToDto(post), null);
         }
     }
 
-    public ArrayList<PostDTO> getFeed(String userId) {
-        ArrayList<String> followingUserIds = new ArrayList<>();
+    public ArrayList<PostDTO> getFeed(String userId, ArrayList<String> connectionUserIds) {
         ArrayList<PostDTO> postDTOs = new ArrayList<>();
-        // TODO: dobavi iz user service-a
 
-
-        for (String followingUserId : followingUserIds) {
+        for (String followingUserId : connectionUserIds) {
             ArrayList<Post> posts = postRepository.findAllByUserId(followingUserId);
             for (Post post : posts) {
                 postDTOs.add(postMapper.entityToDto(post));
@@ -72,8 +74,7 @@ public class PostService {
                         .thenComparing(Comparator.comparing( 
                             ( PostDTO postDTO ) -> postDTO
                                 .getCreationDate()
-                                .toLocalTime())
-        ));
+                                .toLocalTime())));
         return postDTOs;
     }
 
@@ -94,7 +95,7 @@ public class PostService {
         return postDTOs;
     }
 
-    public PostDTO create(PostDTO postDTO) {
+    public PostDTO create(PostDTO postDTO, MultipartFile image) {
         Post post = postMapper.dtoToEntity(postDTO);
         LocalDateTime now = LocalDateTime.now();
         post.setCreationDate(now);
@@ -102,8 +103,17 @@ public class PostService {
         post.setDislikes(0);
         post.setLikedUserIds(null);
         post.setDislikedUserIds(null);
+        try {
+            String imageId = imageService.addImage(post.getImageTitle(), image);
+            post.setImageId(imageId);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         post = postRepository.save(post);
         if (post != null) {
+            Image image1 = imageService.getImage(post.getImageId());
+            image1.setPostId(post.getId());
             System.out.println("Create: Post successfully saved.");
             return postMapper.entityToDto(post);
         }

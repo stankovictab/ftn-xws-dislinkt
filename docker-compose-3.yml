@@ -5,11 +5,7 @@
 
 version: '3.1'
 services:
-    user-service: 
-        build: ./user/user-service/
+    post-service:
+        build: ./post/post-service/
         ports:
-            - 5001:5001
-        restart: always
-    frontend:
-        build: ./frontend/
-        network_mode: host
+            - 5002:5002

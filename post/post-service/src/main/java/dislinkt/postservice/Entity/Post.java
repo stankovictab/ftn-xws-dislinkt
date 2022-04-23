@@ -19,7 +19,8 @@ public class Post {
 
 	private String title;
 	private String description;
-	private String image;
+	private String imageTitle;
+	private String imageId;
 	private String userId;
 
 	private int likes;

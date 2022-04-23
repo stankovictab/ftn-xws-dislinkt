@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,6 +38,15 @@ public class UserController implements UserServiceFeignClient {
 	}
 
 	@Override
+	public ResponseEntity<ArrayList<String>> getConnectionUserIds(@RequestBody String userId) {
+		ArrayList<String> connectionUserIds = userService.getConnectionUserIds(userId);
+		if (connectionUserIds.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(connectionUserIds, HttpStatus.OK);
+	}
+
+	@Override
 	public ResponseEntity<Boolean> blockUser(@RequestBody Map<String, String> userIds) {
 		if (userService.blockUser(userIds.get("userId"), userIds.get("toBlockUserId"))) {
 			return new ResponseEntity<>(true, HttpStatus.OK);
@@ -46,13 +54,13 @@ public class UserController implements UserServiceFeignClient {
 		return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
 	}
 
-	@Override
-	public ResponseEntity<Boolean> updatePrivacy(@PathVariable String userId) {
-		if (userService.updatePrivacy(userId)) {
-			return new ResponseEntity<>(true, HttpStatus.OK);
-		}
-		return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
-	}
+	// @Override
+	// public ResponseEntity<Boolean> updatePrivacy(@PathVariable String userId) {
+	// 	if (userService.updatePrivacy(userId)) {
+	// 		return new ResponseEntity<>(true, HttpStatus.OK);
+	// 	}
+	// 	return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+	// }
 
 	@Override
 	public ResponseEntity<Boolean> approveFollow(@RequestBody Map<String, String> userIds) {

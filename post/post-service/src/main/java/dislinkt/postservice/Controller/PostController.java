@@ -8,12 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import dislinkt.postclient.CommentDTO;
 import dislinkt.postclient.PostDTO;
 import dislinkt.postclient.PostServiceFeignClient;
 import dislinkt.postservice.Service.CommentService;
 import dislinkt.postservice.Service.PostService;
+import dislinkt.userclient.UserServiceFeignClient;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -24,6 +26,8 @@ public class PostController implements PostServiceFeignClient {
     private final PostService postService;
 
     private final CommentService commentService;
+
+    private final UserServiceFeignClient userServiceFeignClient;
 
     @Override
     public String home() {
@@ -37,7 +41,9 @@ public class PostController implements PostServiceFeignClient {
 
     @Override
     public ResponseEntity<ArrayList<PostDTO>> getFeed(@RequestBody String userId) {
-        return new ResponseEntity<>(postService.getFeed(userId), HttpStatus.OK);
+        ArrayList<String> connectionUserIds = userServiceFeignClient.getConnectionUserIds(userId).getBody();
+        // ArrayList<String> connectionUserIds = new ArrayList<>();
+        return new ResponseEntity<>(postService.getFeed(userId, connectionUserIds), HttpStatus.OK);
     }
 
     @Override
@@ -50,8 +56,8 @@ public class PostController implements PostServiceFeignClient {
     }
 
     @Override
-    public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO) {        
-        PostDTO createdPost = postService.create(postDTO);
+    public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO, @RequestBody MultipartFile image) {        
+        PostDTO createdPost = postService.create(postDTO, image);
         if (createdPost == null) {
             System.out.println("Create: No post created.");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

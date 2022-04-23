@@ -6,6 +6,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -66,6 +67,14 @@ public class UserService {
             register(userMapper.entityToDto(user));
         }
 
+    }
+
+    public ArrayList<String> getConnectionUserIds(String userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            return user.get().getConnectionUserIds();
+        }
+        return null;
     }
 
 
