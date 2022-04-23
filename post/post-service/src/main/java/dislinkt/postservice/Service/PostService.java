@@ -19,149 +19,144 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class PostService {
 
-    private final PostRepository postRepository;
+	private final PostRepository postRepository;
 
-    private final PostMapper postMapper;
+	private final PostMapper postMapper;
 
-    private final ImageService imageService;
-    
-    public void generatePosts() {
+	private final ImageService imageService;
 
-        // TODO: cant be hardcoded user id, need to change this for demonstration
+	public void generatePosts() {
 
-        // TODO: Moze ove dve funckije u ./up.sh
-        for (int i = 0; i < 33; i++) {
-            Post post = new Post();
-            post.setTitle("Post " + i);
-            post.setDescription("Description " + i);
-            post.setUserId("6262f8cf6fb35f07e47d155b");
-            create(postMapper.entityToDto(post), null);
-        }
-        for (int i = 0; i < 33; i++) {
-            Post post = new Post();
-            post.setTitle("Post " + i);
-            post.setDescription("Description " + i);
-            post.setUserId("6262f8cf6fb35f07e47d155c");
-            create(postMapper.entityToDto(post), null);
-        }
-        for (int i = 0; i < 33; i++) {
-            Post post = new Post();
-            post.setTitle("Post " + i);
-            post.setDescription("Description " + i);
-            post.setUserId("6262f8cf6fb35f07e47d155d");
-            create(postMapper.entityToDto(post), null);
-        }
-    }
+		// TODO: cant be hardcoded user id, need to change this for demonstration
 
-    public ArrayList<PostDTO> getFeed(String userId, ArrayList<String> connectionUserIds) {
-        ArrayList<PostDTO> postDTOs = new ArrayList<>();
+		// TODO: Moze ove dve funckije u ./up.sh
+		for (int i = 0; i < 33; i++) {
+			Post post = new Post();
+			post.setTitle("Post " + i);
+			post.setDescription("Description " + i);
+			post.setUserId("6264637aa8287771fbb6b25e");
+			create(postMapper.entityToDto(post), null);
+		}
+		for (int i = 0; i < 33; i++) {
+			Post post = new Post();
+			post.setTitle("Post " + i);
+			post.setDescription("Description " + i);
+			post.setUserId("6264637aa8287771fbb6b25f");
+			create(postMapper.entityToDto(post), null);
+		}
+		for (int i = 0; i < 33; i++) {
+			Post post = new Post();
+			post.setTitle("Post " + i);
+			post.setDescription("Description " + i);
+			post.setUserId("6264637aa8287771fbb6b260");
+			create(postMapper.entityToDto(post), null);
+		}
+	}
 
-        for (String followingUserId : connectionUserIds) {
-            ArrayList<Post> posts = postRepository.findAllByUserId(followingUserId);
-            for (Post post : posts) {
-                postDTOs.add(postMapper.entityToDto(post));
-            }
-        }
-        if (postDTOs.isEmpty()) {
-            System.out.println("GetFeed: No posts found.");
-            return null;
-        }
-        postDTOs.sort(Comparator.comparing( 
-                        ( PostDTO postDTO ) -> postDTO
-                            .getCreationDate()
-                            .toLocalDate())
-                        .reversed()
-                        .thenComparing(Comparator.comparing( 
-                            ( PostDTO postDTO ) -> postDTO
-                                .getCreationDate()
-                                .toLocalTime())));
-        return postDTOs;
-    }
+	public ArrayList<PostDTO> getFeed(String userId, ArrayList<String> connectionUserIds) {
+		ArrayList<PostDTO> postDTOs = new ArrayList<>();
 
-    public ArrayList<PostDTO> getAllByUser(String userId) {
-        System.out.println(userId);
-        // TODO: Provera da li je korisnik privatan 
-        ArrayList<Post> posts = postRepository.findAllByUserId(userId);
-        ArrayList<PostDTO> postDTOs = new ArrayList<>();
-        if (posts == null) {
-            System.out.println("GetAllByUser: No posts found.");
-            return null;
-        }
-        System.out.println(posts.size());
-        for (Post post : posts) {
-            System.out.println(post.getTitle());
-            postDTOs.add(postMapper.entityToDto(post));
-        }
-        return postDTOs;
-    }
+		for (String followingUserId : connectionUserIds) {
+			ArrayList<Post> posts = postRepository.findAllByUserId(followingUserId);
+			for (Post post : posts) {
+				postDTOs.add(postMapper.entityToDto(post));
+			}
+		}
+		if (postDTOs.isEmpty()) {
+			System.out.println("GetFeed: No posts found.");
+			return null;
+		}
+		postDTOs.sort(Comparator.comparing(
+				(PostDTO postDTO) -> postDTO
+						.getCreationDate()
+						.toLocalDate())
+				.reversed()
+				.thenComparing(Comparator.comparing(
+						(PostDTO postDTO) -> postDTO
+								.getCreationDate()
+								.toLocalTime())));
+		return postDTOs;
+	}
 
-    public PostDTO create(PostDTO postDTO, MultipartFile image) {
-        Post post = postMapper.dtoToEntity(postDTO);
-        LocalDateTime now = LocalDateTime.now();
-        post.setCreationDate(now);
-        post.setLikes(0);
-        post.setDislikes(0);
-        post.setLikedUserIds(null);
-        post.setDislikedUserIds(null);
-        try {
-            String imageId = imageService.addImage(post.getImageTitle(), image);
-            post.setImageId(imageId);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        post = postRepository.save(post);
-        if (post != null) {
-            Image image1 = imageService.getImage(post.getImageId());
-            image1.setPostId(post.getId());
-            System.out.println("Create: Post successfully saved.");
-            return postMapper.entityToDto(post);
-        }
-        return null;
-    }
+	public ArrayList<PostDTO> getAllByUser(String userId) {
+		System.out.println(userId);
+		// TODO: Provera da li je korisnik privatan
+		ArrayList<Post> posts = postRepository.findAllByUserId(userId);
+		ArrayList<PostDTO> postDTOs = new ArrayList<>();
+		if (posts == null) {
+			System.out.println("GetAllByUser: No posts found.");
+			return null;
+		}
+		System.out.println(posts.size());
+		for (Post post : posts) {
+			System.out.println(post.getTitle());
+			postDTOs.add(postMapper.entityToDto(post));
+		}
+		return postDTOs;
+	}
 
-    public void likePost(String postId, String userId) {
-        Post post = postRepository.findById(postId).get();     
-        if (post != null) {
-            if (post.getLikedUserIds() == null) {
-                post.setLikedUserIds(new ArrayList<String>());
-            }
-            else if (post.getLikedUserIds().contains(userId)) {
-                System.out.println("Like: User already liked this post.");
-                return;
-            }
-            post.setLikes(post.getLikes() + 1);
-            post.getLikedUserIds().add(userId);
-            if (postRepository.save(post) != null) {
-                System.out.println("Like: Post successfully liked.");
-            }
-            else {
-                System.out.println("Like: Post could not be liked.");
-            }
-        }
-        else {
-            System.out.println("Like: No post found.");
-        }
-    }
+	public PostDTO create(PostDTO postDTO, MultipartFile image) {
+		Post post = postMapper.dtoToEntity(postDTO);
+		LocalDateTime now = LocalDateTime.now();
+		post.setCreationDate(now);
+		post.setLikes(0);
+		post.setDislikes(0);
+		post.setLikedUserIds(null);
+		post.setDislikedUserIds(null);
+		try {
+			String imageId = imageService.addImage(post.getImageTitle(), image);
+			post.setImageId(imageId);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		post = postRepository.save(post);
+		if (post != null) {
+			Image image1 = imageService.getImage(post.getImageId());
+			image1.setPostId(post.getId());
+			System.out.println("Create: Post successfully saved.");
+			return postMapper.entityToDto(post);
+		}
+		return null;
+	}
 
-    public void dislikePost(String postId, String userId) {
-        Post post = postRepository.findById(postId).get();     
-        if (post != null) {
-            ArrayList<String> dislikedUserIds = post.getDislikedUserIds();
-            if (dislikedUserIds == null) {
-                dislikedUserIds = new ArrayList<>();
-            }
-            else if (dislikedUserIds.contains(userId)) {
-                System.out.println("Dislike: User already disliked this post.");
-                return;
-            }
-            post.setDislikes(post.getDislikes() + 1);
-            dislikedUserIds.add(userId);
-            post.setDislikedUserIds(dislikedUserIds);
-            postRepository.save(post);
-        }
-        else {
-            System.out.println("Dislike: No post found.");
-        }
-    }
+	public void likePost(String postId, String userId) {
+		Post post = postRepository.findById(postId).get();
+		if (post != null) {
+			if (post.getLikedUserIds() == null) {
+				post.setLikedUserIds(new ArrayList<String>());
+			} else if (post.getLikedUserIds().contains(userId)) {
+				System.out.println("Like: User already liked this post.");
+				return;
+			}
+			post.setLikes(post.getLikes() + 1);
+			post.getLikedUserIds().add(userId);
+			if (postRepository.save(post) != null) {
+				System.out.println("Like: Post successfully liked.");
+			} else {
+				System.out.println("Like: Post could not be liked.");
+			}
+		} else {
+			System.out.println("Like: No post found.");
+		}
+	}
+
+	public void dislikePost(String postId, String userId) {
+		Post post = postRepository.findById(postId).get();
+		if (post != null) {
+			ArrayList<String> dislikedUserIds = post.getDislikedUserIds();
+			if (dislikedUserIds == null) {
+				dislikedUserIds = new ArrayList<>();
+			} else if (dislikedUserIds.contains(userId)) {
+				System.out.println("Dislike: User already disliked this post.");
+				return;
+			}
+			post.setDislikes(post.getDislikes() + 1);
+			dislikedUserIds.add(userId);
+			post.setDislikedUserIds(dislikedUserIds);
+			postRepository.save(post);
+		} else {
+			System.out.println("Dislike: No post found.");
+		}
+	}
 }

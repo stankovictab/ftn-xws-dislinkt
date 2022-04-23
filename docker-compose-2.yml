@@ -10,6 +10,6 @@ services:
         ports:
             - 5001:5001
         restart: always
-    frontend:
-        build: ./frontend/
-        network_mode: host
+    # frontend:
+        # build: ./frontend/
+        # network_mode: host

@@ -1,7 +1,8 @@
 import axios from "axios";
 
-export default () => {
-    return axios.create({
-        baseURL: "http://localhost:8081"
-    })
+export default (port) => {
+	return axios.create({
+		// TODO: Change over to gateway's URL
+		baseURL: "http://localhost:" + port
+	})
 }

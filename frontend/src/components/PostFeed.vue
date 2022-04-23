@@ -28,7 +28,7 @@ export default {
         })
     },
     created() {
-      getFeed().then(response => {
+      getFeed(this.user.id).then(response => {
         this.posts = response.data;
       });
     },

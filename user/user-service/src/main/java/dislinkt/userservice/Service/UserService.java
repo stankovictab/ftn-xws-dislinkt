@@ -28,9 +28,9 @@ public class UserService {
     private final UserMapper userMapper;
 
     public void generateUsers() {
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 100; i++) {
             User user = new User();
-            user.setUsername("auser" + i);
+            user.setUsername("user" + i);
             user.setPasswordInput("password" + i);
             user.setEmail("email" + i + "@email.com");
             user.setNumber("number" + i);

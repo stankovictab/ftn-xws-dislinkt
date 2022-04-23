@@ -14,14 +14,10 @@
 			<div class="input-div">
 				<label>Username</label>
 				<input id="username" v-model="username" />
-				<!-- TODO: Brisi ovo -->
-				Username je 'Admin' ili 'Client'
 			</div>
 			<div class="input-div">
 				<label>Password</label>
 				<input id="password" type="password" v-model="password" />
-				<!-- TODO: Brisi ovo -->
-				{{ password }}
 			</div>
 			<button @click="login">Log In</button>
 		</div>
@@ -44,8 +40,8 @@ export default {
 	computed: {
 		...mapGetters(["hasRole"]),
 	},
-	created(){
-		if(this.hasRole){
+	created() {
+		if (this.hasRole) {
 			this.$router.push("/");
 		}
 	},
@@ -53,10 +49,10 @@ export default {
 		async login() {
 			const res = await login({
 				username: this.username,
-				password: this.password,
+				passwordInput: this.password,
 			});
-			this.$store.commit("setToken", res.data.token);
-			this.$store.commit("setUser", res.data.user);
+			this.$store.commit("setToken", res.data.id);
+			this.$store.commit("setUser", res.data);
 			this.$router.push("/");
 		},
 	},
