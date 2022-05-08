@@ -1,3 +1,3 @@
 ./down.sh
-wait 1s
+sleep 1s
 ./up.sh

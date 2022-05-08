@@ -47,3 +47,10 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Custom
+
+*.classpath
+*.factorypath
+*.project
+*.prefs

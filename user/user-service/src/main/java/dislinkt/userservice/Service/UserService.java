@@ -4,6 +4,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -37,8 +38,7 @@ public class UserService {
             user.setLastName("lastName" + i);
             if (i % 2 == 0) {
                 user.setGender("Male");
-            }
-            else {
+            } else {
                 user.setGender("Female");
             }
             LocalDateTime dob = LocalDateTime.now();
@@ -51,8 +51,7 @@ public class UserService {
             user.setInterests("user: " + i + " interests");
             if (i % 3 == 0) {
                 user.setPrivateAccount(true);
-            }
-            else {
+            } else {
                 user.setPrivateAccount(false);
             }
             user.setConnectionUserIds(new ArrayList<String>());
@@ -62,7 +61,6 @@ public class UserService {
 
             user.setRole("Client");
 
-            
             register(userMapper.entityToDto(user));
         }
 
@@ -72,7 +70,7 @@ public class UserService {
         User user = userRepository.findById(userId).get();
         if (user != null) {
             System.out.println("user found");
-            for (String id: user.getConnectionUserIds()) {
+            for (String id : user.getConnectionUserIds()) {
                 System.out.println(id);
             }
             return user.getConnectionUserIds();
@@ -80,14 +78,12 @@ public class UserService {
         return null;
     }
 
-
     public Boolean blockUser(String userId, String toBlockUserId) {
         User user = userRepository.findById(userId).get();
         User toBlockUser = userRepository.findById(toBlockUserId).get();
         if (user.getBlockedUserIds() == null) {
             user.setBlockedUserIds(new ArrayList<>());
-        }
-        else if (user.getBlockedUserIds().contains(toBlockUserId)) {
+        } else if (user.getBlockedUserIds().contains(toBlockUserId)) {
             System.out.println("User is already blocked");
             return false;
         }
@@ -101,7 +97,8 @@ public class UserService {
         if (toBlockUser.getConnectionUserIds() != null && toBlockUser.getConnectionUserIds().contains(userId)) {
             toBlockUser.getConnectionUserIds().remove(userId);
         }
-        if (toBlockUser.getConnectionRequestUserIds() != null && toBlockUser.getConnectionRequestUserIds().contains(userId)) {
+        if (toBlockUser.getConnectionRequestUserIds() != null
+                && toBlockUser.getConnectionRequestUserIds().contains(userId)) {
             toBlockUser.getConnectionRequestUserIds().remove(userId);
             user.getPendingRequestUserIds().remove(toBlockUserId);
         }
@@ -132,15 +129,13 @@ public class UserService {
             if (toViewUser.getPrivateAccount()) {
                 System.out.println("User is private");
                 return null;
-            } 
-        }
-        else {
+            }
+        } else {
             User user = userRepository.findById(userId).get();
             if (toViewUser.getPrivateAccount()) {
                 if (user.getConnectionRequestUserIds().contains(toViewUserId)) {
                     return userMapper.entityToDto(toViewUser);
-                }
-                else {
+                } else {
                     System.out.println("User is private and user is not connected");
                     return null;
                 }
@@ -175,12 +170,14 @@ public class UserService {
             return false;
         }
         if (toFollowUser.getBlockedUserIds() != null && toFollowUser.getBlockedUserIds().contains(userId)) {
-            System.out.println("User '" + userId + "' cannot follow user '" + toFollowUserId + "' because user '" + toFollowUserId + "' has blocked user '" + userId + "'.");
+            System.out.println("User '" + userId + "' cannot follow user '" + toFollowUserId + "' because user '"
+                    + toFollowUserId + "' has blocked user '" + userId + "'.");
             return false;
         }
         if (toFollowUser.getPrivateAccount()) {
             System.out.println("User '" + toFollowUserId + "' is private.");
-            if (toFollowUser.getConnectionRequestUserIds() != null && toFollowUser.getConnectionRequestUserIds().contains(userId)) {
+            if (toFollowUser.getConnectionRequestUserIds() != null
+                    && toFollowUser.getConnectionRequestUserIds().contains(userId)) {
                 System.out.println("User '" + userId + "' already requested to follow user '" + toFollowUserId + "'.");
                 return false;
             }
@@ -193,7 +190,8 @@ public class UserService {
             toFollowUser.getConnectionRequestUserIds().add(userId);
             user.getPendingRequestUserIds().add(toFollowUserId);
             if (userRepository.save(toFollowUser) != null && userRepository.save(user) != null) {
-                System.out.println("User '" + userId + "' successfully requested to follow user '" + toFollowUserId + "'.");
+                System.out.println(
+                        "User '" + userId + "' successfully requested to follow user '" + toFollowUserId + "'.");
                 return true;
             }
             System.out.println("User '" + userId + "' could not request to follow user '" + toFollowUserId + "'.");
@@ -211,11 +209,11 @@ public class UserService {
         return false;
     }
 
-    public ArrayList<UserDTO> find(String firstName, String lastName) {        
+    public ArrayList<UserDTO> find(String firstName, String lastName) {
         if (lastName == null) {
             return findByOneParam(firstName);
         }
-        return findByName(firstName, lastName);     
+        return findByName(firstName, lastName);
     }
 
     public ArrayList<UserDTO> findByOneParam(String searchParam) {
@@ -248,7 +246,7 @@ public class UserService {
         }
         return mergeArrayLists(mergeArrayLists(usersFirstName, usersLastName), usersUsername);
     }
-    
+
     public ArrayList<UserDTO> findByName(String firstName, String lastName) {
         ArrayList<UserDTO> usersDTO1 = findByFirstName(firstName);
         ArrayList<UserDTO> usersDTO2 = findByLastName(lastName);
@@ -266,7 +264,7 @@ public class UserService {
         if (usersDTO.isEmpty()) {
             System.out.println("No users found");
             return null;
-        } 
+        }
         return usersDTO;
     }
 
@@ -357,7 +355,7 @@ public class UserService {
             if (user2.getUsername().equals(userDTO.getUsername())) {
                 user = user2;
             }
-        }       
+        }
         if (user == null) {
             System.out.println("User not found.");
             return null;
@@ -435,20 +433,19 @@ public class UserService {
 
         user.setPasswordSalt(allegedUser.getPasswordSalt());
         SecretKeyFactory skf;
-        
+
         try {
             skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             PBEKeySpec spec = new PBEKeySpec(user.getPasswordInput().toCharArray(), user.getPasswordSalt(), 65536, 256);
             byte[] passwordHash;
             try {
                 passwordHash = skf.generateSecret(spec).getEncoded();
-                if (Arrays.equals(passwordHash,allegedUser.getPasswordHash())) {
+                if (Arrays.equals(passwordHash, allegedUser.getPasswordHash())) {
                     System.out.println("User '" + user.getUsername() + "' has successfully logged in.");
                     allegedUser.setPasswordSalt(null);
                     allegedUser.setPasswordHash(null);
                     return allegedUser;
-                }
-                else {
+                } else {
                     System.out.println("Wrong password.");
                     System.out.println("Attempted username : '" + user.getUsername() + "'.");
                     return null;
@@ -463,16 +460,29 @@ public class UserService {
             e.printStackTrace();
             return null;
         }
-    }   
+    }
 
     public User register(UserDTO incomingUser) {
+        // TODO: Temporary hack to bypass wrong mapping from String to LocalDateTime by
+        // MapStruct
+        // That's because of the wrong input string, it doesn't contain HH:mm that
+        // LocalDateTime needs
+        // So either convert to LocalDate or append String
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String date = incomingUser.getDateOfBirth().concat(" 00:00");
+        LocalDateTime dateOfBirth = LocalDateTime.parse(date, formatter);
+        incomingUser.setDateOfBirth(null); // To bypass error
+
         User user = userMapper.dtoToEntity(incomingUser);
+        user.setDateOfBirth(dateOfBirth);
+
         user.setRole("Client");
         user.setConnectionUserIds(null);
         user.setConnectionRequestUserIds(null);
         user.setPendingRequestUserIds(null);
         user.setBlockedUserIds(null);
-        
+
         // password handling
         byte[] salt = new byte[16];
         new SecureRandom().nextBytes(salt);
@@ -500,8 +510,7 @@ public class UserService {
                     user.setPasswordSalt(null);
                     user.setPasswordHash(null);
                     return user;
-                }
-                else {
+                } else {
                     System.out.println("User was not saved.");
                     return null;
                 }
