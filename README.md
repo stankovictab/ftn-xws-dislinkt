@@ -6,6 +6,7 @@
 > `TODO:` dislinkt db in mongo express needs to be created manually??\
 > `TODO:` inserting posts requiers 3 user ids which need to be obtained after inserting the users\
 > `TODO:` find fix for permission denied on script launch (marko & mateja)
+> `TODO:` localhost:5001/user/update sets everything else that isn't updated to null
 ---
 ---
 ---
@@ -37,16 +38,17 @@ Payload:
 ```
 
 # 1.2 Unregisterd user has access to posts on public profiles
+Get the user id from the database.
 ```
-http post localhost:5002/post/getAll
+http post localhost:5002/post/getAll userId="userId here"
 ```
 Payload: id of the user whose posts are to be seen (plaintext)
 ```plaintext
 userId
-
 ```
 
 # 1.3 Unregisterd user can register (unique username)
+Frontend.
 ```
 http post localhost:5001/user/register
 ``` 
@@ -60,6 +62,7 @@ Payload: UserDTO object
 ```
 
 # 2.2 Loging in
+Frontend. Pick a username from the database. Password for, for example user0, is password0.
 ```
 http post localhost:5001/user/login
 ```
@@ -72,23 +75,8 @@ Payload: UserDTO object
 ```
 
 # 2.2 Following a user
-## Feed which shows a user posts from all users he follows
-```
-http post localhost:5002/post/getFeed
-```
-Payload: id of the user who is logged in (plaintext)
-```plaintext
-userId
-```
-## User can see all previous posts of the user he follows
-```
-http post localhost:5002/post/getAll
-```
-Payload: id of the user whos posts are to be seen (plaintext)
-```plaintext
-userId
-```
-## Following of a public profile is always possible
+
+## 1.1. Following of a public profile is always possible
 ```
 http post localhost:5001/user/follow
 ```
@@ -99,7 +87,8 @@ Payload:
 	"toFollowUserId": "id of the user that is to be followed"
 }
 ```
-## Following of a private profile needs to be apporved by the private user
+
+## 1.2. Following of a private profile needs to be apporved by the private user
 ```
 http post localhost:5001/user/follow
 ```
@@ -110,7 +99,8 @@ Payload:
     "toFollowUserId": "id of the user that is to be followed"
 }
 ```
-### Approving a follow request
+
+## 2. Approving a follow request
 ```
 http post localhost:5001/user/approveFollow
 ```
@@ -122,17 +112,48 @@ Payload:
 }
 ```
 
+## 3. Feed which shows a user posts from all users he follows
+Do from ThunderClient, userId in plain text.
+```
+http post localhost:5002/post/getFeed
+```
+Payload: id of the user who is logged in (plaintext)
+```plaintext
+userId
+```
+
+## 4. User can see all previous posts of the user he follows
+```
+http post localhost:5002/post/getAll
+```
+Payload: id of the user whos posts are to be seen (plaintext)
+```plaintext
+userId
+```
+
 # 2.6 Publishing posts
+```
+http post localhost:5002/post/create
+```
+Payload: postDTO object, userId must exist
+```json
+{
+	"title": "",
+	"description": "",
+	"imageTitle": "",
+	"userId": ""
+}
+```
 
 # 2.9 Updating ones own profile
 ```
 http post localhost:5001/user/update
 ```
-Payload: UserDTO object
+Payload: UserDTO object, username is mandatory
 ```json
 {
     "username": "",
-    ...
+    // ...
 }
 ```
 ## Updating own username
