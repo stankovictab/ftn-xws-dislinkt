@@ -28,6 +28,14 @@ export async function getFriends() {
 			{
 				username: "Bob Ross",
 				avatar: "Bob.jpg"
+			},
+			{
+				username: "John Doe",
+				avatar: "placeholder.png"
+			},
+			{
+				username: "Jane Doe",
+				avatar: "placeholder.png"
 			}
 		]
 	}
