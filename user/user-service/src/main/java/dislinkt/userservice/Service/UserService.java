@@ -70,7 +70,7 @@ public class UserService {
     public ArrayList<String> getAllUserIds() {
         ArrayList<String> userIds = new ArrayList<>();
         for (User user : userRepository.findAll()) {
-            userIds.add(user.getUserId());
+            userIds.add(user.getId());
         }
         return userIds;
     }
