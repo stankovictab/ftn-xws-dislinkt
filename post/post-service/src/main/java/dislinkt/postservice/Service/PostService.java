@@ -103,17 +103,25 @@ public class PostService {
 		post.setDislikes(0);
 		post.setLikedUserIds(null);
 		post.setDislikedUserIds(null);
-		try {
-			String imageId = imageService.addImage(post.getImageTitle(), image);
-			post.setImageId(imageId);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (image != null)
+		{
+			try {
+				String imageId = imageService.addImage(post.getImageTitle(), image);
+				post.setImageId(imageId);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		post = postRepository.save(post);
 		if (post != null) {
-			Image image1 = imageService.getImage(post.getImageId());
-			image1.setPostId(post.getId());
+			if (image != null)
+			{
+				Image image1 = imageService.getImage(post.getImageId());
+				image1.setPostId(post.getId());
+				//TODO: 
+				// imageService.update(image1)
+			}
 			System.out.println("Create: Post successfully saved.");
 			return postMapper.entityToDto(post);
 		}
