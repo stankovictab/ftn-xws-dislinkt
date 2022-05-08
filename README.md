@@ -1,12 +1,11 @@
 # ftn-xws-dislinkt
 
-```javascript
-TODO: Images, setup, docker-compose launch via script?\
-TODO: mvn clean install -DskipTests script or in readme\
-TODO: localhost:8080, localhost:8761, localhost:8081, localhost:5001\
-TODO: dislinkt db in mongo express needs to be created manually??
-TODO: inserting posts requiers 3 user ids which need to be obtained after inserting the users
-```
+> `TODO:` Images, setup, docker-compose launch via script?\
+> `TODO:` mvn clean install -DskipTests script or in readme\
+> `TODO:` localhost:8080, localhost:8761, localhost:8081, localhost:5001\
+> `TODO:` dislinkt db in mongo express needs to be created manually??\
+> `TODO:` inserting posts requiers 3 user ids which need to be obtained after inserting the users\
+> `TODO:` find fix for permission denied on script launch (marko & mateja)
 ---
 ---
 ---
