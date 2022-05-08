@@ -42,6 +42,7 @@ public class PostController implements PostServiceFeignClient {
 
     @Override
     public ResponseEntity<ArrayList<PostDTO>> getFeed(@RequestBody String userId) {
+        userId = userId.replace("{\"userId\": \"", "").replace("\"}", "");
         ArrayList<String> connectionUserIds = userServiceFeignClient.getConnectionUserIds(userId).getBody();
         // ArrayList<String> connectionUserIds = new ArrayList<>();
         return new ResponseEntity<>(postService.getFeed(userId, connectionUserIds), HttpStatus.OK);
