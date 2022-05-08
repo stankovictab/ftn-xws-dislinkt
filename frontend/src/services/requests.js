@@ -26,8 +26,8 @@ export async function getFriends() {
 
 			},
 			{
-				username: "Aleksandar Vucic",
-				avatar: "Precednik.jpg"
+				username: "Bob Ross",
+				avatar: "Bob.jpg"
 			}
 		]
 	}
@@ -47,33 +47,4 @@ export async function getFeed(userId) {
 			return response;
 		}
 	);
-	// return {
-	// 	data: [
-	// 		{
-	// 			id: 0,
-	// 			username: "Mateja Miletic",
-	// 			avatar: "Mateja.png",
-	// 			text: "We must secure the existence of our people and a future for white children.",
-	// 			votes: 420,
-	// 			comments: []
-	// 		},
-	// 		{
-	// 			id: 1,
-	// 			username: "Aleksandar Vucic",
-	// 			avatar: "Precednik.jpg",
-	// 			text: "Hvala Srbijo!",
-	// 			votes: -5000000,
-	// 			comments: [
-	// 				{
-	// 					id: 0,
-	// 					avatar: 'Todor.png',
-	// 					text: 'Penzionere treba istrebiti !!!',
-	// 				},
-	// 			]
-	// 		},
-	// 	]
-	// }
-	// return api().get('feed', user).then(
-	//     res => { console.log(res) }
-	// );
 }
