@@ -3,8 +3,9 @@ package dislinkt.userservice.Service;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -469,13 +470,18 @@ public class UserService {
         // LocalDateTime needs
         // So either convert to LocalDate or append String
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        String date = incomingUser.getDateOfBirth().concat(" 00:00");
-        LocalDateTime dateOfBirth = LocalDateTime.parse(date, formatter);
+        LocalDateTime x;
+        if (incomingUser.getDateOfBirth().length() > 11) {
+            x = LocalDateTime.parse(incomingUser.getDateOfBirth());
+        } else {
+            LocalDate n = LocalDate.parse(incomingUser.getDateOfBirth());
+            x = LocalDateTime.of(n, LocalTime.now());
+        }
+
         incomingUser.setDateOfBirth(null); // To bypass error
 
         User user = userMapper.dtoToEntity(incomingUser);
-        user.setDateOfBirth(dateOfBirth);
+        user.setDateOfBirth(x);
 
         user.setRole("Client");
         user.setConnectionUserIds(null);
