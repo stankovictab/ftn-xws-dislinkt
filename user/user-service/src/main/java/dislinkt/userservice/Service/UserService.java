@@ -159,7 +159,7 @@ public class UserService {
         if (user.getConnectionRequestUserIds() != null && user.getConnectionRequestUserIds().contains(followerUserId)) {
             user.getConnectionRequestUserIds().remove(followerUserId);
             followerUser.getPendingRequestUserIds().remove(userId);
-            if(followerUser.getConnectionUserIds() == null) {
+            if (followerUser.getConnectionUserIds() == null) {
                 followerUser.setConnectionUserIds(new ArrayList<>());
             }
             followerUser.getConnectionUserIds().add(userId);
