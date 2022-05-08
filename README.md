@@ -181,5 +181,18 @@ sudo apt install maven
 
 To run the app, run the following command.
 ```bash
-docker-compose up --build
+./downup.sh
+```
+
+### Running the frontend app
+
+TODO: Install `npm`
+
+`cd` into `frontend` and install all dependencies.
+```
+npm install
+```
+Run the app.
+```
+npm run serve
 ```
