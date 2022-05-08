@@ -15,5 +15,8 @@ public class PostDTO {
     private int likes;
     private int dislikes;
     private LocalDateTime creationDate;
+
+    // TODO: setLikedUserIds
+    // TODO: setDislikedUserIds
     
 }
