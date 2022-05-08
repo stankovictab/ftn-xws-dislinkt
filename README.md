@@ -195,3 +195,14 @@ Run the app.
 ```
 npm run serve
 ```
+
+## `Permission Denied` Fix
+When running the script you might get the `Permission Denied` error.\
+This is the fix.
+
+```
+sudo groupadd docker
+sudo usermod -aG docker $USER
+sudo newgrp docker 
+```
+Exit from root user shell and `reboot`.
