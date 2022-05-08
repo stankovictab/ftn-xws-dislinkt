@@ -36,7 +36,8 @@ public class PostController implements PostServiceFeignClient {
 
     @Override
     public void generatePosts() {
-        postService.generatePosts();
+        ArrayList<String> userIds = userServiceFeignClient.getAllUserIds().getBody();
+        postService.generatePosts(userIds);
     }
 
     @Override

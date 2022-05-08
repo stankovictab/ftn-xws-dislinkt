@@ -22,6 +22,9 @@ public interface UserServiceFeignClient {
 	@PostMapping(value = "/user/generateUsers")
 	public void generateUsers();
 
+	@PostMapping(value = "/user/getAllUserIds")
+	public ResponseEntity<ArrayList<String>> getAllUserIds();
+
 	@PostMapping(value = "/user/getConnectionUserIds")
 	public ResponseEntity<ArrayList<String>> getConnectionUserIds(@RequestBody String userId);
 	

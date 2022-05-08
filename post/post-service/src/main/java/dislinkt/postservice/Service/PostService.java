@@ -25,7 +25,7 @@ public class PostService {
 
 	private final ImageService imageService;
 
-	public void generatePosts() {
+	public void generatePosts(ArrayList<String> userIds) {
 
 		// TODO: cant be hardcoded user id, need to change this for demonstration
 
@@ -34,21 +34,21 @@ public class PostService {
 			Post post = new Post();
 			post.setTitle("Post " + i);
 			post.setDescription("Description " + i);
-			post.setUserId("6264637aa8287771fbb6b25e");
+			post.setUserId(userIds.get(0));
 			create(postMapper.entityToDto(post), null);
 		}
 		for (int i = 0; i < 33; i++) {
 			Post post = new Post();
 			post.setTitle("Post " + i);
 			post.setDescription("Description " + i);
-			post.setUserId("6264637aa8287771fbb6b25f");
+			post.setUserId(userIds.get(1));
 			create(postMapper.entityToDto(post), null);
 		}
 		for (int i = 0; i < 33; i++) {
 			Post post = new Post();
 			post.setTitle("Post " + i);
 			post.setDescription("Description " + i);
-			post.setUserId("6264637aa8287771fbb6b260");
+			post.setUserId(userIds.get(2));
 			create(postMapper.entityToDto(post), null);
 		}
 	}
