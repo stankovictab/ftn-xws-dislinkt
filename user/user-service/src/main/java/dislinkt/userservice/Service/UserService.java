@@ -373,39 +373,39 @@ public class UserService {
             user.setFirstName(userDTO.getFirstName());
             System.out.println("First name updated.");
         }
-        if (!user.getLastName().equals(userDTO.getLastName()) && userDTO.getFirstName() != null) {
+        if (!user.getLastName().equals(userDTO.getLastName()) && userDTO.getLastName() != null) {
             user.setLastName(userDTO.getLastName());
             System.out.println("Last name updated.");
         }
-        if (!user.getEmail().equals(userDTO.getEmail()) && userDTO.getFirstName() != null) {
+        if (!user.getEmail().equals(userDTO.getEmail()) && userDTO.getEmail() != null) {
             user.setEmail(userDTO.getEmail());
             System.out.println("Email updated.");
         }
-        if (!user.getNumber().equals(userDTO.getNumber()) && userDTO.getFirstName() != null) {
+        if (!user.getNumber().equals(userDTO.getNumber()) && userDTO.getNumber() != null) {
             user.setNumber(userDTO.getNumber());
             System.out.println("Number updated.");
         }
-        if (!user.getGender().equals(userDTO.getGender()) && userDTO.getFirstName() != null) {
+        if (!user.getGender().equals(userDTO.getGender()) && userDTO.getGender() != null) {
             user.setGender(userDTO.getGender());
             System.out.println("Gender updated.");
         }
-        if (!user.getBiography().equals(userDTO.getBiography()) && userDTO.getFirstName() != null) {
+        if (!user.getBiography().equals(userDTO.getBiography()) && userDTO.getBiography() != null) {
             user.setBiography(userDTO.getBiography());
             System.out.println("Biography updated.");
         }
-        if (!user.getWorkExperience().equals(userDTO.getWorkExperience()) && userDTO.getFirstName() != null) {
+        if (!user.getWorkExperience().equals(userDTO.getWorkExperience()) && userDTO.getWorkExperience() != null) {
             user.setWorkExperience(userDTO.getWorkExperience());
             System.out.println("Work experience updated.");
         }
-        if (!user.getStudies().equals(userDTO.getStudies()) && userDTO.getFirstName() != null) {
+        if (!user.getStudies().equals(userDTO.getStudies()) && userDTO.getStudies() != null) {
             user.setStudies(userDTO.getStudies());
             System.out.println("Studies updated.");
         }
-        if (!user.getSkills().equals(userDTO.getSkills()) && userDTO.getFirstName() != null) {
+        if (!user.getSkills().equals(userDTO.getSkills()) && userDTO.getSkills() != null) {
             user.setSkills(userDTO.getSkills());
             System.out.println("Skills updated.");
         }
-        if (!user.getInterests().equals(userDTO.getInterests()) && userDTO.getFirstName() != null) {
+        if (!user.getInterests().equals(userDTO.getInterests()) && userDTO.getInterests() != null) {
             user.setInterests(userDTO.getInterests());
             System.out.println("Interests updated.");
         }
