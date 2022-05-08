@@ -7,8 +7,11 @@ TODO: localhost:8080, localhost:8761, localhost:8081, localhost:5001\
 TODO: dislinkt db in mongo express needs to be created manually??
 TODO: inserting posts requiers 3 user ids which need to be obtained after inserting the users
 ```
+---
+---
+---
 
-## Inserting data into the database
+# Inserting data into the database
 Inserting users: generates 100 users with the username: user{#number} and password: password{#number}.
 Every third user is a private user.
 
@@ -22,13 +25,14 @@ http post localhost:5002/post/generatePosts
 ```
 
 # 1.1 Unregisterd user can search public profiles
+Able to show on frontend via search.
 ```
-http get localhost:5001/user/find
+http post localhost:5001/user/find/ firstName="first name or username here"
 ``` 
 Payload: 
 ```json
 {
-	"firstName": "first name here, or username",
+	"firstName": "first name or username here",
 	"lastName": "last name here, can be empty string"
 }
 ```
