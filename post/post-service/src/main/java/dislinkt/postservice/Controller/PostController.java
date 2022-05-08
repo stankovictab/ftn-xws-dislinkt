@@ -49,6 +49,7 @@ public class PostController implements PostServiceFeignClient {
 
     @Override
     public ResponseEntity<ArrayList<PostDTO>> getAllByUser(@RequestBody String userId) {
+        userId = userId.replace("{\"userId\": \"", "").replace("\"}", "");
         ArrayList<PostDTO> postDTOs = postService.getAllByUser(userId);    
         if (postDTOs == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
