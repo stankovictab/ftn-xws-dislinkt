@@ -68,7 +68,11 @@ public class UserService {
     }
 
     public ArrayList<String> getAllUserIds() {
-        return userRepository.getAllUserIds();
+        ArrayList<String> userIds = new ArrayList<>();
+        for (User user : userRepository.findAll()) {
+            userIds.add(user.getUserId());
+        }
+        return userIds;
     }
 
     public ArrayList<String> getConnectionUserIds(String userId) {
