@@ -1,11 +1,8 @@
 <div align="center">
   <img src="docs/Dislinkt.png" />
-  <br>
-  <br>
   <h3>
 	A LinkedIn clone project.
   </h3>
-  <br>
 </div>
 
 
