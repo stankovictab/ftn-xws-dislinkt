@@ -36,10 +36,10 @@ public class User {
     private String gender;
     private LocalDateTime dateOfBirth;
     private String biography;
-    private String workExperience;
-    private String studies;
-    private String skills;
-    private String interests;
+    private ArrayList<String> workExperience;
+    private ArrayList<String> studies;
+    private ArrayList<String> skills;
+    private ArrayList<String> interests;
     private Boolean privateAccount;
 
     // ids of users that the user is following

@@ -27,7 +27,7 @@ public interface PostServiceFeignClient {
 	public ResponseEntity<ArrayList<PostDTO>> getFeed(@RequestBody String userId);
 
 	@PostMapping(value = "/post/getAll")
-	public ResponseEntity<ArrayList<PostDTO>> getAllByUser(@RequestBody String userId);
+	public ResponseEntity<ArrayList<PostDTO>> getAllByUser(@RequestBody Map<String, String> userIds);
 
 	@PostMapping(value = "/post/create")
 	public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO, @RequestBody MultipartFile image);

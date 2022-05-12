@@ -61,6 +61,9 @@ public interface UserServiceFeignClient {
 	@PostMapping(value = "/user/findByUsername")
 	public ResponseEntity<ArrayList<UserDTO>> findByUsername(@RequestBody String username);
 
+	@PostMapping(value = "/user/findById")
+	public ResponseEntity<UserDTO> findById(@RequestBody String userId);
+
 	@PostMapping(value = "/user/findAll")
 	public ResponseEntity<ArrayList<UserDTO>> findAll();
 

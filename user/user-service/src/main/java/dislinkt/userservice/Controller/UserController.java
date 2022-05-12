@@ -38,6 +38,16 @@ public class UserController implements UserServiceFeignClient {
 	}
 
 	@Override
+	public ResponseEntity<UserDTO> findById(@RequestBody String userId) {
+		UserDTO userDTO = userService.findById(userId);
+		if (userDTO == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(userDTO, HttpStatus.OK);
+	}
+
+
+	@Override
 	public ResponseEntity<ArrayList<String>> getAllUserIds() {
 		ArrayList<String> userIds = userService.getAllUserIds();
 		if (userIds == null) {

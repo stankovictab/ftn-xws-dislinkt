@@ -1,6 +1,7 @@
 package dislinkt.postclient;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import lombok.Data;
 
@@ -16,7 +17,7 @@ public class PostDTO {
     private int dislikes;
     private LocalDateTime creationDate;
 
-    // TODO: setLikedUserIds
-    // TODO: setDislikedUserIds
+    private ArrayList<String> likedUserIds;
+    private ArrayList<String> dislikedUserIds;
     
 }

@@ -46,10 +46,17 @@ public class UserService {
             dob.minusDays(10 + i);
             user.setDateOfBirth(dob);
             user.setBiography("user: " + i + " biography");
-            user.setWorkExperience("user: " + i + " work experience");
-            user.setStudies("user: " + i + " studies");
-            user.setSkills("user: " + i + " skills");
-            user.setInterests("user: " + i + " interests");
+
+            user.setWorkExperience(new ArrayList<>());
+            user.setStudies(new ArrayList<>());
+            user.setSkills(new ArrayList<>());
+            user.setInterests(new ArrayList<>());
+
+            user.getWorkExperience().add("user: " + i + " work experience");
+            user.getStudies().add("user: " + i + " studies");
+            user.getSkills().add("user: " + i + " skills");
+            user.getInterests().add("user: " + i + " interests");
+            
             if (i % 3 == 0) {
                 user.setPrivateAccount(true);
             } else {
@@ -65,6 +72,16 @@ public class UserService {
             register(userMapper.entityToDto(user));
         }
 
+    }
+
+    public UserDTO findById(String userId) {
+        User user = userRepository.findById(userId).get();
+        if (user != null) {
+            System.out.println("user found");
+            return userMapper.entityToDto(user);
+        }
+        System.out.println("user not found");
+        return null;
     }
 
     public ArrayList<String> getAllUserIds() {

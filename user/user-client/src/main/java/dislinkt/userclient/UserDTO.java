@@ -24,10 +24,10 @@ public class UserDTO {
     private String gender;
     private String dateOfBirth;
     private String biography;
-    private String workExperience;
-    private String studies;
-    private String skills;
-    private String interests;
+    private ArrayList<String> workExperience;
+    private ArrayList<String> studies;
+    private ArrayList<String> skills;
+    private ArrayList<String> interests;
     private Boolean privateAccount;
 
     // ids of users that the user is following

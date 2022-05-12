@@ -15,6 +15,7 @@ import dislinkt.postclient.PostDTO;
 import dislinkt.postclient.PostServiceFeignClient;
 import dislinkt.postservice.Service.CommentService;
 import dislinkt.postservice.Service.PostService;
+import dislinkt.userclient.UserDTO;
 import dislinkt.userclient.UserServiceFeignClient;
 import lombok.RequiredArgsConstructor;
 
@@ -49,9 +50,23 @@ public class PostController implements PostServiceFeignClient {
     }
 
     @Override
-    public ResponseEntity<ArrayList<PostDTO>> getAllByUser(@RequestBody String userId) {
-        userId = userId.replace("{\"userId\": \"", "").replace("\"}", "");
-        ArrayList<PostDTO> postDTOs = postService.getAllByUser(userId);    
+    public ResponseEntity<ArrayList<PostDTO>> getAllByUser(@RequestBody Map<String, String> userIds) {
+        String userId = userIds.get("userId");
+        String userPostsId = userIds.get("userPostsId");
+        Boolean isPrivate = userServiceFeignClient.findById(userPostsId).getBody().getPrivateAccount();
+        
+        
+        if (isPrivate) {
+            UserDTO userDTO = userServiceFeignClient.findById(userId).getBody();
+            if (userDTO.getConnectionUserIds().contains(userPostsId)) {
+                return new ResponseEntity<>(postService.getAllByUser(userPostsId), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        }
+
+
+        ArrayList<PostDTO> postDTOs = postService.getAllByUser(userPostsId);    
         if (postDTOs == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

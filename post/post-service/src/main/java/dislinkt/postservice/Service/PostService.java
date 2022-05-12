@@ -27,8 +27,6 @@ public class PostService {
 
 	public void generatePosts(ArrayList<String> userIds) {
 
-		// TODO: cant be hardcoded user id, need to change this for demonstration
-
 		// TODO: Moze ove dve funckije u ./up.sh
 		for (int i = 0; i < 33; i++) {
 			Post post = new Post();
@@ -79,8 +77,6 @@ public class PostService {
 	}
 
 	public ArrayList<PostDTO> getAllByUser(String userId) {
-		System.out.println(userId);
-		// TODO: Provera da li je korisnik privatan
 		ArrayList<Post> posts = postRepository.findAllByUserId(userId);
 		ArrayList<PostDTO> postDTOs = new ArrayList<>();
 		if (posts == null) {
