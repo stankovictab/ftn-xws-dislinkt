@@ -1,4 +1,13 @@
-![Dislinkt - A LinkedIn Clone!](/docs/Dislinkt.png)
+<div align="center">
+  <img src="docs/Dislinkt.png" />
+  <br>
+  <br>
+  <h2>
+	A LinkedIn clone project.
+  </h2>
+  <br>
+</div>
+
 
 # ftn-xws-dislinkt
 
