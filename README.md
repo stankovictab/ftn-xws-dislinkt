@@ -2,9 +2,9 @@
   <img src="docs/Dislinkt.png" />
   <br>
   <br>
-  <h2>
+  <h3>
 	A LinkedIn clone project.
-  </h2>
+  </h3>
   <br>
 </div>
 
