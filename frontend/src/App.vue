@@ -3,6 +3,7 @@
 		<!-- TODO: Add unregisteredSearch check -->
 		<header v-if="hasRole">
 			<p class="mini-logo">Dislinkt</p>
+			<!-- TODO: Search on Enter -->
 			<input class="search-input" placeholder="Search Dislinkt" />
 			<button @click="logout">
 				{{ isLoggedIn ? "Log Out" : "Sign Up" }}
@@ -40,12 +41,12 @@ import "./style.css";
 
 <style scoped>
 header {
-	background: #0e131c;
-	height: 50px;
+	background: var(--backdrop3);
+	height: 60px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin-bottom: 20px;
+	margin-bottom: 70px;
 }
 header p {
 	position: absolute;
@@ -56,5 +57,8 @@ header button {
 	right: 10%;
 	height: 35px;
 	width: 125px;
+}
+header input {
+	font-size: 20px;
 }
 </style>

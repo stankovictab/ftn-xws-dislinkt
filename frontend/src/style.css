@@ -4,6 +4,8 @@ body {
 	--text2: #173755;
 	--text3: #427EB5;
 	--backdrop: #0E1623;
+	--backdrop2: #0E1C31;
+	--backdrop3: #09111c;
 	--button: #0D418C;
 	--yellow1: #FFE57F;
 	--yellow2: #FFBE7A;
@@ -144,6 +146,16 @@ button a:hover {
 	color: white;
 }
 
+/* View Profile, Like, Dislike */
+.alternate-button {
+	font-size: 22px;
+	font-weight: 500;
+	height: 36px;
+	width: 180px;
+	border-radius: 20px;
+	background-color: var(--backdrop3);
+}
+
 label {
 	font-weight: 600;
 	font-size: 20px;
@@ -220,6 +232,31 @@ textarea {
 	font-size: 16px;
 	padding: 7px;
 	border: 2px solid white;
+}
+
+.comment {
+	width: -webkit-fill-available;
+	min-width: -webkit-fill-available;
+	max-width: -webkit-fill-available;
+	min-height: 42px;
+	border-radius: 5px;
+	border: none;
+	background-color: var(--backdrop);
+	color: white;
+	padding: 10px 25px;
+	font-size: 20px;
+}
+
+.comment::placeholder {
+	color: var(--text3);
+}
+
+.comment::-webkit-resizer {
+	background: linear-gradient(to bottom right,
+			var(--backdrop) 50%,
+			transparent 0%),
+		linear-gradient(to bottom right, var(--text1) 50%, transparent 50%),
+		var(--text2);
 }
 
 .register-and-login {
