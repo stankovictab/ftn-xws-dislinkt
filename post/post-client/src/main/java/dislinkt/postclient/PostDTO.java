@@ -10,6 +10,7 @@ public class PostDTO {
     private String id;
     private String title;
     private String description;
+    private String embedLink;
 	private String imageTitle;
 	private String imageId;
     private String userId;

@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -27,6 +28,34 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final UserMapper userMapper;
+
+
+	public String generateAPIToken(String userId) {
+        User user = userRepository.findById(userId).orElse(null);
+
+        if (user == null) {
+            return null;
+        }
+        String upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String lowerAlphabet = "abcdefghijklmnopqrstuvwxyz";
+        String numbers = "0123456789";
+        String alphaNumeric = upperAlphabet + lowerAlphabet + numbers;
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        int length = 48;
+
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(alphaNumeric.length());
+            sb.append(alphaNumeric.charAt(index));
+        }
+        String token = sb.toString();
+        user.setApiToken(token);
+        if (userRepository.save(user) != null) {
+            return token;
+        } else {
+            return null;
+        }
+    }
 
     public void generateUsers() {
         for (int i = 0; i < 100; i++) {
@@ -389,43 +418,43 @@ public class UserService {
             System.out.println("User not found.");
             return null;
         }
-        if (!user.getFirstName().equals(userDTO.getFirstName()) && userDTO.getFirstName() != null) {
+        if (userDTO.getFirstName() != null && !user.getFirstName().equals(userDTO.getFirstName())) {
             user.setFirstName(userDTO.getFirstName());
             System.out.println("First name updated.");
         }
-        if (!user.getLastName().equals(userDTO.getLastName()) && userDTO.getLastName() != null) {
+        if (userDTO.getLastName() != null && !user.getLastName().equals(userDTO.getLastName())) {
             user.setLastName(userDTO.getLastName());
             System.out.println("Last name updated.");
         }
-        if (!user.getEmail().equals(userDTO.getEmail()) && userDTO.getEmail() != null) {
+        if (userDTO.getEmail() != null && !user.getEmail().equals(userDTO.getEmail())) {
             user.setEmail(userDTO.getEmail());
             System.out.println("Email updated.");
         }
-        if (!user.getNumber().equals(userDTO.getNumber()) && userDTO.getNumber() != null) {
+        if (userDTO.getNumber() != null && !user.getNumber().equals(userDTO.getNumber())) {
             user.setNumber(userDTO.getNumber());
             System.out.println("Number updated.");
         }
-        if (!user.getGender().equals(userDTO.getGender()) && userDTO.getGender() != null) {
+        if (userDTO.getGender() != null && !user.getGender().equals(userDTO.getGender())) {
             user.setGender(userDTO.getGender());
             System.out.println("Gender updated.");
         }
-        if (!user.getBiography().equals(userDTO.getBiography()) && userDTO.getBiography() != null) {
+        if (userDTO.getBiography() != null && !user.getBiography().equals(userDTO.getBiography())) {
             user.setBiography(userDTO.getBiography());
             System.out.println("Biography updated.");
         }
-        if (!user.getWorkExperience().equals(userDTO.getWorkExperience()) && userDTO.getWorkExperience() != null) {
+        if (userDTO.getWorkExperience() != null && !user.getWorkExperience().equals(userDTO.getWorkExperience())) {
             user.setWorkExperience(userDTO.getWorkExperience());
             System.out.println("Work experience updated.");
         }
-        if (!user.getStudies().equals(userDTO.getStudies()) && userDTO.getStudies() != null) {
+        if (userDTO.getStudies() != null && !user.getStudies().equals(userDTO.getStudies())) {
             user.setStudies(userDTO.getStudies());
             System.out.println("Studies updated.");
         }
-        if (!user.getSkills().equals(userDTO.getSkills()) && userDTO.getSkills() != null) {
+        if (userDTO.getSkills() != null && !user.getSkills().equals(userDTO.getSkills())) {
             user.setSkills(userDTO.getSkills());
             System.out.println("Skills updated.");
         }
-        if (!user.getInterests().equals(userDTO.getInterests()) && userDTO.getInterests() != null) {
+        if (userDTO.getInterests() != null && !user.getInterests().equals(userDTO.getInterests())) {
             user.setInterests(userDTO.getInterests());
             System.out.println("Interests updated.");
         }
@@ -452,6 +481,7 @@ public class UserService {
         for (User user2 : users) {
             if (user2.getUsername().equals(user.getUsername())) {
                 allegedUser = user2;
+                break;
             }
         }
         if (allegedUser == null) {
@@ -474,7 +504,8 @@ public class UserService {
                     allegedUser.setPasswordSalt(null);
                     allegedUser.setPasswordHash(null);
                     return allegedUser;
-                } else {
+                } 
+                else {
                     System.out.println("Wrong password.");
                     System.out.println("Attempted username : '" + user.getUsername() + "'.");
                     return null;
@@ -530,7 +561,7 @@ public class UserService {
             try {
                 passwordHash = skf.generateSecret(spec).getEncoded();
                 user.setPasswordHash(passwordHash);
-                user.setPasswordInput("");
+                user.setPasswordInput(null);
                 ArrayList<User> users = userRepository.findByUsername(user.getUsername());
                 for (User user1 : users) {
                     if (user1.getUsername().equalsIgnoreCase(user.getUsername())) {

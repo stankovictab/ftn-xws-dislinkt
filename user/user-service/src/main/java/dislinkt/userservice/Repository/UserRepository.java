@@ -22,9 +22,10 @@ public interface UserRepository extends MongoRepository<User, String> {
     @Query("{'lastName': {$regex: ?0, $options: 'i'}}")
     ArrayList<User> findByLastName(String lastName);
 
-    @Query("{'id': {$regex: ?0}}")
     Optional<User> findById(String id);
     
     ArrayList<String> getConnectionUserIdsById(String id);
+
+    
     
 }

@@ -19,6 +19,7 @@ public class Post {
 
 	private String title;
 	private String description;
+	private String embedLink;
 	private String imageTitle;
 	private String imageId;
 	private String userId;

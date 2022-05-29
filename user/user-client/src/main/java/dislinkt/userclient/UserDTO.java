@@ -37,5 +37,7 @@ public class UserDTO {
     // ids of users that the user has requested to follow
     private ArrayList<String> pendingRequestUserIds;
 
+    private String apiToken;
+
     private String role;
 }

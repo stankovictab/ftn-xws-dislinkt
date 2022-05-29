@@ -33,6 +33,11 @@ public class UserController implements UserServiceFeignClient {
 	}
 
 	@Override
+	public ResponseEntity<String> generateAPIToken(@RequestBody String userId) {
+		return new ResponseEntity<String>(userService.generateAPIToken(userId), HttpStatus.OK);
+	}
+
+	@Override
 	public void generateUsers() {
 		userService.generateUsers();
 	}

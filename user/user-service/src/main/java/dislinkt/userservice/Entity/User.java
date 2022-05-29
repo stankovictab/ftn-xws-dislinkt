@@ -51,6 +51,10 @@ public class User {
     // ids of users that the user has blocked
     private ArrayList<String> blockedUserIds;
 
+    @Indexed(unique = true)
+    private String apiToken;
+    
+
     private String role;
 
 }
