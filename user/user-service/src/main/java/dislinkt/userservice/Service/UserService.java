@@ -29,6 +29,13 @@ public class UserService {
 
     private final UserMapper userMapper;
 
+    public String getUserIdByApiToken(String apiToken) {
+        User user = userRepository.findByApiToken(apiToken);
+        if (user != null) {
+            return user.getId();
+        }
+        return null;
+    }
 
 	public String generateAPIToken(String userId) {
         User user = userRepository.findById(userId).orElse(null);

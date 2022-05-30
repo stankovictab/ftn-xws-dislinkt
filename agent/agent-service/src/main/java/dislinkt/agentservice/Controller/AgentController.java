@@ -17,12 +17,12 @@ import dislinkt.agentclient.FirmDTO;
 import dislinkt.agentclient.OfferDTO;
 import dislinkt.agentservice.Entity.Agent;
 import dislinkt.agentservice.Mapper.AgentMapper;
-import dislinkt.agentservice.Mapper.FirmMapper;
-import dislinkt.agentservice.Mapper.OfferMapper;
 import dislinkt.agentservice.Service.AgentService;
 import dislinkt.agentservice.Service.CommentService;
 import dislinkt.agentservice.Service.FirmService;
 import dislinkt.agentservice.Service.OfferService;
+import dislinkt.postclient.PostDTO;
+import dislinkt.postclient.PostServiceFeignClient;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -39,6 +39,8 @@ public class AgentController implements AgentServiceFeignClient {
 	private final CommentService commentService;
 
 	private final AgentMapper agentMapper;
+
+	private final PostServiceFeignClient postServiceFeignClient;
 
 
 	@GetMapping(value = "/actuator/info")
@@ -91,6 +93,27 @@ public class AgentController implements AgentServiceFeignClient {
 		if (offer == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+		if (offer.getDislinktShare()) {
+			// TODO: 
+			PostDTO postDTO = new PostDTO();
+			postDTO.setTitle("Job Offer");
+			postDTO.setDescription(
+				offer.getJobTitle() + 
+				offer.getJobDescription() +
+				offer.getJobLocation() + 
+				offer.getJobSeniority() + 
+				offer.getJobField() + 
+				offer.getJobTechnologies() + 
+				offer.getJobResponsibilities() + 
+				offer.getJobRequirements() +
+				offer.getJobBonuses()
+			);
+			postDTO.setEmbedLink("localhost:5003/post/getPost/" + offer.getId());
+			postDTO.setApiToken(agent.getApiToken());
+
+			postServiceFeignClient.createPost(postDTO);
+		}
+
 		return new ResponseEntity<>(offer, HttpStatus.OK);
 	}
 

@@ -24,6 +24,8 @@ public class Post {
 	private String imageId;
 	private String userId;
 
+	private String apiToken;
+
 	private int likes;
 	private int dislikes;
 

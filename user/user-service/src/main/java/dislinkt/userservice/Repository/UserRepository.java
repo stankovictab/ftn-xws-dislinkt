@@ -26,6 +26,8 @@ public interface UserRepository extends MongoRepository<User, String> {
     
     ArrayList<String> getConnectionUserIdsById(String id);
 
+    User findByApiToken(String apiToken);
+
     
     
 }

@@ -106,7 +106,7 @@ Payload: OfferDTO object
 ```JSON
 {
     "firmId": "id of the firm",
-    "jobTittle": "L",
+    "jobTitle": "L",
     "jobDescription": "has to use eclipse",
     "jobLocation": "Novi Sad",
     "jobSeniority": "Medior",
@@ -148,5 +148,38 @@ Payload: json object
 {
     "agentId": "id of the agent",
     "apiToken": "user generated api token"
+}
+```
+## Sharing the offer on the Dislinkt platform
+```
+localhost:5003/offer/create
+```
+Payload: OfferDTO object
+```JSON
+{
+    "firmId": "id of the firm",
+    "jobTitle": "L",
+    "jobDescription": "has to use eclipse",
+    "jobLocation": "Novi Sad",
+    "jobSeniority": "Medior",
+    "jobField": "Backend",
+    "jobTechnologies": [
+        "python",
+        "java"
+    ],
+    "jobResponsibilities": [
+        "fix and review code",
+        "write your own code"
+    ],
+    "jobRequirements": [
+        "you just have to use eclipse",
+        "there is no way around that",
+        "you have to use it",
+        "eclipse"
+    ],
+    "jobBonuses": [
+        "have eclipse ide already installed"
+    ],
+    "dislinktShare": true
 }
 ```

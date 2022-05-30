@@ -30,7 +30,7 @@ public interface PostServiceFeignClient {
 	public ResponseEntity<ArrayList<PostDTO>> getAllByUser(@RequestBody Map<String, String> userIds);
 
 	@PostMapping(value = "/post/create")
-	public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO, @RequestBody MultipartFile image);
+	public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO);
 
 	@PostMapping(value = "/comment/create")
 	public ResponseEntity<CommentDTO> createComment(@RequestBody CommentDTO commentDTO);

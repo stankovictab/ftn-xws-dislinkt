@@ -33,21 +33,21 @@ public class PostService {
 			post.setTitle("Post " + i);
 			post.setDescription("Description " + i);
 			post.setUserId(userIds.get(0));
-			create(postMapper.entityToDto(post), null);
+			create(postMapper.entityToDto(post));
 		}
 		for (int i = 0; i < 33; i++) {
 			Post post = new Post();
 			post.setTitle("Post " + i);
 			post.setDescription("Description " + i);
 			post.setUserId(userIds.get(1));
-			create(postMapper.entityToDto(post), null);
+			create(postMapper.entityToDto(post));
 		}
 		for (int i = 0; i < 33; i++) {
 			Post post = new Post();
 			post.setTitle("Post " + i);
 			post.setDescription("Description " + i);
 			post.setUserId(userIds.get(2));
-			create(postMapper.entityToDto(post), null);
+			create(postMapper.entityToDto(post));
 		}
 	}
 
@@ -91,7 +91,7 @@ public class PostService {
 		return postDTOs;
 	}
 
-	public PostDTO create(PostDTO postDTO, MultipartFile image) {
+	public PostDTO create(PostDTO postDTO) {
 		Post post = postMapper.dtoToEntity(postDTO);
 		LocalDateTime now = LocalDateTime.now();
 		post.setCreationDate(now);
@@ -99,25 +99,25 @@ public class PostService {
 		post.setDislikes(0);
 		post.setLikedUserIds(null);
 		post.setDislikedUserIds(null);
-		if (image != null)
-		{
-			try {
-				String imageId = imageService.addImage(post.getImageTitle(), image);
-				post.setImageId(imageId);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		// if (image != null)
+		// {
+		// 	try {
+		// 		String imageId = imageService.addImage(post.getImageTitle(), image);
+		// 		post.setImageId(imageId);
+		// 	} catch (IOException e) {
+		// 		// TODO Auto-generated catch block
+		// 		e.printStackTrace();
+		// 	}
+		// }
 		post = postRepository.save(post);
 		if (post != null) {
-			if (image != null)
-			{
-				Image image1 = imageService.getImage(post.getImageId());
-				image1.setPostId(post.getId());
-				//TODO: 
-				// imageService.update(image1)
-			}
+			// if (image != null)
+			// {
+			// 	Image image1 = imageService.getImage(post.getImageId());
+			// 	image1.setPostId(post.getId());
+			// 	//TODO: 
+			// 	// imageService.update(image1)
+			// }
 			System.out.println("Create: Post successfully saved.");
 			return postMapper.entityToDto(post);
 		}

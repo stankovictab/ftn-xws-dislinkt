@@ -1,5 +1,6 @@
 package dislinkt.agentservice.Entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import org.springframework.data.annotation.Id;
@@ -19,7 +20,9 @@ public class Offer {
     // for which firm the offer is made
     private String firmId;
 
-    private String jobTittle;
+    private LocalDateTime creationDate;
+
+    private String jobTitle;
 
     private String jobDescription;
 

@@ -1,5 +1,6 @@
 package dislinkt.agentclient;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import lombok.Data;
@@ -11,7 +12,9 @@ public class OfferDTO {
 
     private String firmId;
 
-    private String jobTittle;
+    private LocalDateTime creationDate;
+
+    private String jobTitle;
 
     private String jobDescription;
 

@@ -74,8 +74,15 @@ public class PostController implements PostServiceFeignClient {
     }
 
     @Override
-    public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO, @RequestBody MultipartFile image) {        
-        PostDTO createdPost = postService.create(postDTO, image);
+    public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO) {
+        if (postDTO.getApiToken() != null) {
+            String userId = userServiceFeignClient.getUserIdByApiToken(postDTO.getApiToken()).getBody();
+            if (userId != null) {
+                postDTO.setUserId(userId);
+                return new ResponseEntity<>(postService.create(postDTO), HttpStatus.OK);
+            }
+        }        
+        PostDTO createdPost = postService.create(postDTO);
         if (createdPost == null) {
             System.out.println("Create: No post created.");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

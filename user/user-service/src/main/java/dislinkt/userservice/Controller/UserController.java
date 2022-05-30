@@ -15,6 +15,7 @@ import dislinkt.userclient.UserServiceFeignClient;
 import dislinkt.userservice.Entity.User;
 import dislinkt.userservice.Mapper.UserMapper;
 import dislinkt.userservice.Service.UserService;
+import feign.Response;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -30,6 +31,11 @@ public class UserController implements UserServiceFeignClient {
 	@Override
 	public String home() {
 		return "Hello from User Service";
+	}
+
+	@Override
+	public ResponseEntity<String> getUserIdByApiToken(@RequestBody String apiToken) {
+		return new ResponseEntity<>(userService.getUserIdByApiToken(apiToken), HttpStatus.OK);
 	}
 
 	@Override

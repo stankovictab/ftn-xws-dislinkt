@@ -22,6 +22,9 @@ public interface UserServiceFeignClient {
 	@PostMapping(value = "/user/generateUsers")
 	public void generateUsers();
 
+	@PostMapping("/user/getUserIdByApiToken")
+	public ResponseEntity<String> getUserIdByApiToken(@RequestBody String apiToken);
+
 	@PostMapping(value = "/user/generateApiToken")
 	public ResponseEntity<String> generateAPIToken(@RequestBody String userId);
 
