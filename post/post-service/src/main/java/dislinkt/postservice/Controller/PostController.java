@@ -53,7 +53,13 @@ public class PostController implements PostServiceFeignClient {
     public ResponseEntity<ArrayList<PostDTO>> getAllByUser(@RequestBody Map<String, String> userIds) {
         String userId = userIds.get("userId");
         String userPostsId = userIds.get("userPostsId");
-        Boolean isPrivate = userServiceFeignClient.findById(userPostsId).getBody().getPrivateAccount();
+        Boolean isPrivate;
+        if (userServiceFeignClient.findById(userPostsId).getBody().getPrivateAccount() != null) {
+            isPrivate = userServiceFeignClient.findById(userPostsId).getBody().getPrivateAccount();
+        } 
+        else {
+            isPrivate = false;
+        }
         
         
         if (isPrivate) {

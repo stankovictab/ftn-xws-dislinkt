@@ -88,6 +88,10 @@ public class FirmService {
 
     public FirmDTO firmRegister(FirmDTO firmDTO) {
         Firm firm = firmMapper.dtoToEntity(firmDTO);
+        if (firmRepository.findByOwnerId(firm.getOwnerId()) != null) {
+            System.out.println("User already has firm");
+            return null;
+        }
         firm.setOfferIds(null);
         firm.setFirmCommentIds(null);
         firm.setApproved(false);

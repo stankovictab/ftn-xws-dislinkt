@@ -536,16 +536,19 @@ public class UserService {
         // LocalDateTime needs
         // So either convert to LocalDate or append String
 
-        LocalDateTime x;
-        if (incomingUser.getDateOfBirth().length() > 11) {
-            x = LocalDateTime.parse(incomingUser.getDateOfBirth());
-        } else {
-            LocalDate n = LocalDate.parse(incomingUser.getDateOfBirth());
-            x = LocalDateTime.of(n, LocalTime.now());
+        // TODO: imma add another temporary hack
+        LocalDateTime x = null;
+        if (incomingUser.getDateOfBirth() != null) {
+            if (incomingUser.getDateOfBirth().length() > 11) {
+                x = LocalDateTime.parse(incomingUser.getDateOfBirth());
+            } else {
+                LocalDate n = LocalDate.parse(incomingUser.getDateOfBirth());
+                x = LocalDateTime.of(n, LocalTime.now());
+            }
         }
-
         incomingUser.setDateOfBirth(null); // To bypass error
-
+            
+        
         User user = userMapper.dtoToEntity(incomingUser);
         user.setDateOfBirth(x);
 
