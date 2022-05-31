@@ -1,54 +1,52 @@
 <template>
-    <div>
-        <img :src="require('../assets/' + avatar)"/>
-        <p id="username">{{user.username}}</p>
-        <!-- <p>{{user.jobDesc}}</p> -->
-        <!-- <p>Working at {{user.company}}</p> -->
-        <router-link to="/profile">  
-            <button>Profile</button>
-        </router-link>
-    </div>
+	<div>
+		<img :src="require('../assets/' + avatar)" />
+		<h4>{{ user.username }}</h4>
+		<!-- <p>{{ user.jobDesc }}</p> -->
+		<!-- <p>Working at {{ user.company }}</p> -->
+		<router-link to="/profile">
+			<button class="alternate-button">View Profile</button>
+		</router-link>
+	</div>
 </template>
 
 <script>
-import {mapState} from "vuex";
+import { mapState } from "vuex";
 export default {
 	name: "ProfilePreview",
 	components: {},
 	methods: {},
-    computed: {
-        ...mapState({
-            user: 'user',
-        }),
-        avatar() {
-            return this.user.avatar || "placeholder.png";
-        },
-    }
+	computed: {
+		...mapState({
+			user: "user",
+		}),
+		avatar() {
+			return this.user.avatar || "placeholder.png";
+		},
+	},
 };
 import "../style.css";
 </script>
 
 <style scoped>
-div{
-    border-radius: 5px;
-	background-color: var(--backdrop);
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+div {
+	border-radius: 20px;
+	background-color: var(--backdrop2);
+	padding: 15px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 200px;
+	width: 330px;
+	justify-content: space-around;
 }
 img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
+	width: 55px;
+	height: 55px;
+	border-radius: 50%;
 }
-p{
-    font-size: 20px;
-    margin: 5px 0px;
-}
-#username{
-    color: white;
-    font-size: 25px;
+h4 {
+	color: white;
+	font-weight: 500;
 }
 </style>
