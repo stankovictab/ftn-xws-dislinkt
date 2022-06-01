@@ -4,7 +4,7 @@
 			<!-- <profile-preview></profile-preview> -->
 		</section>
 		<main>
-            <profile-info :userId = userId></profile-info>
+			<profile-info :userId="userId"></profile-info>
 			<!-- <post-feed></post-feed> -->
 		</main>
 		<section>
@@ -17,22 +17,22 @@
 // import ProfilePreview from '../components/ProfilePreview.vue';
 // import ChatLinks from '../components/ChatLinks.vue';
 // import PostFeed from '../components/PostFeed.vue';
-import ProfileInfo from '../components/ProfileInfo.vue';
+import ProfileInfo from "../components/ProfileInfo.vue";
 
 export default {
-	name: "HomePage",
+	name: "ProfilePage",
 	components: {
 		// ProfilePreview,
 		// ChatLinks,
 		// PostFeed,
-        ProfileInfo
+		ProfileInfo,
 	},
-    props: {
-        userId: {
-            type: String,
-            required: true
-        }
-    },
+	props: {
+		userId: {
+			type: String,
+			required: true,
+		},
+	},
 };
 import "../style.css";
 </script>
@@ -43,7 +43,7 @@ import "../style.css";
 	justify-content: space-evenly;
 }
 
-main{
+main {
 	width: 35%;
 }
 section {

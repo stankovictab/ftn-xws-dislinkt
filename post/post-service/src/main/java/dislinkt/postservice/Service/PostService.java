@@ -28,21 +28,21 @@ public class PostService {
 	public void generatePosts(ArrayList<String> userIds) {
 
 		// TODO: Moze ove dve funckije u ./up.sh
-		for (int i = 0; i < 33; i++) {
+		for (int i = 0; i < 3; i++) {
 			Post post = new Post();
 			post.setTitle("Post " + i);
 			post.setDescription("Description " + i);
 			post.setUserId(userIds.get(0));
 			create(postMapper.entityToDto(post));
 		}
-		for (int i = 0; i < 33; i++) {
+		for (int i = 0; i < 3; i++) {
 			Post post = new Post();
 			post.setTitle("Post " + i);
 			post.setDescription("Description " + i);
 			post.setUserId(userIds.get(1));
 			create(postMapper.entityToDto(post));
 		}
-		for (int i = 0; i < 33; i++) {
+		for (int i = 0; i < 3; i++) {
 			Post post = new Post();
 			post.setTitle("Post " + i);
 			post.setDescription("Description " + i);
@@ -53,7 +53,10 @@ public class PostService {
 
 	public ArrayList<PostDTO> getFeed(String userId, ArrayList<String> connectionUserIds) {
 		ArrayList<PostDTO> postDTOs = new ArrayList<>();
-
+		if (connectionUserIds == null) {
+			System.out.println("GetFeed: Has no connections.");
+			return null;
+		}
 		for (String followingUserId : connectionUserIds) {
 			ArrayList<Post> posts = postRepository.findAllByUserId(followingUserId);
 			for (Post post : posts) {
@@ -61,7 +64,7 @@ public class PostService {
 			}
 		}
 		if (postDTOs.isEmpty()) {
-			System.out.println("GetFeed: No posts found.");
+			System.out.println("GetFeed: No posts found in followed accounts.");
 			return null;
 		}
 		postDTOs.sort(Comparator.comparing(
@@ -101,22 +104,22 @@ public class PostService {
 		post.setDislikedUserIds(null);
 		// if (image != null)
 		// {
-		// 	try {
-		// 		String imageId = imageService.addImage(post.getImageTitle(), image);
-		// 		post.setImageId(imageId);
-		// 	} catch (IOException e) {
-		// 		// TODO Auto-generated catch block
-		// 		e.printStackTrace();
-		// 	}
+		// try {
+		// String imageId = imageService.addImage(post.getImageTitle(), image);
+		// post.setImageId(imageId);
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 		// }
 		post = postRepository.save(post);
 		if (post != null) {
 			// if (image != null)
 			// {
-			// 	Image image1 = imageService.getImage(post.getImageId());
-			// 	image1.setPostId(post.getId());
-			// 	//TODO: 
-			// 	// imageService.update(image1)
+			// Image image1 = imageService.getImage(post.getImageId());
+			// image1.setPostId(post.getId());
+			// //TODO:
+			// // imageService.update(image1)
 			// }
 			System.out.println("Create: Post successfully saved.");
 			return postMapper.entityToDto(post);

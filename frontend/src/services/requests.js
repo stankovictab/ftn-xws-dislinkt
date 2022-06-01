@@ -1,4 +1,4 @@
-import api from "./api"
+import api from "./api";
 
 export async function register(newUser) {
 	console.log("requests.ts/register()", newUser);
@@ -21,15 +21,6 @@ export async function getFriends() {
 	return {
 		data: [
 			{
-				username: "Mateja Miletic",
-				avatar: "Mateja.png",
-
-			},
-			{
-				username: "Bob Ross",
-				avatar: "Bob.jpg"
-			},
-			{
 				username: "John Doe",
 				avatar: "placeholder.png"
 			},
@@ -38,7 +29,7 @@ export async function getFriends() {
 				avatar: "placeholder.png"
 			}
 		]
-	}
+	};
 	// return api("5001").get('friends', user).then(
 	//     res => { console.log(res) }
 	// );
@@ -46,13 +37,14 @@ export async function getFriends() {
 
 export async function getFeed(userId) {
 	console.log("requests.ts/getFeed()");
-	api("5002").post('post/getFeed', userId,
-	{
-		headers: { "Content-Type": "plain/text" },
-	}).then(
-		function (response) {
-			console.log(response.data[0].description);
-			return response;
-		}
-	);
+	// TODO: await?
+	await api("5002").post('post/getFeed', userId,
+		{
+			headers: { "Content-Type": "plain/text" },
+		}).then(
+			function (response) {
+				console.log(response.data[13].description);
+				return response.data;
+			}
+		);
 }

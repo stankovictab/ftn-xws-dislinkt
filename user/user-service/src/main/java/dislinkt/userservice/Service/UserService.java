@@ -37,7 +37,7 @@ public class UserService {
         return null;
     }
 
-	public String generateAPIToken(String userId) {
+    public String generateAPIToken(String userId) {
         User user = userRepository.findById(userId).orElse(null);
 
         if (user == null) {
@@ -92,7 +92,7 @@ public class UserService {
             user.getStudies().add("user: " + i + " studies");
             user.getSkills().add("user: " + i + " skills");
             user.getInterests().add("user: " + i + " interests");
-            
+
             if (i % 3 == 0) {
                 user.setPrivateAccount(true);
             } else {
@@ -132,10 +132,11 @@ public class UserService {
         User user = userRepository.findById(userId).get();
         if (user != null) {
             System.out.println("user found");
-            for (String id : user.getConnectionUserIds()) {
-                System.out.println(id);
+            if (user.getConnectionUserIds() != null) {
+                for (String id : user.getConnectionUserIds())
+                    System.out.println(id);
+                return user.getConnectionUserIds();
             }
-            return user.getConnectionUserIds();
         }
         return null;
     }
@@ -511,8 +512,7 @@ public class UserService {
                     allegedUser.setPasswordSalt(null);
                     allegedUser.setPasswordHash(null);
                     return allegedUser;
-                } 
-                else {
+                } else {
                     System.out.println("Wrong password.");
                     System.out.println("Attempted username : '" + user.getUsername() + "'.");
                     return null;
@@ -547,8 +547,7 @@ public class UserService {
             }
         }
         incomingUser.setDateOfBirth(null); // To bypass error
-            
-        
+
         User user = userMapper.dtoToEntity(incomingUser);
         user.setDateOfBirth(x);
 

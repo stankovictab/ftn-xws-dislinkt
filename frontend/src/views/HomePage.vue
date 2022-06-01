@@ -6,6 +6,7 @@
 		<main>
 			<status-input></status-input>
 			<post-feed></post-feed>
+			<h1>AAAAAAAAAAAAAAAAA</h1>
 		</main>
 		<section>
 			<chat-links></chat-links>

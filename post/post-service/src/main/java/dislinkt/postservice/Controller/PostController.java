@@ -43,9 +43,7 @@ public class PostController implements PostServiceFeignClient {
 
     @Override
     public ResponseEntity<ArrayList<PostDTO>> getFeed(@RequestBody String userId) {
-        userId = userId.replace("{\"userId\": \"", "").replace("\"}", "");
         ArrayList<String> connectionUserIds = userServiceFeignClient.getConnectionUserIds(userId).getBody();
-        // ArrayList<String> connectionUserIds = new ArrayList<>();
         return new ResponseEntity<>(postService.getFeed(userId, connectionUserIds), HttpStatus.OK);
     }
 
@@ -56,12 +54,10 @@ public class PostController implements PostServiceFeignClient {
         Boolean isPrivate;
         if (userServiceFeignClient.findById(userPostsId).getBody().getPrivateAccount() != null) {
             isPrivate = userServiceFeignClient.findById(userPostsId).getBody().getPrivateAccount();
-        } 
-        else {
+        } else {
             isPrivate = false;
         }
-        
-        
+
         if (isPrivate) {
             UserDTO userDTO = userServiceFeignClient.findById(userId).getBody();
             if (userDTO.getConnectionUserIds().contains(userPostsId)) {
@@ -71,8 +67,7 @@ public class PostController implements PostServiceFeignClient {
             }
         }
 
-
-        ArrayList<PostDTO> postDTOs = postService.getAllByUser(userPostsId);    
+        ArrayList<PostDTO> postDTOs = postService.getAllByUser(userPostsId);
         if (postDTOs == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -87,7 +82,7 @@ public class PostController implements PostServiceFeignClient {
                 postDTO.setUserId(userId);
                 return new ResponseEntity<>(postService.create(postDTO), HttpStatus.OK);
             }
-        }        
+        }
         PostDTO createdPost = postService.create(postDTO);
         if (createdPost == null) {
             System.out.println("Create: No post created.");
@@ -107,13 +102,13 @@ public class PostController implements PostServiceFeignClient {
     }
 
     @Override
-	public void likePost(@RequestBody Map<String, String> json) {
+    public void likePost(@RequestBody Map<String, String> json) {
         postService.likePost(json.get("postId"), json.get("userId"));
     }
 
     @Override
     public void dislikePost(@RequestBody Map<String, String> json) {
         postService.dislikePost(json.get("postId"), json.get("userId"));
-    }    
+    }
 
 }
