@@ -58,3 +58,15 @@ export async function getOwnPosts(userId) {
 		);
 	return data;
 }
+
+export async function getFriendRequests(userId) {
+	const data = await api("5001").post('user/getPendingRequests', userId,
+		{
+			headers: { "Content-Type":  "plain/text", },
+		}).then(
+			function (response) {
+				return response.data;
+			}
+		);
+	return data;
+}
