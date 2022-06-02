@@ -18,7 +18,7 @@ const routes = [
 		component: () => import('../views/RegisterPage.vue')
 	},
 	{
-		path: '/profile/:userId',
+		path: '/profile/:profileOwnerId',
 		name: 'Profile',
 		component: () => import('../views/ProfilePage.vue'),
 		props: true
