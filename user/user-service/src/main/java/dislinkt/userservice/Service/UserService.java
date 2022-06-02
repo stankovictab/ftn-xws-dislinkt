@@ -207,6 +207,19 @@ public class UserService {
         return userMapper.entityToDto(toViewUser);
     }
 
+    public ArrayList<UserDTO> getConnectionRequestUserIds(String userId) {
+        User user = userRepository.findById(userId).get();
+        if (user.getConnectionRequestUserIds() != null) {
+            ArrayList<UserDTO> users = new ArrayList<>();
+            for (String id : user.getConnectionRequestUserIds()) {
+                UserDTO userDTO = userMapper.entityToDto(userRepository.findById(id).get());
+                users.add(userDTO);
+            }
+            return users;
+        }
+        return null;
+    }
+
     public Boolean approveFollow(String userId, String followerUserId) {
         User user = userRepository.findById(userId).get();
         User followerUser = userRepository.findById(followerUserId).get();

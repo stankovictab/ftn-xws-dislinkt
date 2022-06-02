@@ -89,6 +89,14 @@ public class UserController implements UserServiceFeignClient {
 	// return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
 	// }
 
+	@Override 
+	public ResponseEntity<ArrayList<UserDTO>> getConnectionRequestUserIds(@RequestBody String userId) {
+		ArrayList<UserDTO> connectionRequestUserIds = userService.getConnectionRequestUserIds(userId);
+		if (connectionRequestUserIds == null)
+			return new ResponseEntity<>(null, HttpStatus.OK);
+		return new ResponseEntity<>(connectionRequestUserIds, HttpStatus.OK);
+	}
+
 	@Override
 	public ResponseEntity<Boolean> approveFollow(@RequestBody Map<String, String> userIds) {
 		if (userService.approveFollow(userIds.get("userId"), userIds.get("followerUserId"))) {

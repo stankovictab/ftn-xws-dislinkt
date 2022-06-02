@@ -43,6 +43,9 @@ public interface UserServiceFeignClient {
 	// @PostMapping(value = "/user/updatePrivacy/{userId}")
 	// public ResponseEntity<Boolean> updatePrivacy(@PathVariable String userId);
 
+	@PostMapping("/user/getPendingRequests")
+	public ResponseEntity<ArrayList<UserDTO>> getConnectionRequestUserIds(@RequestBody String userId);
+
 	@PostMapping(value = "/user/approveFollow")
 	public ResponseEntity<Boolean> approveFollow(@RequestBody Map<String, String> userIds);
 
