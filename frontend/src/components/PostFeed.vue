@@ -47,11 +47,8 @@ export default {
 			user: "user",
 		}),
 	},
-	created() {
-		// this.posts = getFeed(this.user.id);
-		getFeed(this.user.id).then(function (response) {
-			console.log("REPSONES:");
-			console.log(response);
+	mounted() {
+		getFeed(this.user.id).then(response => {
 			this.posts = response;
 		});
 	},

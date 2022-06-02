@@ -14,6 +14,7 @@ public class PostDTO {
 	private String imageTitle;
 	private String imageId;
     private String userId;
+    private String authorName;
 	private String apiToken;
     private int likes;
     private int dislikes;

@@ -1,10 +1,10 @@
 <template>
     <article class="user-post">
         <div>
-            <img :src="require('../assets/' + post.avatar)"/>
-            <router-link to="/profile/id">{{post.username}}</router-link>
+            <!-- <router-link to="/profile/id">{{post.username}}</router-link> -->
+            ovde treba autor
         </div>
-        <p>{{post.text}}</p>
+        <p>{{post.description}}</p>
         <div>
             
             <button @click="changeVote(1)" :class="{active: myVote == 1}">👍</button>
@@ -23,18 +23,19 @@
             {{post.comments?.length}}
             <button @click="toggleCommenting">💬</button>
         </div>
+        aaa
     </article> 
 </template>
 
 <script>
 
-import CommentOnPost from './CommentOnPost.vue';
+// import CommentOnPost from './CommentOnPost.vue';
 import {mapState} from "vuex";
 
 export default {
 	name: "UserPost",
 	components: {
-        CommentOnPost
+        // CommentOnPost
     },
     props:{
         post: Object

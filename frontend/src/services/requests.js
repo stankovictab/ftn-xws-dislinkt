@@ -36,15 +36,13 @@ export async function getFriends() {
 }
 
 export async function getFeed(userId) {
-	console.log("requests.ts/getFeed()");
-	// TODO: await?
-	api("5002").post('post/getFeed', userId,
+	const data = await api("5002").post('post/getFeed', userId,
 		{
 			headers: { "Content-Type": "plain/text" },
 		}).then(
 			function (response) {
-				console.log(response.data[13].description);
 				return response.data;
 			}
 		);
+	return data;
 }
