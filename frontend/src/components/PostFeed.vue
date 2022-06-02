@@ -11,47 +11,22 @@
 </template>
 
 <script>
-import { getFeed } from "../services/requests";
 import UserPost from "../components/UserPost.vue";
 import { mapState } from "vuex";
 // import { ref } from "vue";
 export default {
 	name: "PostFeed",
 	components: { UserPost },
-	// setup() {
-	// 	var posts = ref(null);
-	// 	axios
-	// 		.post(
-	// 			"http://localhost:5002/post/getFeed",
-	// 			"629783322704f2575da2d8bf",
-	// 			{
-	// 				headers: { "Content-Type": "plain/text" },
-	// 			}
-	// 		)
-	// 		.then(function (response) {
-	// 			console.log(response.data[13].description);
-	// 			posts.value = response.data;
-	// 			// return response.data;
-	// 		});
-	// 	return {
-	// 		posts,
-	// 	};
-	// },
-	data: function () {
-		return {
-			posts: [],
-		};
+	props: {
+		posts: Array,
 	},
+	
 	computed: {
 		...mapState({
 			user: "user",
 		}),
 	},
-	mounted() {
-		getFeed(this.user.id).then(response => {
-			this.posts = response;
-		});
-	},
+	
 	methods: {
 		applyVote(postId, newVotes) {
 			this.posts.find((post) => post.id === postId).votes = newVotes;

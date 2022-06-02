@@ -5,7 +5,7 @@
 		</section>
 		<main>
 			<status-input></status-input>
-			<post-feed></post-feed>
+			<post-feed :posts="posts"></post-feed>
 		</main>
 		<section>
 			<chat-links></chat-links>
@@ -18,6 +18,8 @@ import ProfilePreview from "../components/ProfilePreview.vue";
 import StatusInput from "../components/StatusInput.vue";
 import ChatLinks from "../components/ChatLinks.vue";
 import PostFeed from "../components/PostFeed.vue";
+import { getFeed } from "../services/requests";
+import { mapState } from "vuex";
 
 export default {
 	name: "HomePage",
@@ -26,6 +28,21 @@ export default {
 		StatusInput,
 		ChatLinks,
 		PostFeed,
+	},
+	computed: {
+		...mapState({
+			user: "user",
+		}),
+	},
+	mounted() {
+		getFeed(this.user.id).then(response => {
+			this.posts = response;
+		});
+	},
+	data: function () {
+		return {
+			posts: [],
+		};
 	},
 };
 import "../style.css";

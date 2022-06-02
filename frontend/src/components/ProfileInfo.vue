@@ -1,13 +1,12 @@
 <template>
     <header>
-        <img :src="require('../assets/' + user.avatar)"/>
+        <img :src="require('../assets/placeholder.png')"/>
         <h1>{{user.username}}</h1>
     </header> 
 </template>
 
 <script>
 import {mapState} from "vuex";
-import {getUserById} from "../services/requests";
 
 export default {
 	name: "ProfileInfo",
@@ -19,12 +18,7 @@ export default {
         ...mapState({
             user: 'user',
         })
-    },
-    created() {
-        getUserById(this.userId).then(user => {
-            this.user = user;
-        });
-    },
+    }
     
 };
 

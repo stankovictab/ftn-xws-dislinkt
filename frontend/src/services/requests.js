@@ -46,3 +46,15 @@ export async function getFeed(userId) {
 		);
 	return data;
 }
+
+export async function getOwnPosts(userId) {
+	const data = await api("5002").post('post/getAll', {userId, userPostsId: userId},
+		{
+			headers: { "Content-Type": "application/json", },
+		}).then(
+			function (response) {
+				return response.data;
+			}
+		);
+	return data;
+}

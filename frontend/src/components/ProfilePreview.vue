@@ -4,7 +4,7 @@
 		<h4>{{ user.username }}</h4>
 		<!-- <p>{{ user.jobDesc }}</p> -->
 		<!-- <p>Working at {{ user.company }}</p> -->
-		<router-link to="/profile">
+		<router-link :to="`/profile/${user.id}`">
 			<button class="alternate-button">View Profile</button>
 		</router-link>
 	</div>
