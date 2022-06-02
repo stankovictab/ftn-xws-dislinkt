@@ -15,7 +15,6 @@ import dislinkt.userclient.UserServiceFeignClient;
 import dislinkt.userservice.Entity.User;
 import dislinkt.userservice.Mapper.UserMapper;
 import dislinkt.userservice.Service.UserService;
-import feign.Response;
 import lombok.RequiredArgsConstructor;
 
 @RestController

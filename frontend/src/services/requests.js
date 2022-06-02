@@ -38,7 +38,7 @@ export async function getFriends() {
 export async function getFeed(userId) {
 	console.log("requests.ts/getFeed()");
 	// TODO: await?
-	await api("5002").post('post/getFeed', userId,
+	api("5002").post('post/getFeed', userId,
 		{
 			headers: { "Content-Type": "plain/text" },
 		}).then(

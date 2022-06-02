@@ -11,37 +11,37 @@
 </template>
 
 <script>
-// import { getFeed } from "../services/requests";
+import { getFeed } from "../services/requests";
 import UserPost from "../components/UserPost.vue";
 import { mapState } from "vuex";
-import { ref } from "vue";
+// import { ref } from "vue";
 export default {
 	name: "PostFeed",
 	components: { UserPost },
-	setup() {
-		var posts = ref(null);
-		axios
-			.post(
-				"http://localhost:5002/post/getFeed",
-				"629783322704f2575da2d8bf",
-				{
-					headers: { "Content-Type": "plain/text" },
-				}
-			)
-			.then(function (response) {
-				console.log(response.data[13].description);
-				posts.value = response.data;
-				// return response.data;
-			});
-		return {
-			posts,
-		};
-	},
-	// data: function () {
+	// setup() {
+	// 	var posts = ref(null);
+	// 	axios
+	// 		.post(
+	// 			"http://localhost:5002/post/getFeed",
+	// 			"629783322704f2575da2d8bf",
+	// 			{
+	// 				headers: { "Content-Type": "plain/text" },
+	// 			}
+	// 		)
+	// 		.then(function (response) {
+	// 			console.log(response.data[13].description);
+	// 			posts.value = response.data;
+	// 			// return response.data;
+	// 		});
 	// 	return {
-	// 		posts: [],
+	// 		posts,
 	// 	};
 	// },
+	data: function () {
+		return {
+			posts: [],
+		};
+	},
 	computed: {
 		...mapState({
 			user: "user",
@@ -49,11 +49,11 @@ export default {
 	},
 	created() {
 		// this.posts = getFeed(this.user.id);
-		// getFeed(this.user.id).then(function (response) {
-		// 	console.log("REPSONES:");
-		// 	console.log(response);
-		// 	this.posts = response;
-		// });
+		getFeed(this.user.id).then(function (response) {
+			console.log("REPSONES:");
+			console.log(response);
+			this.posts = response;
+		});
 	},
 	methods: {
 		applyVote(postId, newVotes) {
@@ -77,7 +77,6 @@ export default {
 	},
 };
 import "../style.css";
-import axios from "axios";
 </script>
 
 <style scoped>
