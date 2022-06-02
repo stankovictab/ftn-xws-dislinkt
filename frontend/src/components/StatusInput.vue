@@ -4,21 +4,83 @@
 			<img :src="require('../assets/' + avatar)" />
 			<h4>{{ user.username }}</h4>
 		</div>
-		<textarea class="comment" placeholder="What's on your mind?"></textarea>
-		<button class="alternate-button">Add Image</button>
+		<textarea
+			class="comment"
+			placeholder="Post Title"
+			v-model="title"
+		></textarea>
+		<textarea
+			class="comment"
+			placeholder="What's on your mind?"
+			v-model="description"
+		></textarea>
+		<div style="display: flex; justify-content: space-between">
+			<button class="alternate-button" @click="addImage()">
+				Add Image
+			</button>
+			<button class="alternate-button" @click="embedLink()">
+				Embed Link
+			</button>
+			<button class="alternate-button" @click="submitPost()">
+				Submit
+			</button>
+		</div>
 	</div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import axios from "axios";
 export default {
 	name: "StatusInput",
 	components: {},
-	methods: {},
+	data() {
+		return {
+			title: "",
+			description: "",
+			embedLink: "",
+		};
+	},
+	methods: {
+		submitPost() {
+			// TODO: Prebaci u profile
+			// STEFAN
+			axios.post(
+				"http://localhost:5002/post/getAll",
+				{
+					userId: this.user.id,
+					userPostsId: this.user.id,
+				},
+				{
+					headers: {
+						"Content-Type": "application/json",
+					},
+				}
+			);
+			axios.post(
+				"http://localhost:5002/post/create",
+				{
+					title: this.title,
+					description: this.description,
+					embedLink: "testembedlink",
+					userId: this.user.id,
+					authorName: this.user.firstName + " " + this.user.lastName,
+				},
+				{
+					headers: {
+						// TODO: Auth
+						// Authorization: "Bearer " + this.$store.state.token
+						"Content-Type": "application/json",
+					},
+				}
+			);
+		},
+	},
 	computed: {
 		...mapState({
 			user: "user",
 		}),
+
 		avatar() {
 			return this.user.avatar || "placeholder.png";
 		},
@@ -35,7 +97,6 @@ import "../style.css";
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
-	align-items: flex-start;
 	gap: 25px;
 }
 .sub-container {
