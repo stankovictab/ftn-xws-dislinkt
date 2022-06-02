@@ -33,6 +33,7 @@ public class PostService {
 			post.setTitle("Post " + i);
 			post.setDescription("Description " + i);
 			post.setUserId(userIds.get(0));
+			post.setAuthorName("firstname0 lastname0");
 			create(postMapper.entityToDto(post));
 		}
 		for (int i = 0; i < 3; i++) {
@@ -40,6 +41,7 @@ public class PostService {
 			post.setTitle("Post " + i);
 			post.setDescription("Description " + i);
 			post.setUserId(userIds.get(1));
+			post.setAuthorName("firstname1 lastname1");
 			create(postMapper.entityToDto(post));
 		}
 		for (int i = 0; i < 3; i++) {
@@ -47,6 +49,7 @@ public class PostService {
 			post.setTitle("Post " + i);
 			post.setDescription("Description " + i);
 			post.setUserId(userIds.get(2));
+			post.setAuthorName("firstname2 lastname2");
 			create(postMapper.entityToDto(post));
 		}
 	}

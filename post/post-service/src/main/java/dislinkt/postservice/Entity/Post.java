@@ -23,6 +23,7 @@ public class Post {
 	private String imageTitle;
 	private String imageId;
 	private String userId;
+	private String authorName;
 
 	private String apiToken;
 
