@@ -31,7 +31,7 @@
 					<img src="../assets/placeholder.png" />
 					<h3>{{ i.firstName }} {{ i.lastName }}</h3>
 					<p style="font-size: 20px">@{{ i.username }}</p>
-					<p>{{ i.workExperience }}</p>
+					<!-- <p>{{ i.workExperience }}</p> -->
 					<button>View Profile</button>
 				</div>
 			</div>
@@ -122,6 +122,7 @@ header button {
 .search-results-child {
 	display: flex;
 	flex-direction: row;
+	flex-wrap: wrap;
 }
 .search-result {
 	height: 250px;
@@ -138,7 +139,7 @@ header button {
 .search-result h3 {
 	color: white;
 	font-weight: 600;
-	font-size: 32px;
+	font-size: 26px;
 }
 .search-result button {
 	width: 200px;

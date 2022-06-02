@@ -2,8 +2,15 @@
 	<article class="user-post">
 		<!-- <router-link to="/profile/id">{{ post.username }}</router-link> -->
 		<p>{{ post.authorName }}</p>
-		<p style="font-weight: 600">{{ post.title }}</p>
-		<p>{{ post.description }}</p>
+		<p style="font-weight: 600; font-size: 25px">
+			{{ post.title }} Lorem ipsum dolor sit amet.
+		</p>
+		<p>
+			{{ post.description }} Lorem ipsum dolor sit amet consectetur,
+			adipisicing elit. Voluptatum animi accusantium dolorum earum,
+			perspiciatis iste explicabo dolorem? Sit debitis totam non aliquam
+			voluptatum molestias! Veniam quos temporibus amet cumque pariatur.
+		</p>
 		<div>
 			<button @click="changeVote(1)" :class="{ active: myVote == 1 }">
 				👍
@@ -95,8 +102,8 @@ import "../style.css";
 
 <style scoped>
 .user-post {
-	border-radius: 5px;
-	background-color: var(--backdrop);
+	border-radius: 20px;
+	background-color: var(--backdrop2);
 	padding: 15px;
 	display: flex;
 	flex-direction: column;
