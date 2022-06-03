@@ -70,3 +70,27 @@ export async function getFriendRequests(userId) {
 		);
 	return data;
 }
+
+export async function approveFollow(ownerId, requesterId) {
+	const data = await api("5001").post('user/approveFollow', {userId: ownerId, followerUserId: requesterId},
+		{
+			headers: { "Content-Type":  "application/json", },
+		}).then(
+			function (response) {
+				return response.data;
+			}
+		);
+	return data;
+}
+
+export async function declineFollow(ownerId, requesterId) {
+	const data = await api("5001").post('user/blockUser', {userId: ownerId, toBlockUserId: requesterId},
+		{
+			headers: { "Content-Type":  "application/json", },
+		}).then(
+			function (response) {
+				return response.data;
+			}
+		);
+	return data;
+}

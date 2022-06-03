@@ -5,6 +5,8 @@
 			v-for="request in friendRequests"
 			:key="request.id"
 			:request="request"
+			@approve="removeFriendRequest"
+			@decline="removeFriendRequest"
 		/>
 	</nav>
 </template>
@@ -29,7 +31,13 @@ export default {
 			this.friendRequests = response;
 		});
 	},
-	methods: {},
+	methods: {
+		removeFriendRequest(requestId) {
+			this.friendRequests = this.friendRequests.filter((request) => {
+				return request.id !== requestId;
+			});
+		},
+	},
 };
 import "../style.css";
 </script>

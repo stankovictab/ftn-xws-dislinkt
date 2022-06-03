@@ -2,17 +2,37 @@
 	<div>
 		<img :src="require('../assets/placeholder.png')" />
 		<router-link to="/profile/id">{{ request.username }}</router-link>
-        <button>Accept</button>
-        <button>Decline</button>
+        <button @click="approveFollow()">Accept</button>
+        <button @click="declineFollow()">Decline</button>
 	</div>
 </template>
 
 <script>
+import { approveFollow, declineFollow } from "../services/requests";
+import { mapState } from "vuex";
+
 export default {
 	name: "FriendRequest",
 	components: {},
 	props: {
 		request: Object,
+	},
+	computed : {
+		...mapState({
+			user: "user",
+		}),
+	},
+	methods: {
+		approveFollow() {
+			approveFollow(this.user.id, this.request.id).then(() => {
+				this.$emit("approve", this.request.id);
+			});
+		},
+		declineFollow() {
+			declineFollow(this.user.id, this.request.id).then(() => {
+				this.$emit("decline", this.request.id);
+			});
+		},
 	},
 };
 import "../style.css";
