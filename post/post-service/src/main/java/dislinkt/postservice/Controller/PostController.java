@@ -35,6 +35,24 @@ public class PostController implements PostServiceFeignClient {
 	}
 
 	@Override
+	public ResponseEntity<ArrayList<PostDTO>> searchOffers(@RequestBody Map<String, String> query) {
+		String queryString = query.get("query");
+		String field = query.get("field");
+
+		if (queryString == null || field == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		ArrayList<PostDTO> postDTOs = postService.searchOffers(queryString, field);
+		if (postDTOs == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(postDTOs, HttpStatus.OK);
+
+	}
+
+	@Override
 	public void generatePosts() {
 		ArrayList<String> userIds = userServiceFeignClient.getAllUserIds().getBody();
 		postService.generatePosts(userIds);

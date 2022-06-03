@@ -25,6 +25,19 @@ public class PostService {
 
 	private final ImageService imageService;
 
+
+	public ArrayList<PostDTO> searchOffers(String query, String field) {
+		ArrayList<Post> posts = postRepository.findAllByJobTitle(query);
+		ArrayList<PostDTO> postDTOs = new ArrayList<>();
+		if (posts != null && posts.size() > 0) {
+			for (Post post: posts) {
+				postDTOs.add(postMapper.entityToDto(post));
+			}
+			return postDTOs;
+		}
+		return null;
+	}
+
 	public void generatePosts(ArrayList<String> userIds) {
 
 		// TODO: Moze ove dve funckije u ./up.sh
