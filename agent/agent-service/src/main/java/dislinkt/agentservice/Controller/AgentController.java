@@ -97,17 +97,17 @@ public class AgentController implements AgentServiceFeignClient {
 			// TODO: 
 			PostDTO postDTO = new PostDTO();
 			postDTO.setTitle("Job Offer");
-			postDTO.setDescription(
-				offer.getJobTitle() + 
-				offer.getJobDescription() +
-				offer.getJobLocation() + 
-				offer.getJobSeniority() + 
-				offer.getJobField() + 
-				offer.getJobTechnologies() + 
-				offer.getJobResponsibilities() + 
-				offer.getJobRequirements() +
-				offer.getJobBonuses()
-			);
+			postDTO.setOfferId(offer.getId());
+			postDTO.setFirmId(offer.getFirmId());
+			postDTO.setJobTitle(offer.getJobTitle());
+			postDTO.setJobDescription(offer.getJobDescription());
+			postDTO.setJobLocation(offer.getJobLocation());
+			postDTO.setJobSeniority(offer.getJobSeniority());
+			postDTO.setJobField(offer.getJobField());
+			postDTO.setJobTechnologies(offer.getJobTechnologies());
+			postDTO.setJobResponsibilities(offer.getJobResponsibilities());
+			postDTO.setJobRequirements(offer.getJobRequirements());
+			
 			postDTO.setEmbedLink("localhost:5003/post/getPost/" + offer.getId());
 			postDTO.setApiToken(agent.getApiToken());
 

@@ -16,6 +16,19 @@ public class PostDTO {
     private String userId;
     private String authorName;
 	private String apiToken;
+
+	private String offerId;
+	private String firmId;
+	private String jobTitle;
+	private String jobDescription;
+	private String jobLocation;
+	private String jobSeniority;
+	private String jobField;
+	private ArrayList<String> jobTechnologies;
+	private ArrayList<String> jobResponsibilities;
+	private ArrayList<String> jobRequirements;
+	private ArrayList<String> jobBonuses;
+
     private int likes;
     private int dislikes;
     private LocalDateTime creationDate;

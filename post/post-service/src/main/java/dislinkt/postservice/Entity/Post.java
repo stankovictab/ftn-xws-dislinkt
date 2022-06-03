@@ -27,6 +27,19 @@ public class Post {
 
 	private String apiToken;
 
+	// offer part
+	private String offerId;
+	private String firmId;
+	private String jobTitle;
+	private String jobDescription;
+	private String jobLocation;
+	private String jobSeniority;
+	private String jobField;
+	private ArrayList<String> jobTechnologies;
+	private ArrayList<String> jobResponsibilities;
+	private ArrayList<String> jobRequirements;
+	private ArrayList<String> jobBonuses;
+
 	private int likes;
 	private int dislikes;
 
