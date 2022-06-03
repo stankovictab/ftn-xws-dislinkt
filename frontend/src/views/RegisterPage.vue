@@ -101,31 +101,43 @@
 			</div>
 			<div class="input-div-large">
 				<label>Work Experience</label>
-				<div class="input-div-list">
-					<input id="workexperience" v-model="workExperience" />
-					<button>+</button>
-				</div>
+				<list-input-item 
+					v-for="(expItem, index) in workExperience" 
+					:key="'workExpItem'+index" 
+					v-model="workExperience[index]"
+					:showPlus="index==workExperience.length-1"
+					@lengthen="workExperience.push('')">
+				</list-input-item>
 			</div>
 			<div class="input-div-large">
 				<label>Studies</label>
-				<div class="input-div-list">
-					<input id="studies" v-model="studies" />
-					<button>+</button>
-				</div>
+				<list-input-item 
+					v-for="(studiesItem, index) in studies" 
+					:key="'studiesItem'+index" 
+					v-model="studies[index]"
+					:showPlus="index==studies.length-1"
+					@lengthen="studies.push('')">
+				</list-input-item>
 			</div>
 			<div class="input-div-large">
 				<label>Skills</label>
-				<div class="input-div-list">
-					<input id="skills" v-model="skills" />
-					<button>+</button>
-				</div>
+				<list-input-item 
+					v-for="(skillsItem, index) in skills" 
+					:key="'skillsItem'+index" 
+					v-model="skills[index]"
+					:showPlus="index==skills.length-1"
+					@lengthen="skills.push('')">
+				</list-input-item>
 			</div>
 			<div class="input-div-large">
 				<label>Interests</label>
-				<div class="input-div-list">
-					<input id="interests" v-model="interests" />
-					<button>+</button>
-				</div>
+				<list-input-item 
+					v-for="(interestsItem, index) in interests" 
+					:key="'interestsItem'+index" 
+					v-model="interests[index]"
+					:showPlus="index==interests.length-1"
+					@lengthen="interests.push('')">
+				</list-input-item>
 			</div>
 			<h5>Privacy</h5>
 			<div id="privacy-radio-buttons" class="input-div-large">
@@ -141,9 +153,13 @@
 <script>
 import { ref } from "vue";
 import axios from "axios";
+import ListInputItem from "../components/ListInputItem.vue";
+
 export default {
 	name: "RegisterPage",
-	components: {},
+	components: {
+		ListInputItem,
+	},
 	setup() {
 		localStorage.clear();
 
@@ -156,10 +172,10 @@ export default {
 		var gender = ref(null);
 		var dateOfBirth = ref(null);
 		var biography = ref(null);
-		var workExperience = ref(null);
-		var studies = ref(null);
-		var skills = ref(null);
-		var interests = ref(null);
+		var workExperience = ref(['']);
+		var studies = ref(['']);
+		var skills = ref(['']);
+		var interests = ref(['']);
 		var privateAccount = ref(false);
 
 		var usernameCheck = ref(true);
@@ -224,10 +240,10 @@ export default {
 				this.gender == null ||
 				this.dateOfBirth == null ||
 				this.biography == null ||
-				this.workExperience == null ||
-				this.studies == null ||
-				this.skills == null ||
-				this.interests == null
+				!this.workExperience ||
+				!this.studies ||
+				!this.skills  ||
+				!this.interests
 			) {
 				alert("All fields need to be filled, try again.");
 			} else if (!this.checkEmail(this.email)) {
@@ -249,10 +265,10 @@ export default {
 					gender: this.gender,
 					dateOfBirth: this.dateOfBirth,
 					biography: this.biography,
-					workExperience: [this.workExperience],
-					studies: [this.studies],
-					skills: [this.skills],
-					interests: [this.interests],
+					workExperience: this.workExperience,
+					studies: this.studies,
+					skills: this.skills,
+					interests: this.interests,
 					privateAccount: this.privateAccount,
 				};
 
