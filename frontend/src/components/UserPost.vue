@@ -3,13 +3,10 @@
 		<!-- <router-link to="/profile/id">{{ post.username }}</router-link> -->
 		<p>{{ post.authorName }}</p>
 		<p style="font-weight: 600; font-size: 25px">
-			{{ post.title }} Lorem ipsum dolor sit amet.
+			{{ post.title }}
 		</p>
 		<p>
-			{{ post.description }} Lorem ipsum dolor sit amet consectetur,
-			adipisicing elit. Voluptatum animi accusantium dolorum earum,
-			perspiciatis iste explicabo dolorem? Sit debitis totam non aliquam
-			voluptatum molestias! Veniam quos temporibus amet cumque pariatur.
+			{{ post.description }}
 		</p>
 		<div>
 			<button @click="changeVote(1)" :class="{ active: myVote == 1 }">

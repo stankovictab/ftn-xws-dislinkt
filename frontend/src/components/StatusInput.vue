@@ -14,11 +14,21 @@
 			placeholder="What's on your mind?"
 			v-model="description"
 		></textarea>
+		<textarea
+			class="comment"
+			placeholder="Embed link here."
+			v-model="embedLink"
+			v-if="this.embedLinkBool == true"
+		></textarea>
 		<div style="display: flex; justify-content: space-between">
 			<button class="alternate-button" @click="addImage()">
 				Add Image
 			</button>
-			<button class="alternate-button" @click="embedLink()">
+			<button
+				class="alternate-button"
+				@click="embedLinkEnable()"
+				v-if="this.embedLinkBool == false"
+			>
 				Embed Link
 			</button>
 			<button class="alternate-button" @click="submitPost()">
@@ -38,42 +48,38 @@ export default {
 		return {
 			title: "",
 			description: "",
+			embedLinkBool: false,
 			embedLink: "",
 		};
 	},
 	methods: {
+		embedLinkEnable() {
+			this.embedLinkBool = true;
+		},
 		submitPost() {
-			// TODO: Prebaci u profile
-			// STEFAN
-			axios.post(
-				"http://localhost:5002/post/getAll",
-				{
-					userId: this.user.id,
-					userPostsId: this.user.id,
-				},
-				{
-					headers: {
-						"Content-Type": "application/json",
+			axios
+				.post(
+					"http://localhost:5002/post/create",
+					{
+						title: this.title,
+						description: this.description,
+						embedLink: this.embedLink,
+						userId: this.user.id,
+						authorName:
+							this.user.firstName + " " + this.user.lastName,
 					},
-				}
-			);
-			axios.post(
-				"http://localhost:5002/post/create",
-				{
-					title: this.title,
-					description: this.description,
-					embedLink: "testembedlink",
-					userId: this.user.id,
-					authorName: this.user.firstName + " " + this.user.lastName,
-				},
-				{
-					headers: {
-						// TODO: Auth
-						// Authorization: "Bearer " + this.$store.state.token
-						"Content-Type": "application/json",
-					},
-				}
-			);
+					{
+						headers: {
+							// TODO: Auth
+							// Authorization: "Bearer " + this.$store.state.token
+							"Content-Type": "application/json",
+						},
+					}
+				)
+				.then((response) => {
+					console.log(response);
+					alert("Post created!");
+				});
 		},
 	},
 	computed: {

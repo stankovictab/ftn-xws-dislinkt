@@ -41,19 +41,35 @@
 			</div>
 			<div>
 				<h3>Work Experience</h3>
-				<p>{{ user.workExperience }}</p>
+				<div style="display: flex; flex-direction: column; gap: 0px">
+					<p v-for="i in user.workExperience" :key="i">
+						{{ i }}
+					</p>
+				</div>
 			</div>
 			<div>
 				<h3>Studies</h3>
-				<p>{{ user.studies }}</p>
+				<div style="display: flex; flex-direction: column; gap: 0px">
+					<p v-for="i in user.studies" :key="i">
+						{{ i }}
+					</p>
+				</div>
 			</div>
 			<div>
 				<h3>Skills</h3>
-				<p>{{ user.skills }}</p>
+				<div style="display: flex; flex-direction: column; gap: 0px">
+					<p v-for="i in user.skills" :key="i">
+						{{ i }}
+					</p>
+				</div>
 			</div>
 			<div>
 				<h3>Interests</h3>
-				<p>{{ user.interests }}</p>
+				<div style="display: flex; flex-direction: column; gap: 0px">
+					<p v-for="i in user.interests" :key="i">
+						{{ i }}
+					</p>
+				</div>
 			</div>
 		</div>
 	</header>
@@ -86,7 +102,8 @@ header {
 }
 .header-head {
 	display: flex;
-	gap: 60px;
+	gap: 20px;
+	justify-content: space-between;
 	align-items: center;
 }
 .header-body {
@@ -108,17 +125,17 @@ img {
 }
 p {
 	color: white;
-	font-size: 30px;
+	font-size: 26px;
 	text-align: right;
 }
 h2 {
 	color: white;
-	font-size: 36px;
+	font-size: 34px;
 	font-weight: 600;
 }
 h3 {
 	color: var(--text1);
-	font-size: 30px;
+	font-size: 26px;
 	font-weight: 600;
 	text-align: left;
 }

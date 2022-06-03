@@ -6,9 +6,9 @@
 			<input
 				class="search-input"
 				placeholder="Search Dislinkt"
-				@keyup.enter="search()"
+				v-model="inPlaceSearchTerm"
+				@keyup.enter="search(inPlaceSearchTerm)"
 			/>
-			<!-- TODO: Add v-model to input -->
 			<button @click="logout">
 				{{ isLoggedIn ? "Log Out" : "Go Back" }}
 			</button>
@@ -16,7 +16,10 @@
 		<div class="search-results-parent">
 			<p>
 				Search results for
-				<span style="color: var(--yellow3)">{{ searchTerm }}</span>
+				<!-- <span style="color: var(--yellow3)">{{ searchTerm }}</span> -->
+				<span style="color: var(--yellow3)">{{
+					searchTermDisplay
+				}}</span>
 			</p>
 			<!-- TODO: Add v-if to list -->
 			<p
@@ -49,9 +52,25 @@ export default {
 		searchTerm: String,
 	},
 	methods: {
-		search() {
-			// TODO: Add search functionality
-			alert("TODO");
+		search(searchBy) {
+			var me = this;
+			this.searchResults = null;
+			this.searchTermDisplay = searchBy;
+			// TODO: Search only by searchTerm, without splitting?
+			axios
+				.post(
+					"http://localhost:5001/user/find",
+					{
+						firstName: searchBy.split(" ")[0],
+						lastName: searchBy.split(" ")[1],
+					},
+					{
+						headers: { "Content-Type": "application/json" },
+					}
+				)
+				.then(function (response) {
+					me.searchResults = response.data;
+				});
 		},
 		logout() {
 			this.$store.commit("setToken", "");
@@ -60,33 +79,14 @@ export default {
 		},
 	},
 	data() {
-		// var searchResults = ref(null);
 		return {
+			searchTermDisplay: "",
+			inPlaceSearchTerm: this.searchTerm,
 			searchResults: Object,
 		};
 	},
 	mounted() {
-		var me = this;
-		this.searchResults = null;
-		// TODO: Can we call search() here?
-		// TODO: Search only by searchTerm
-		axios
-			.post(
-				"http://localhost:5001/user/find",
-				{
-					firstName: this.searchTerm.split(" ")[0],
-					lastName: this.searchTerm.split(" ")[1],
-				},
-				{
-					headers: { "Content-Type": "application/json" },
-				}
-			)
-			.then(function (response) {
-				// TODO: Add search results into a list
-				console.log(response.data);
-				console.log(response.data[0].username);
-				me.searchResults = response.data;
-			});
+		this.search(this.searchTerm);
 	},
 };
 import "../style.css";
@@ -123,6 +123,7 @@ header button {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
+	justify-content: center;
 }
 .search-result {
 	height: 250px;

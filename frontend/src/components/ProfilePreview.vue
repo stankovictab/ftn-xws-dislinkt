@@ -37,7 +37,7 @@ div {
 	flex-direction: column;
 	align-items: center;
 	height: 200px;
-	width: 330px;
+	/* width: 330px; */
 	justify-content: space-around;
 }
 img {

@@ -101,42 +101,46 @@
 			</div>
 			<div class="input-div-large">
 				<label>Work Experience</label>
-				<list-input-item 
-					v-for="(expItem, index) in workExperience" 
-					:key="'workExpItem'+index" 
+				<list-input-item
+					v-for="(expItem, index) in workExperience"
+					:key="'workExpItem' + index"
 					v-model="workExperience[index]"
-					:showPlus="index==workExperience.length-1"
-					@lengthen="workExperience.push('')">
+					:showPlus="index == workExperience.length - 1"
+					@lengthen="workExperience.push('')"
+				>
 				</list-input-item>
 			</div>
 			<div class="input-div-large">
 				<label>Studies</label>
-				<list-input-item 
-					v-for="(studiesItem, index) in studies" 
-					:key="'studiesItem'+index" 
+				<list-input-item
+					v-for="(studiesItem, index) in studies"
+					:key="'studiesItem' + index"
 					v-model="studies[index]"
-					:showPlus="index==studies.length-1"
-					@lengthen="studies.push('')">
+					:showPlus="index == studies.length - 1"
+					@lengthen="studies.push('')"
+				>
 				</list-input-item>
 			</div>
 			<div class="input-div-large">
 				<label>Skills</label>
-				<list-input-item 
-					v-for="(skillsItem, index) in skills" 
-					:key="'skillsItem'+index" 
+				<list-input-item
+					v-for="(skillsItem, index) in skills"
+					:key="'skillsItem' + index"
 					v-model="skills[index]"
-					:showPlus="index==skills.length-1"
-					@lengthen="skills.push('')">
+					:showPlus="index == skills.length - 1"
+					@lengthen="skills.push('')"
+				>
 				</list-input-item>
 			</div>
 			<div class="input-div-large">
 				<label>Interests</label>
-				<list-input-item 
-					v-for="(interestsItem, index) in interests" 
-					:key="'interestsItem'+index" 
+				<list-input-item
+					v-for="(interestsItem, index) in interests"
+					:key="'interestsItem' + index"
 					v-model="interests[index]"
-					:showPlus="index==interests.length-1"
-					@lengthen="interests.push('')">
+					:showPlus="index == interests.length - 1"
+					@lengthen="interests.push('')"
+				>
 				</list-input-item>
 			</div>
 			<h5>Privacy</h5>
@@ -172,10 +176,10 @@ export default {
 		var gender = ref(null);
 		var dateOfBirth = ref(null);
 		var biography = ref(null);
-		var workExperience = ref(['']);
-		var studies = ref(['']);
-		var skills = ref(['']);
-		var interests = ref(['']);
+		var workExperience = ref([""]);
+		var studies = ref([""]);
+		var skills = ref([""]);
+		var interests = ref([""]);
 		var privateAccount = ref(false);
 
 		var usernameCheck = ref(true);
@@ -242,7 +246,7 @@ export default {
 				this.biography == null ||
 				!this.workExperience ||
 				!this.studies ||
-				!this.skills  ||
+				!this.skills ||
 				!this.interests
 			) {
 				alert("All fields need to be filled, try again.");
@@ -277,9 +281,9 @@ export default {
 				axios
 					.post("http://localhost:5001/user/register/", newUser)
 					.then(function (response) {
-						// TODO: Redirect to homepage of the registered user
-						// TODO: Don't return password hash (Marko)
-						// TODO: Add Role to user (Marko)
+						alert(
+							"Welcome to Dislinkt, " + newUser.firstName + "!"
+						);
 						response.data.role = "Client";
 						me.$store.commit("setToken", response.data.id);
 						me.$store.commit("setUser", response.data);
