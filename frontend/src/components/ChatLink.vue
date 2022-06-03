@@ -1,7 +1,7 @@
 <template>
-	<div>
+	<div @click="todo()">
 		<img :src="require('../assets/' + friend.avatar)" />
-		<router-link to="/profile/id">{{ friend.username }}</router-link>
+		<a>{{ friend.username }}</a>
 	</div>
 </template>
 
@@ -12,16 +12,28 @@ export default {
 	props: {
 		friend: Object,
 	},
+	methods: {
+		todo() {
+			alert("To be implemented!");
+		},
+	},
 };
 import "../style.css";
 </script>
 
 <style scoped>
 div {
+	background-color: var(--backdrop3);
+	border-radius: 10px;
+	padding: 10px;
 	display: flex;
 	align-items: center;
 	margin: 5px 0px;
 	width: 100%;
+}
+div:hover {
+	cursor: pointer;
+	background-color: var(--backdrop);
 }
 img {
 	width: 50px;

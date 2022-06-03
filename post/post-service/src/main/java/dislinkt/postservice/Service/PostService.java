@@ -1,15 +1,12 @@
 package dislinkt.postservice.Service;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import dislinkt.postclient.PostDTO;
-import dislinkt.postservice.Entity.Image;
 import dislinkt.postservice.Entity.Post;
 import dislinkt.postservice.Mapper.PostMapper;
 import dislinkt.postservice.Repository.PostRepository;
@@ -23,7 +20,7 @@ public class PostService {
 
 	private final PostMapper postMapper;
 
-	private final ImageService imageService;
+	// private final ImageService imageService;
 
 	public void generatePosts(ArrayList<String> userIds) {
 

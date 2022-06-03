@@ -101,34 +101,31 @@
 			</div>
 			<div class="input-div-large">
 				<label>Work Experience</label>
-				<textarea
-					id="workexperience"
-					cols="20"
-					rows="3"
-					v-model="workExperience"
-				></textarea>
+				<div class="input-div-list">
+					<input id="workexperience" v-model="workExperience" />
+					<button>+</button>
+				</div>
 			</div>
 			<div class="input-div-large">
 				<label>Studies</label>
-				<input id="studies" v-model="studies" />
+				<div class="input-div-list">
+					<input id="studies" v-model="studies" />
+					<button>+</button>
+				</div>
 			</div>
 			<div class="input-div-large">
 				<label>Skills</label>
-				<textarea
-					id="skills"
-					cols="20"
-					rows="3"
-					v-model="skills"
-				></textarea>
+				<div class="input-div-list">
+					<input id="skills" v-model="skills" />
+					<button>+</button>
+				</div>
 			</div>
 			<div class="input-div-large">
 				<label>Interests</label>
-				<textarea
-					id="interests"
-					cols="20"
-					rows="3"
-					v-model="interests"
-				></textarea>
+				<div class="input-div-list">
+					<input id="interests" v-model="interests" />
+					<button>+</button>
+				</div>
 			</div>
 			<h5>Privacy</h5>
 			<div id="privacy-radio-buttons" class="input-div-large">
@@ -241,8 +238,7 @@ export default {
 			} else if (this.usernameCheck == false) {
 				alert("Username already exists, please choose another one.");
 				return;
-			} else 
-			{	
+			} else {
 				var newUser = {
 					username: this.username,
 					passwordInput: this.passwordInput,
@@ -253,16 +249,17 @@ export default {
 					gender: this.gender,
 					dateOfBirth: this.dateOfBirth,
 					biography: this.biography,
-					workExperience: this.workExperience,
-					studies: this.studies,
-					skills: this.skills,
-					interests: this.interests,
+					workExperience: [this.workExperience],
+					studies: [this.studies],
+					skills: [this.skills],
+					interests: [this.interests],
 					privateAccount: this.privateAccount,
 				};
 
-				const me = this
+				const me = this;
 
-				axios.post("http://localhost:5001/user/register/", newUser)
+				axios
+					.post("http://localhost:5001/user/register/", newUser)
 					.then(function (response) {
 						// TODO: Redirect to homepage of the registered user
 						// TODO: Don't return password hash (Marko)
@@ -275,7 +272,6 @@ export default {
 			}
 		},
 	},
-	
 };
 import "../style.css";
 </script>
@@ -297,6 +293,17 @@ import "../style.css";
 .input-div-large input {
 	width: 97.3%;
 }
+.input-div-list {
+	display: flex;
+	align-items: center;
+}
+.input-div-list button {
+	width: 35px;
+	height: 36px;
+	margin-left: 10px;
+	margin-top: 0px;
+	font-size: 26px;
+}
 .checkbox-div {
 	display: flex;
 	flex-direction: row;
@@ -307,13 +314,14 @@ import "../style.css";
 .checkbox-div input {
 	width: 18px;
 }
+label {
+	margin-bottom: 5px;
+}
 input {
-	margin-top: 2px;
 	height: 32px;
 	width: 280px;
 }
 select {
-	margin-top: 2px;
 	height: 32px;
 	width: 300px;
 }
