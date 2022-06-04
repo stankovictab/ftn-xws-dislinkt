@@ -25,7 +25,7 @@ printf '\n'
 mvn clean install -DskipTests
 
 cd ..
-cd agent
+cd agent/backend
 printf '\n'
 echo "-------------------------------------------------------------------------------"
 echo "----------------------------INSTALLING AGENT-----------------------------------"
