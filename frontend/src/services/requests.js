@@ -94,3 +94,23 @@ export async function declineFollow(ownerId, requesterId) {
 		);
 	return data;
 }
+
+export async function ratePost(postId, raterId, rating) {
+
+	rating = rating === 1 ? 'like' : 'unlike';
+
+	const data = await api("5002").post(`post/${rating}`, 
+		{
+			userId: raterId, 
+			postId
+		},
+		{
+			headers: { "Content-Type":  "application/json", },
+		}).then(
+			function (response) {
+				console.log(response)
+				return response.data;
+			}
+		);
+	return data;
+}

@@ -9,16 +9,16 @@
 			{{ post.description }}
 		</p>
 		<div>
-			<button @click="changeVote(1)" :class="{ active: myVote == 1 }">
+			<button @click="changeVote(1)" :disabled="liked" :class="{ active: liked }" :style="{ cursor: liked ? 'not-allowed' : 'pointer' }">
 				👍
 			</button>
 			{{ post.likes }}
-			<button @click="changeVote(-1)" :class="{ active: myVote == -1 }">
+			<button @click="changeVote(-1)" :disabled="disliked" :class="{ active: disliked }" :style="{ cursor: disliked ? 'not-allowed' : 'pointer' }">
 				👎
 			</button>
-			{{ post.likes }}
+			{{ post.dislikes}}
 		</div>
-		<div class="comment-container">
+		<!-- <div class="comment-container">
 			<comment-on-post
 				v-for="comment in post.comments"
 				:key="comment.id"
@@ -36,13 +36,14 @@
 		<div class="comment-control">
 			{{ post.comments?.length }}
 			<button @click="toggleCommenting">💬</button>
-		</div>
+		</div> -->
 	</article>
 </template>
 
 <script>
 // import CommentOnPost from './CommentOnPost.vue';
 import { mapState } from "vuex";
+import { ratePost } from "../services/requests";
 
 export default {
 	name: "UserPost",
@@ -54,7 +55,6 @@ export default {
 	},
 	data: function () {
 		return {
-			myVote: 0, // treba da se dobije sa servera
 			isCommenting: false,
 			commentText: "",
 		};
@@ -66,19 +66,26 @@ export default {
 		avatar() {
 			return this.user.avatar || "placeholder.png";
 		},
-	},
-	watch: {
-		myVote: function (newVote, oldVote) {
-			this.$emit(
-				"vote",
-				this.post.id,
-				this.post.votes + newVote - oldVote
-			);
+		liked(){
+			return this.myVote === 1;
 		},
+		disliked(){
+			return this.myVote === -1;
+		},
+		myVote(){
+			if(this.post.likedUserIds && this.post.likedUserIds.includes(this.user.id)) {
+			return 1;
+			} else if(this.post.dislikedUserIds && this.post.dislikedUserIds.includes(this.user.id)) {
+			return -1;
+			} else return 0;
+		}
 	},
 	methods: {
 		changeVote(newVote) {
-			this.myVote = this.myVote == newVote ? 0 : newVote;
+			ratePost(this.post.id, this.user.id, newVote).then(response => {
+				console.log('UserPost.vue', response)
+				this.$emit('voted')
+			});
 		},
 		postComment() {
 			this.$emit("post-comment", this.post.id, this.commentText);

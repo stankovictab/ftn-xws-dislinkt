@@ -25,7 +25,7 @@
 		</section>
 		<main>
 			<profile-info :userId="profileOwnerId"></profile-info>
-			<post-feed :posts="posts"></post-feed>
+			<post-feed :posts="posts" @reload-posts="reloadPosts()"></post-feed>
 		</main>
 		<section>
 			<friend-requests
@@ -91,15 +91,19 @@ export default {
 					}
 				);
 		},
+		reloadPosts(){
+			getOwnPosts(this.profileOwnerId).then(response => {
+				this.posts = response;
+				console.log(this.posts )
+			});
+		}
 	},
 	mounted() {
 		if (this.user.apiToken != null) {
 			this.generateApiTokenBoolean = true;
 		}
-		getOwnPosts(this.profileOwnerId).then((response) => {
-			this.posts = response;
-		});
-	},
+		this.reloadPosts()
+	}
 };
 import "../style.css";
 </script>

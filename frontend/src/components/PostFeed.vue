@@ -4,8 +4,8 @@
 			v-for="post in posts"
 			:key="post.id"
 			:post="post"
-			@vote="applyVote"
 			@post-comment="postComment"
+			@voted="$emit('reload-posts')"
 		/>
 	</div>
 </template>
@@ -13,7 +13,7 @@
 <script>
 import UserPost from "../components/UserPost.vue";
 import { mapState } from "vuex";
-// import { ref } from "vue";
+
 export default {
 	name: "PostFeed",
 	components: { UserPost },
@@ -28,10 +28,6 @@ export default {
 	},
 	
 	methods: {
-		applyVote(postId, newVotes) {
-			this.posts.find((post) => post.id === postId).votes = newVotes;
-			// pozivamo metodu updatePost() iz services/requests.js
-		},
 		randomInt() {
 			return Math.floor(Math.random() * 10);
 		},
