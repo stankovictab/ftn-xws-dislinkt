@@ -19,7 +19,7 @@ public interface PostServiceFeignClient {
 	@GetMapping(value = "/actuator/info")
 	public String home();
 
-	@PostMapping("/posts/searchOffers") 
+	@PostMapping("/post/searchOffers") 
 	public ResponseEntity<ArrayList<PostDTO>> searchOffers(@RequestBody Map<String, String> query);
 
 	@PostMapping(value = "/post/generatePosts")
