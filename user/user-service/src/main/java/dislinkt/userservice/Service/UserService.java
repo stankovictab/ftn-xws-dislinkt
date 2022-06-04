@@ -38,9 +38,11 @@ public class UserService {
     }
 
     public String generateAPIToken(String userId) {
-        User user = userRepository.findById(userId).orElse(null);
+        System.out.println("Entered service...");
+        User user = userRepository.getById(userId);
 
         if (user == null) {
+            System.out.println("User not found when generating API token.");
             return null;
         }
         String upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -58,8 +60,10 @@ public class UserService {
         String token = sb.toString();
         user.setApiToken(token);
         if (userRepository.save(user) != null) {
+            System.out.println("UserService.generateAPIToken() : " + token);
             return token;
         } else {
+            System.out.println("Didn't generate token.");
             return null;
         }
     }
@@ -208,7 +212,7 @@ public class UserService {
     }
 
     public ArrayList<UserDTO> getConnectionRequestUserIds(String userId) {
-        User user = userRepository.findById(userId).get();
+        User user = userRepository.getById(userId);
         if (user.getConnectionRequestUserIds() != null) {
             ArrayList<UserDTO> users = new ArrayList<>();
             for (String id : user.getConnectionRequestUserIds()) {

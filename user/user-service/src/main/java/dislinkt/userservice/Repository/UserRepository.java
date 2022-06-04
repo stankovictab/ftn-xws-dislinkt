@@ -23,11 +23,11 @@ public interface UserRepository extends MongoRepository<User, String> {
     ArrayList<User> findByLastName(String lastName);
 
     Optional<User> findById(String id);
-    
+
     ArrayList<String> getConnectionUserIdsById(String id);
 
     User findByApiToken(String apiToken);
 
-    
-    
+    User getById(String id);
+
 }
