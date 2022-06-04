@@ -46,7 +46,6 @@ public class AgentController implements AgentServiceFeignClient {
 
 	private final PostServiceFeignClient postServiceFeignClient;
 
-
 	@GetMapping(value = "/actuator/info")
 	@Override
 	public String home() {
@@ -61,6 +60,7 @@ public class AgentController implements AgentServiceFeignClient {
 
 	@Override
 	public ResponseEntity<FirmDTO> setFirmApiToken(Map<String, String> json) {
+		System.out.println("Usao");
 		String firmId = json.get("firmId");
 		String apiToken = json.get("apiToken");
 
@@ -88,7 +88,7 @@ public class AgentController implements AgentServiceFeignClient {
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
-	
+
 	@Override
 	public void setAdmin() {
 		agentService.setAdmin("agent3");
@@ -103,24 +103,23 @@ public class AgentController implements AgentServiceFeignClient {
 				return new ResponseEntity<>(commentDTO2, HttpStatus.OK);
 			}
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		else {
+		} else {
 			System.out.println("Not a regular user");
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 	}
 
-
 	@Override
 	public ResponseEntity<OfferDTO> createOffer(@RequestBody OfferDTO offerDTO) {
 		Firm firm = firmService.getFirm(offerDTO.getFirmId());
-		// Agent agent = agentService.getAgent(firmService.getFirm(offerDTO.getFirmId()).getOwnerId());
+		// Agent agent =
+		// agentService.getAgent(firmService.getFirm(offerDTO.getFirmId()).getOwnerId());
 		OfferDTO offer = offerService.createOffer(offerDTO, firm);
 		if (offer == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		if (offer.getDislinktShare()) {
-			// TODO: 
+			// TODO:
 			PostDTO postDTO = new PostDTO();
 			postDTO.setTitle("Job Offer");
 			postDTO.setOfferId(offer.getId());
@@ -133,7 +132,7 @@ public class AgentController implements AgentServiceFeignClient {
 			postDTO.setJobTechnologies(offer.getJobTechnologies());
 			postDTO.setJobResponsibilities(offer.getJobResponsibilities());
 			postDTO.setJobRequirements(offer.getJobRequirements());
-			
+			postDTO.setJobBonuses(offer.getJobBonuses());
 			postDTO.setEmbedLink("localhost:5003/post/getPost/" + offer.getId());
 			postDTO.setApiToken(firm.getApiToken());
 
@@ -143,7 +142,7 @@ public class AgentController implements AgentServiceFeignClient {
 		return new ResponseEntity<>(offer, HttpStatus.OK);
 	}
 
-	@Override 
+	@Override
 	public ResponseEntity<FirmDTO> updateFirm(@RequestBody FirmDTO firmDTO) {
 		FirmDTO firm = firmService.updateFirm(firmDTO);
 		if (firm == null) {
@@ -164,15 +163,12 @@ public class AgentController implements AgentServiceFeignClient {
 			Boolean result2 = agentService.setOwner(result);
 			if (result2 == null) {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			}
-			else if (result2) {
+			} else if (result2) {
 				return new ResponseEntity<>(true, HttpStatus.OK);
-			}
-			else {
+			} else {
 				return new ResponseEntity<>(false, HttpStatus.INSUFFICIENT_STORAGE);
 			}
-		}
-		else {
+		} else {
 			System.out.println("You are not an admin");
 			return new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
 		}
@@ -187,7 +183,6 @@ public class AgentController implements AgentServiceFeignClient {
 		}
 		return new ResponseEntity<>(firmDTOs, HttpStatus.OK);
 	}
-
 
 	@Override
 	public ResponseEntity<FirmDTO> firmRegister(@RequestBody FirmDTO firmDTO) {
@@ -216,7 +211,7 @@ public class AgentController implements AgentServiceFeignClient {
 		AgentDTO agentDTO = agentMapper.entityToDto(agent);
 		return new ResponseEntity<>(agentDTO, HttpStatus.OK);
 	}
-	
+
 	@Override
 	public ResponseEntity<AgentDTO> agentRegister(@RequestBody AgentDTO incomingAgent) {
 		Agent agent = agentService.register(incomingAgent);
@@ -226,5 +221,5 @@ public class AgentController implements AgentServiceFeignClient {
 		AgentDTO agentDTO = agentMapper.entityToDto(agent);
 		return new ResponseEntity<>(agentDTO, HttpStatus.OK);
 	}
-	
+
 }

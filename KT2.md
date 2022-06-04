@@ -135,18 +135,19 @@ Payload: OfferDTO object
 ```
 localhost:5001/user/generateApiToken
 ```
+For the sake of testing, pick an id of a public user.\
 Payload: UserId 
 ```plain-text
 userId
 ```
 ## Agent setting the User generated API Token
 ```
-localhost:5003/agent/setApiToken
+localhost:5003/firm/setApiToken
 ```
 Payload: json object
 ```JSON
 {
-    "agentId": "id of the agent",
+    "firmId": "id of the firm",
     "apiToken": "user generated api token"
 }
 ```

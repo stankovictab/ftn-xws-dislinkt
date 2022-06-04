@@ -11,6 +11,6 @@ services:
             - 5002:5002
 
     agent-service:
-        build: ./agent/agent-service/
+        build: ./agent/backend/agent-service/
         ports:
             - 5003:5003
