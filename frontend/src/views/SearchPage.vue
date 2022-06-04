@@ -1,22 +1,9 @@
 <template>
-	<div>
+	<div style="display: flex">
 		<!-- TODO: Remove header and css if implemented in App.vue -->
-		<header>
-			<p class="mini-logo">Dislinkt</p>
-			<input
-				class="search-input"
-				placeholder="Search Dislinkt"
-				v-model="inPlaceSearchTerm"
-				@keyup.enter="search(inPlaceSearchTerm)"
-			/>
-			<button @click="logout">
-				{{ isLoggedIn ? "Log Out" : "Go Back" }}
-			</button>
-		</header>
 		<div class="search-results-parent">
 			<p>
-				Search results for
-				<!-- <span style="color: var(--yellow3)">{{ searchTerm }}</span> -->
+				Users matching search
 				<span style="color: var(--yellow3)">{{
 					searchTermDisplay
 				}}</span>
@@ -24,12 +11,12 @@
 			<!-- TODO: Add v-if to list -->
 			<p
 				style="margin-top: 50px; color: var(--text2)"
-				v-if="searchResults == null"
+				v-if="!userSearchResults"
 			>
 				No results found.
 			</p>
 			<div class="search-results-child">
-				<div class="search-result" v-for="i in searchResults" :key="i">
+				<div class="search-result" v-for="i in userSearchResults" :key="i">
 					<!-- <p>{{ i }}</p> -->
 					<img src="../assets/placeholder.png" />
 					<h3>{{ i.firstName }} {{ i.lastName }}</h3>
@@ -39,12 +26,32 @@
 				</div>
 			</div>
 		</div>
+		<div class="search-results-parent" v-if="isLoggedIn">
+			<p>
+				Posts matching search
+				<span style="color: var(--yellow3)">{{
+					searchTermDisplay
+				}}</span>
+			</p>
+			<p
+				style="margin-top: 50px; color: var(--text2)"
+				v-if="!postsSearchResults"
+			>
+				No results found.
+			</p>
+			<div class="search-results-child">
+				<div class="search-result" v-for="i in postsSearchResults" :key="i">
+					<h3>{{ i.title }} {{ i.description }}</h3>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script>
 // import { ref } from "@vue/reactivity";
 import axios from "axios";
+import { mapGetters } from "vuex";
 
 export default {
 	name: "SearchPage",
@@ -54,7 +61,7 @@ export default {
 	methods: {
 		search(searchBy) {
 			var me = this;
-			this.searchResults = null;
+			this.userSearchResults = null;
 			this.searchTermDisplay = searchBy;
 			// TODO: Search only by searchTerm, without splitting?
 			axios
@@ -69,8 +76,24 @@ export default {
 					}
 				)
 				.then(function (response) {
-					me.searchResults = response.data;
+					me.userSearchResults = response.data;
 				});
+			if(this.isLoggedIn){
+				axios
+					.post(
+						"http://localhost:5002/post/searchOffers",
+						{
+							query: searchBy,
+							field: ""
+						},
+						{
+							headers: { "Content-Type": "application/json" },
+						}
+					)
+					.then(function (response) {
+						me.postSearchResults = response.data;
+					});
+			}
 		},
 		logout() {
 			this.$store.commit("setToken", "");
@@ -82,8 +105,12 @@ export default {
 		return {
 			searchTermDisplay: "",
 			inPlaceSearchTerm: this.searchTerm,
-			searchResults: Object,
+			userSearchResults: null,
+			postsSearchResults: null,
 		};
+	},
+	computed: {
+		...mapGetters(["isLoggedIn", "hasRole"]),
 	},
 	mounted() {
 		this.search(this.searchTerm);
@@ -115,6 +142,11 @@ header button {
 	display: flex;
 	align-items: center;
 	flex-direction: column;
+
+	min-height: 0px;
+	min-width: 0px;
+	flex-basis: 50%;
+	flex-grow: 1;
 }
 .search-results-parent p {
 	color: var(--text1);

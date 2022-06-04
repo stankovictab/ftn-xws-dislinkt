@@ -75,6 +75,7 @@ export default {
 	},
 	methods: {
 		search() {
+			this.guestMode();
 			this.$router.push({
 				name: "Search",
 				params: {
