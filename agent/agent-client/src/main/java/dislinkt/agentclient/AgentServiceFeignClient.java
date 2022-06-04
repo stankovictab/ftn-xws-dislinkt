@@ -19,6 +19,13 @@ public interface AgentServiceFeignClient {
 	@GetMapping(value = "/actuator/info")
 	public String home(); 
 
+
+	@PostMapping
+	public ResponseEntity<ArrayList<FirmDTO>> searchFirms(@RequestBody String query);
+
+	@PostMapping("/firm/setApiToken")
+	public ResponseEntity<FirmDTO> setFirmApiToken(@RequestBody Map<String, String> json);
+
 	@PostMapping("/agent/setApiToken")
 	public ResponseEntity<AgentDTO> setApiToken(@RequestBody Map<String, String> json);
 

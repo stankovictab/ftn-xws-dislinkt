@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 
 import dislinkt.agentclient.OfferDTO;
-import dislinkt.agentservice.Entity.Agent;
+import dislinkt.agentservice.Entity.Firm;
 import dislinkt.agentservice.Entity.Offer;
 import dislinkt.agentservice.Mapper.OfferMapper;
 import dislinkt.agentservice.Repository.OfferRepository;
@@ -20,7 +20,7 @@ public class OfferService {
     private final OfferMapper offerMapper;
 
 
-    public OfferDTO createOffer(OfferDTO offerDTO, Agent agent) {
+    public OfferDTO createOffer(OfferDTO offerDTO, Firm firm) {
         Offer offer = offerMapper.dtoToEntity(offerDTO);
         offer.setCreationDate(LocalDateTime.now());
 
@@ -32,11 +32,7 @@ public class OfferService {
             System.out.println("Offer not created");
             return null;
         }
-        else if (agent.getApiToken() != null) {
-            
-
-            // TODO: poziv ka dislinkt api za kreiranje posta
-
+        else if (firm.getApiToken() != null) {
             if (offerRepository.save(offer) != null) {
                 System.out.println("Offer created");
                 return offerMapper.entityToDto(offer);
