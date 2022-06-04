@@ -151,6 +151,10 @@ public class PostService {
 			}
 			post.setLikes(post.getLikes() + 1);
 			post.getLikedUserIds().add(userId);
+			if (post.getDislikedUserIds() != null && post.getDislikedUserIds().contains(userId)) {
+				post.setDislikes(post.getDislikes() - 1);
+				post.getDislikedUserIds().remove(userId);
+			}
 			if (postRepository.save(post) != null) {
 				System.out.println("Like: Post successfully liked.");
 			} else {
@@ -174,7 +178,15 @@ public class PostService {
 			post.setDislikes(post.getDislikes() + 1);
 			dislikedUserIds.add(userId);
 			post.setDislikedUserIds(dislikedUserIds);
-			postRepository.save(post);
+			if (post.getLikedUserIds() != null && post.getLikedUserIds().contains(userId)) {
+				post.setLikes(post.getLikes() - 1);
+				post.getLikedUserIds().remove(userId);
+			}
+			if (postRepository.save(post) != null) {
+				System.out.println("Like: Post successfully liked.");
+			} else {
+				System.out.println("Like: Post could not be liked.");
+			}
 		} else {
 			System.out.println("Dislike: No post found.");
 		}
