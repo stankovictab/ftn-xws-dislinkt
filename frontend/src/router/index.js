@@ -1,5 +1,5 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
-import HomeJuncture from '../views/HomeJuncture.vue'
+import { createRouter, createWebHashHistory } from 'vue-router';
+import HomeJuncture from '../views/HomeJuncture.vue';
 
 const routes = [
 	{
@@ -15,7 +15,8 @@ const routes = [
 	{
 		path: '/register',
 		name: 'Register',
-		component: () => import('../views/RegisterPage.vue')
+		component: () => import('../views/RegisterPage.vue'),
+		props: true
 	},
 	{
 		path: '/profile/:profileOwnerId',
@@ -29,11 +30,11 @@ const routes = [
 		component: () => import('../views/SearchPage.vue'),
 		props: true
 	},
-]
+];
 
 const router = createRouter({
 	history: createWebHashHistory(),
 	routes
-})
+});
 
-export default router
+export default router;

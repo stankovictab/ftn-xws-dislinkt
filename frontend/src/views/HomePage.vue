@@ -1,7 +1,23 @@
 <template>
 	<div id="homepage">
 		<section>
-			<profile-preview></profile-preview>
+			<div
+				style="
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					gap: 30px;
+				"
+			>
+				<div style="width: 100%">
+					<profile-preview></profile-preview>
+				</div>
+				<div>
+					<router-link to="/companySearch">
+						<button style="width: 220px">Search Job Offers</button>
+					</router-link>
+				</div>
+			</div>
 		</section>
 		<main>
 			<status-input></status-input>
@@ -35,7 +51,7 @@ export default {
 		}),
 	},
 	mounted() {
-		getFeed(this.user.id).then(response => {
+		getFeed(this.user.id).then((response) => {
 			this.posts = response;
 		});
 	},

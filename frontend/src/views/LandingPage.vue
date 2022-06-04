@@ -23,11 +23,26 @@
 				<h3>
 					Start your professional career <br />by creating an account.
 				</h3>
-				<router-link to="/register"
+				<router-link
+					:to="{
+						name: 'Register',
+						params: { registrationType: 'user' },
+					}"
 					><button class="cta-large-button" href="#/register">
 						Sign Up
 					</button></router-link
 				>
+				<div style="margin-top: 20px"></div>
+				<p>
+					You can also
+					<router-link
+						:to="{
+							name: 'Register',
+							params: { registrationType: 'company' },
+						}"
+						>Register a Company</router-link
+					>.
+				</p>
 				<div style="margin-top: 20px"></div>
 				<p>
 					Already have an account?
