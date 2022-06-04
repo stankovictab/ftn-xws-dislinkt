@@ -8,7 +8,7 @@ spring:
             authentication-database: admin # default, used to authenticate against the admin database
             username: root # docker-compose
             password: example # docker-compose
-            database: dislinkt
+            database: agent
             # If running from a Docker container, use the service name, not localhost
             # host: localhost 
             host: mongo 
