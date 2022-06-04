@@ -4,7 +4,12 @@
 		<header v-if="hasRole">
 			<p class="mini-logo">Dislinkt</p>
 			<!-- TODO: Search on Enter -->
-			<input class="search-input" placeholder="Search Dislinkt" />
+			<input
+				class="search-input"
+				placeholder="Search Job Offers on Dislinkt"
+				@keyup.enter="searchJobOffers"
+				v-model="searchTerm"
+			/>
 			<button @click="logout">
 				{{ isLoggedIn ? "Log Out" : "Sign Up" }}
 			</button>
@@ -25,6 +30,11 @@ import { mapGetters } from "vuex";
 export default {
 	name: "App",
 	components: {},
+	data() {
+		return {
+			searchTerm: "",
+		};
+	},
 	computed: {
 		...mapGetters(["isLoggedIn", "hasRole"]),
 	},
@@ -33,6 +43,14 @@ export default {
 			this.$store.commit("setToken", "");
 			this.$store.commit("setUser", { username: "", role: "" });
 			this.$router.push("/");
+		},
+		searchJobOffers() {
+			this.$router.push({
+				name: "Search",
+				params: {
+					searchTerm: this.searchTerm,
+				},
+			});
 		},
 	},
 };
