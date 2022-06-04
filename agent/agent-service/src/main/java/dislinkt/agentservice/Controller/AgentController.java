@@ -16,7 +16,9 @@ import dislinkt.agentclient.CommentDTO;
 import dislinkt.agentclient.FirmDTO;
 import dislinkt.agentclient.OfferDTO;
 import dislinkt.agentservice.Entity.Agent;
+import dislinkt.agentservice.Entity.Firm;
 import dislinkt.agentservice.Mapper.AgentMapper;
+import dislinkt.agentservice.Mapper.FirmMapper;
 import dislinkt.agentservice.Service.AgentService;
 import dislinkt.agentservice.Service.CommentService;
 import dislinkt.agentservice.Service.FirmService;
@@ -40,6 +42,8 @@ public class AgentController implements AgentServiceFeignClient {
 
 	private final AgentMapper agentMapper;
 
+	private final FirmMapper firmMapper;
+
 	private final PostServiceFeignClient postServiceFeignClient;
 
 
@@ -47,6 +51,27 @@ public class AgentController implements AgentServiceFeignClient {
 	@Override
 	public String home() {
 		return "Hello from User Service";
+	}
+
+	@Override
+	public ResponseEntity<ArrayList<FirmDTO>> searchFirms(String query) {
+
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<FirmDTO> setFirmApiToken(Map<String, String> json) {
+		String firmId = json.get("firmId");
+		String apiToken = json.get("apiToken");
+
+		if (firmId == null || apiToken == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		Firm firm = firmService.setApiToken(firmId, apiToken);
+		if (firm != null) {
+			return new ResponseEntity<>(firmMapper.entityToDto(firm), HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 	@Override
@@ -88,8 +113,9 @@ public class AgentController implements AgentServiceFeignClient {
 
 	@Override
 	public ResponseEntity<OfferDTO> createOffer(@RequestBody OfferDTO offerDTO) {
-		Agent agent = agentService.getAgent(firmService.getFirm(offerDTO.getFirmId()).getOwnerId());
-		OfferDTO offer = offerService.createOffer(offerDTO, agent);
+		Firm firm = firmService.getFirm(offerDTO.getFirmId());
+		// Agent agent = agentService.getAgent(firmService.getFirm(offerDTO.getFirmId()).getOwnerId());
+		OfferDTO offer = offerService.createOffer(offerDTO, firm);
 		if (offer == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -109,7 +135,7 @@ public class AgentController implements AgentServiceFeignClient {
 			postDTO.setJobRequirements(offer.getJobRequirements());
 			
 			postDTO.setEmbedLink("localhost:5003/post/getPost/" + offer.getId());
-			postDTO.setApiToken(agent.getApiToken());
+			postDTO.setApiToken(firm.getApiToken());
 
 			postServiceFeignClient.createPost(postDTO);
 		}

@@ -22,6 +22,16 @@ public class FirmService {
         return firmRepository.findById(firmId).orElse(null);
     }
 
+    public Firm setApiToken(String firmId, String apiToken) {
+        Firm firm = firmRepository.getById(firmId);
+        if (firm != null) {
+            firm.setApiToken(apiToken);
+            firmRepository.save(firm);
+            return firm;
+        }
+        return null;
+    }
+
     public FirmDTO updateFirm(FirmDTO firmDTO) { 
         Firm firm = firmRepository.findById(firmDTO.getId()).get();
         if (firm == null) {

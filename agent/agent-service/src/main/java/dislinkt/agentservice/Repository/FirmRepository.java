@@ -18,4 +18,6 @@ public interface FirmRepository extends MongoRepository<Firm, String> {
     ArrayList<Firm> findByApproved(boolean approved);
 
     Firm findByOwnerId(String ownerId);
+
+    Firm getById(String id);
 }
