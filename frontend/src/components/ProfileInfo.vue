@@ -4,45 +4,41 @@
 			<img :src="require('../assets/placeholder.png')" />
 			<div>
 				<div style="display: flex; gap: 20px">
-					<h2>{{ user.firstName }} {{ user.lastName }}</h2>
+					<h2>{{ profileOwner.firstName }} {{ profileOwner.lastName }}</h2>
 					<button>✏️</button>
 				</div>
 				<div style="display: flex; justify-content: space-between">
-					<h4>@{{ user.username }}</h4>
+					<h4>@{{ profileOwner.username }}</h4>
 					<h4 v-if="user.privateAccount">Private</h4>
 					<h4 v-if="!user.privateAccount">Public</h4>
 				</div>
 			</div>
 		</div>
 		<div class="header-body">
-			<!-- <div>
-				<h3>Role</h3>
-				<p>{{ user.role }}</p>
-			</div> -->
 			<div>
 				<h3>Email</h3>
-				<p>{{ user.email }}</p>
+				<p>{{ profileOwner.email }}</p>
 			</div>
 			<div>
 				<h3>Phone Number</h3>
-				<p>{{ user.number }}</p>
+				<p>{{ profileOwner.number }}</p>
 			</div>
 			<div>
 				<h3>Gender</h3>
-				<p>{{ user.gender }}</p>
+				<p>{{ profileOwner.gender }}</p>
 			</div>
 			<div>
 				<h3>Date of Birth</h3>
-				<p>{{ user.dateOfBirth }}</p>
+				<p>{{ profileOwner.dateOfBirth }}</p>
 			</div>
 			<div>
 				<h3>Biography</h3>
-				<p>{{ user.biography }}</p>
+				<p>{{ profileOwner.biography }}</p>
 			</div>
 			<div>
 				<h3>Work Experience</h3>
 				<div style="display: flex; flex-direction: column; gap: 0px">
-					<p v-for="i in user.workExperience" :key="i">
+					<p v-for="i in profileOwner.workExperience" :key="i">
 						{{ i }}
 					</p>
 				</div>
@@ -50,7 +46,7 @@
 			<div>
 				<h3>Studies</h3>
 				<div style="display: flex; flex-direction: column; gap: 0px">
-					<p v-for="i in user.studies" :key="i">
+					<p v-for="i in profileOwner.studies" :key="i">
 						{{ i }}
 					</p>
 				</div>
@@ -58,7 +54,7 @@
 			<div>
 				<h3>Skills</h3>
 				<div style="display: flex; flex-direction: column; gap: 0px">
-					<p v-for="i in user.skills" :key="i">
+					<p v-for="i in profileOwner.skills" :key="i">
 						{{ i }}
 					</p>
 				</div>
@@ -66,7 +62,7 @@
 			<div>
 				<h3>Interests</h3>
 				<div style="display: flex; flex-direction: column; gap: 0px">
-					<p v-for="i in user.interests" :key="i">
+					<p v-for="i in profileOwner.interests" :key="i">
 						{{ i }}
 					</p>
 				</div>
@@ -77,6 +73,7 @@
 
 <script>
 import { mapState } from "vuex";
+import { getUserById } from "../services/requests";
 
 export default {
 	name: "ProfileInfo",
@@ -84,11 +81,22 @@ export default {
 	props: {
 		userId: String,
 	},
+	data: function() {
+		return {
+			profileOwner: {},
+		};
+	},
 	computed: {
 		...mapState({
 			user: "user",
 		}),
 	},
+	mounted(){
+		getUserById(this.userId).then(res => {
+			this.profileOwner = res;
+			console.log('ProfileINfo.vue', this.profileOwner);
+		});
+	}
 };
 
 import "../style.css";

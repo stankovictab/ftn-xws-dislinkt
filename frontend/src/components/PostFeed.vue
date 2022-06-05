@@ -13,6 +13,7 @@
 <script>
 import UserPost from "../components/UserPost.vue";
 import { mapState } from "vuex";
+import { postComment } from "../services/requests";
 
 export default {
 	name: "PostFeed",
@@ -33,14 +34,16 @@ export default {
 		},
 		postComment(postId, commentText) {
 			console.log("posting comment");
-			this.posts
-				.find((post) => post.id === postId)
-				.comments.push({
-					id: this.posts[this.posts.length - 1].id + 1,
-					avatar: this.user.avatar,
-					text: commentText,
-				});
+			// this.posts
+			// 	.find((post) => post.id === postId)
+			// 	.comments.push({
+			// 		id: this.posts[this.posts.length - 1].id + 1,
+			// 		avatar: this.user.avatar,
+			// 		text: commentText,
+			// 	});
 			// pozivamo metodu postComment() iz services/requests.js
+			postComment(this.user.id, postId, commentText);
+			this.$emit("reload-posts");
 		},
 	},
 };

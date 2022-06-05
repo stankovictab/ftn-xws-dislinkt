@@ -1,7 +1,7 @@
 <template>
     <div>
         <img :src="require('../assets/' + avatar)"/>
-        <p>{{comment.text}}</p>
+        <p>{{comment.comment}}</p>
     </div> 
 </template>
 

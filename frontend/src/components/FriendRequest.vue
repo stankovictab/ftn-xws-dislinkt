@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<img :src="require('../assets/placeholder.png')" />
-		<router-link to="/profile/id">{{ request.username }}</router-link>
+		<router-link :to="`/profile/${request.id}`">{{ request.username }}</router-link>
         <button @click="approveFollow()">Accept</button>
         <button @click="declineFollow()">Decline</button>
 	</div>

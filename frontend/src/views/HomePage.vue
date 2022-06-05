@@ -7,7 +7,7 @@
 		</section>
 		<main>
 			<status-input></status-input>
-			<post-feed :posts="posts"></post-feed>
+			<post-feed :posts="posts" @reload-posts="reloadPosts()"></post-feed>
 		</main>
 		<section>
 			<chat-links></chat-links>
@@ -37,15 +37,20 @@ export default {
 		}),
 	},
 	mounted() {
-		getFeed(this.user.id).then((response) => {
-			this.posts = response;
-		});
+		this.reloadPosts()
 	},
 	data: function () {
 		return {
 			posts: [],
 		};
 	},
+	methods:{
+		reloadPosts(){
+			getFeed(this.user.id).then((response) => {
+			this.posts = response;
+		});
+		}
+	}
 };
 import "../style.css";
 </script>

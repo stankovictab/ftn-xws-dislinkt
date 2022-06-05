@@ -18,7 +18,7 @@
 			</button>
 			{{ post.dislikes}}
 		</div>
-		<!-- <div class="comment-container">
+		<div class="comment-container">
 			<comment-on-post
 				v-for="comment in post.comments"
 				:key="comment.id"
@@ -36,19 +36,19 @@
 		<div class="comment-control">
 			{{ post.comments?.length }}
 			<button @click="toggleCommenting">💬</button>
-		</div> -->
+		</div>
 	</article>
 </template>
 
 <script>
-// import CommentOnPost from './CommentOnPost.vue';
+import CommentOnPost from './CommentOnPost.vue';
 import { mapState } from "vuex";
 import { ratePost } from "../services/requests";
 
 export default {
 	name: "UserPost",
 	components: {
-		// CommentOnPost
+		CommentOnPost
 	},
 	props: {
 		post: Object,

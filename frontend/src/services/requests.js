@@ -114,3 +114,38 @@ export async function ratePost(postId, raterId, rating) {
 		);
 	return data;
 }
+
+export async function postComment(userId, postId, comment) {
+
+	const data = await api("5002").post(`/comment/create`, 
+		{
+			userId, 
+			postId, 
+			comment
+		},
+		{
+			headers: { "Content-Type":  "application/json", },
+		}).then(
+			function (response) {
+				console.log(response)
+				return response.data;
+			}
+		);
+	return data;
+}
+
+export async function getUserById(userId) {
+
+	const data = await api("5001").post(`/user/findById`, 
+		userId,
+		{
+			headers: { "Content-Type":  "plain/text", },
+		}).then(
+			function (response) {
+				console.log("getUserById", response)
+				return response.data;
+			}
+		);
+	console.log('returning data', data);	
+	return data;
+}
