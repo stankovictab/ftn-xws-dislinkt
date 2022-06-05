@@ -12,6 +12,7 @@
 		>
 			<h4>Welcome to Dislinkt!</h4>
 			<h5>General Information</h5>
+
 			<div class="multiple-input-div">
 				<div class="input-div">
 					<label>Username</label>
@@ -37,7 +38,17 @@
 					Username already exists, please choose another one.
 				</p>
 			</div>
-			<div class="multiple-input-div">
+			<div class="input-div-large" v-if="registrationType == 'company'">
+				<div class="input-div">
+					<label>Company Name</label>
+					<input
+						id="firstName"
+						placeholder="John"
+						v-model="firstName"
+					/>
+				</div>
+			</div>
+			<div class="multiple-input-div" v-if="registrationType == 'user'">
 				<div class="input-div">
 					<label>First Name</label>
 					<input
@@ -75,7 +86,7 @@
 					/>
 				</div>
 			</div>
-			<div class="multiple-input-div">
+			<div class="multiple-input-div" v-if="registrationType == 'user'">
 				<div class="input-div">
 					<label>Gender</label>
 					<select id="gender" v-model="gender">
@@ -89,9 +100,12 @@
 					<input id="dateofbirth" type="date" v-model="dateOfBirth" />
 				</div>
 			</div>
-			<h5>Biography & Work Experience</h5>
+			<h5 v-if="registrationType == 'user'">
+				Biography & Work Experience
+			</h5>
 			<div class="input-div-large">
-				<label>Biography</label>
+				<label v-if="registrationType == 'user'">Biography</label>
+				<label v-if="registrationType == 'company'">Description</label>
 				<textarea
 					id="biography"
 					cols="20"
@@ -99,39 +113,56 @@
 					v-model="biography"
 				></textarea>
 			</div>
-			<div class="input-div-large">
+			<div class="input-div-large" v-if="registrationType == 'user'">
 				<label>Work Experience</label>
-				<textarea
-					id="workexperience"
-					cols="20"
-					rows="3"
-					v-model="workExperience"
-				></textarea>
+				<list-input-item
+					v-for="(expItem, index) in workExperience"
+					:key="'workExpItem' + index"
+					v-model="workExperience[index]"
+					:showPlus="index == workExperience.length - 1"
+					@lengthen="workExperience.push('')"
+				>
+				</list-input-item>
 			</div>
-			<div class="input-div-large">
+			<div class="input-div-large" v-if="registrationType == 'user'">
 				<label>Studies</label>
-				<input id="studies" v-model="studies" />
+				<list-input-item
+					v-for="(studiesItem, index) in studies"
+					:key="'studiesItem' + index"
+					v-model="studies[index]"
+					:showPlus="index == studies.length - 1"
+					@lengthen="studies.push('')"
+				>
+				</list-input-item>
 			</div>
-			<div class="input-div-large">
+			<div class="input-div-large" v-if="registrationType == 'user'">
 				<label>Skills</label>
-				<textarea
-					id="skills"
-					cols="20"
-					rows="3"
-					v-model="skills"
-				></textarea>
+				<list-input-item
+					v-for="(skillsItem, index) in skills"
+					:key="'skillsItem' + index"
+					v-model="skills[index]"
+					:showPlus="index == skills.length - 1"
+					@lengthen="skills.push('')"
+				>
+				</list-input-item>
 			</div>
-			<div class="input-div-large">
+			<div class="input-div-large" v-if="registrationType == 'user'">
 				<label>Interests</label>
-				<textarea
-					id="interests"
-					cols="20"
-					rows="3"
-					v-model="interests"
-				></textarea>
+				<list-input-item
+					v-for="(interestsItem, index) in interests"
+					:key="'interestsItem' + index"
+					v-model="interests[index]"
+					:showPlus="index == interests.length - 1"
+					@lengthen="interests.push('')"
+				>
+				</list-input-item>
 			</div>
-			<h5>Privacy</h5>
-			<div id="privacy-radio-buttons" class="input-div-large">
+			<h5 v-if="registrationType == 'user'">Privacy</h5>
+			<div
+				id="privacy-radio-buttons"
+				class="input-div-large"
+				v-if="registrationType == 'user'"
+			>
 				<div class="checkbox-div">
 					<input type="checkbox" v-model="privateAccount" />
 					<label for="public">Private Account</label>
@@ -144,9 +175,16 @@
 <script>
 import { ref } from "vue";
 import axios from "axios";
+import ListInputItem from "../components/ListInputItem.vue";
+
 export default {
 	name: "RegisterPage",
-	components: {},
+	components: {
+		ListInputItem,
+	},
+	props: {
+		registrationType: String,
+	},
 	setup() {
 		localStorage.clear();
 
@@ -159,10 +197,10 @@ export default {
 		var gender = ref(null);
 		var dateOfBirth = ref(null);
 		var biography = ref(null);
-		var workExperience = ref(null);
-		var studies = ref(null);
-		var skills = ref(null);
-		var interests = ref(null);
+		var workExperience = ref([""]);
+		var studies = ref([""]);
+		var skills = ref([""]);
+		var interests = ref([""]);
 		var privateAccount = ref(false);
 
 		var usernameCheck = ref(true);
@@ -194,11 +232,6 @@ export default {
 					)
 					.then(function (response) {
 						usernameCheck.value = response.data;
-						// if (response.data == false) {
-						// 	usernameCheck.value = false;
-						// } else {
-						// 	usernameCheck.value = true;
-						// }
 					});
 			},
 
@@ -217,65 +250,120 @@ export default {
 	},
 	methods: {
 		register() {
-			if (
-				this.username == null ||
-				this.passwordInput == null ||
-				this.firstName == null ||
-				this.lastName == null ||
-				this.email == null ||
-				this.number == null ||
-				this.gender == null ||
-				this.dateOfBirth == null ||
-				this.biography == null ||
-				this.workExperience == null ||
-				this.studies == null ||
-				this.skills == null ||
-				this.interests == null
-			) {
-				alert("All fields need to be filled, try again.");
-			} else if (!this.checkEmail(this.email)) {
-				alert(
-					"Email isn't in the correct form. Please fill out the form again."
-				);
-				return;
-			} else if (this.usernameCheck == false) {
-				alert("Username already exists, please choose another one.");
-				return;
-			} else 
-			{	
-				var newUser = {
-					username: this.username,
-					passwordInput: this.passwordInput,
-					firstName: this.firstName,
-					lastName: this.lastName,
-					email: this.email,
-					number: this.number,
-					gender: this.gender,
-					dateOfBirth: this.dateOfBirth,
-					biography: this.biography,
-					workExperience: this.workExperience,
-					studies: this.studies,
-					skills: this.skills,
-					interests: this.interests,
-					privateAccount: this.privateAccount,
-				};
+			if (this.registrationType == "user") {
+				if (
+					this.username == null ||
+					this.passwordInput == null ||
+					this.firstName == null ||
+					this.lastName == null ||
+					this.email == null ||
+					this.number == null ||
+					this.gender == null ||
+					this.dateOfBirth == null ||
+					this.biography == null ||
+					!this.workExperience ||
+					!this.studies ||
+					!this.skills ||
+					!this.interests
+				) {
+					alert("All fields need to be filled, try again.");
+				} else if (!this.checkEmail(this.email)) {
+					alert(
+						"Email isn't in the correct form. Please fill out the form again."
+					);
+					return;
+				} else if (this.usernameCheck == false) {
+					alert(
+						"Username already exists, please choose another one."
+					);
+					return;
+				} else {
+					var newUser = {
+						username: this.username,
+						passwordInput: this.passwordInput,
+						firstName: this.firstName,
+						lastName: this.lastName,
+						email: this.email,
+						number: this.number,
+						gender: this.gender,
+						dateOfBirth: this.dateOfBirth,
+						biography: this.biography,
+						workExperience: this.workExperience,
+						studies: this.studies,
+						skills: this.skills,
+						interests: this.interests,
+						privateAccount: this.privateAccount,
+					};
 
-				const me = this
+					const me = this;
 
-				axios.post("http://localhost:5001/user/register/", newUser)
-					.then(function (response) {
-						// TODO: Redirect to homepage of the registered user
-						// TODO: Don't return password hash (Marko)
-						// TODO: Add Role to user (Marko)
-						response.data.role = "Client";
-						me.$store.commit("setToken", response.data.id);
-						me.$store.commit("setUser", response.data);
-						me.$router.push("/");
-					});
+					axios
+						.post("http://localhost:5001/user/register/", newUser)
+						.then(function (response) {
+							alert(
+								"Welcome to Dislinkt, " +
+									newUser.firstName +
+									"!"
+							);
+							response.data.role = "Client";
+							me.$store.commit("setToken", response.data.id);
+							me.$store.commit("setUser", response.data);
+							me.$router.push("/");
+						});
+				}
+			} else {
+				if (
+					this.username == null ||
+					this.passwordInput == null ||
+					this.firstName == null ||
+					this.email == null ||
+					this.number == null ||
+					this.biography == null
+				) {
+					alert("All fields need to be filled, try again.");
+				} else if (!this.checkEmail(this.email)) {
+					alert(
+						"Email isn't in the correct form. Please fill out the form again."
+					);
+					return;
+				} else if (this.usernameCheck == false) {
+					alert(
+						"Username already exists, please choose another one."
+					);
+					return;
+				} else {
+					var newCompany = {
+						username: this.username,
+						passwordInput: this.passwordInput,
+						firstName: this.firstName,
+						email: this.email,
+						number: this.number,
+						biography: this.biography,
+						privateAccount: false,
+					};
+
+					const me = this;
+
+					axios
+						.post(
+							"http://localhost:5001/user/register/",
+							newCompany
+						)
+						.then(function (response) {
+							alert(
+								"Welcome to Dislinkt, " +
+									newCompany.firstName +
+									"!"
+							);
+							response.data.role = "Client";
+							me.$store.commit("setToken", response.data.id);
+							me.$store.commit("setUser", response.data);
+							me.$router.push("/");
+						});
+				}
 			}
 		},
 	},
-	
 };
 import "../style.css";
 </script>
@@ -297,6 +385,17 @@ import "../style.css";
 .input-div-large input {
 	width: 97.3%;
 }
+.input-div-list {
+	display: flex;
+	align-items: center;
+}
+.input-div-list button {
+	width: 35px;
+	height: 36px;
+	margin-left: 10px;
+	margin-top: 0px;
+	font-size: 26px;
+}
 .checkbox-div {
 	display: flex;
 	flex-direction: row;
@@ -307,13 +406,14 @@ import "../style.css";
 .checkbox-div input {
 	width: 18px;
 }
+label {
+	margin-bottom: 5px;
+}
 input {
-	margin-top: 2px;
 	height: 32px;
 	width: 280px;
 }
 select {
-	margin-top: 2px;
 	height: 32px;
 	width: 300px;
 }

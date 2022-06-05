@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.multipart.MultipartFile;
 
 // This Feign Client will be accessed by other microservices,
 // in order to communicate with this one
@@ -20,6 +19,9 @@ public interface PostServiceFeignClient {
 	@GetMapping(value = "/actuator/info")
 	public String home();
 
+	@PostMapping("/post/searchOffers") 
+	public ResponseEntity<ArrayList<PostDTO>> searchOffers(@RequestBody Map<String, String> query);
+
 	@PostMapping(value = "/post/generatePosts")
 	public void generatePosts();
 
@@ -30,7 +32,7 @@ public interface PostServiceFeignClient {
 	public ResponseEntity<ArrayList<PostDTO>> getAllByUser(@RequestBody Map<String, String> userIds);
 
 	@PostMapping(value = "/post/create")
-	public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO, @RequestBody MultipartFile image);
+	public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO);
 
 	@PostMapping(value = "/comment/create")
 	public ResponseEntity<CommentDTO> createComment(@RequestBody CommentDTO commentDTO);

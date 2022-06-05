@@ -2,9 +2,16 @@
 	<div>
 		<!-- TODO: Add unregisteredSearch check -->
 		<header v-if="hasRole">
-			<p class="mini-logo">Dislinkt</p>
+			<router-link class="mini-logo" :to="{name: 'HomeJuncture'}">
+				Dislinkt
+			</router-link>
 			<!-- TODO: Search on Enter -->
-			<input class="search-input" placeholder="Search Dislinkt" />
+			<input
+				class="search-input"
+				placeholder="Search Job Offers on Dislinkt"
+				@keyup.enter="searchJobOffers"
+				v-model="searchTerm"
+			/>
 			<button @click="logout">
 				{{ isLoggedIn ? "Log Out" : "Sign Up" }}
 			</button>
@@ -15,7 +22,7 @@
 			href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,700;0,800;1,900&display=swap"
 			rel="stylesheet"
 		/>
-		<router-view />
+		<router-view :key="$route.fullPath"/>
 	</div>
 </template>
 
@@ -25,6 +32,11 @@ import { mapGetters } from "vuex";
 export default {
 	name: "App",
 	components: {},
+	data() {
+		return {
+			searchTerm: "",
+		};
+	},
 	computed: {
 		...mapGetters(["isLoggedIn", "hasRole"]),
 	},
@@ -33,6 +45,14 @@ export default {
 			this.$store.commit("setToken", "");
 			this.$store.commit("setUser", { username: "", role: "" });
 			this.$router.push("/");
+		},
+		searchJobOffers() {
+			this.$router.push({
+				name: "Search",
+				params: {
+					searchTerm: this.searchTerm,
+				},
+			});
 		},
 	},
 };
@@ -48,7 +68,7 @@ header {
 	align-items: center;
 	margin-bottom: 70px;
 }
-header p {
+header a {
 	position: absolute;
 	left: 10%;
 }

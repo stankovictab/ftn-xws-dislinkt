@@ -1,6 +1,7 @@
 package dislinkt.postservice.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,21 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     private final CommentMapper commentMapper;
+
+    public ArrayList<CommentDTO> getAllByPostId(String postId) {
+        ArrayList<CommentDTO> commentDTOs = new ArrayList<>();
+        ArrayList<Comment> comments = commentRepository.findAllByPostId(postId);
+
+        if (comments != null && comments.size() > 0) {
+            for (Comment comment : comments) {
+                commentDTOs.add(commentMapper.entityToDto(comment));
+            }
+            System.out.println("CommentService.getAllByPostId: found comments");
+            return commentDTOs;
+        }
+        System.out.println("CommentService.getAllByPostId: no comments found");
+        return null;
+    }
 
     public CommentDTO create(CommentDTO commentDTO) {
         Comment comment = commentMapper.dtoToEntity(commentDTO);

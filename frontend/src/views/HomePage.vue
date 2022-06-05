@@ -1,11 +1,13 @@
 <template>
 	<div id="homepage">
 		<section>
-			<profile-preview></profile-preview>
+			<div style="width: 100%">
+				<profile-preview></profile-preview>
+			</div>
 		</section>
 		<main>
 			<status-input></status-input>
-			<post-feed></post-feed>
+			<post-feed :posts="posts" @reload-posts="reloadPosts()"></post-feed>
 		</main>
 		<section>
 			<chat-links></chat-links>
@@ -18,6 +20,8 @@ import ProfilePreview from "../components/ProfilePreview.vue";
 import StatusInput from "../components/StatusInput.vue";
 import ChatLinks from "../components/ChatLinks.vue";
 import PostFeed from "../components/PostFeed.vue";
+import { getFeed } from "../services/requests";
+import { mapState } from "vuex";
 
 export default {
 	name: "HomePage",
@@ -27,6 +31,26 @@ export default {
 		ChatLinks,
 		PostFeed,
 	},
+	computed: {
+		...mapState({
+			user: "user",
+		}),
+	},
+	mounted() {
+		this.reloadPosts()
+	},
+	data: function () {
+		return {
+			posts: [],
+		};
+	},
+	methods:{
+		reloadPosts(){
+			getFeed(this.user.id).then((response) => {
+			this.posts = response;
+		});
+		}
+	}
 };
 import "../style.css";
 </script>

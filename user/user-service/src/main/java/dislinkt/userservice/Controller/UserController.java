@@ -33,6 +33,16 @@ public class UserController implements UserServiceFeignClient {
 	}
 
 	@Override
+	public ResponseEntity<String> getUserIdByApiToken(@RequestBody String apiToken) {
+		return new ResponseEntity<>(userService.getUserIdByApiToken(apiToken), HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<String> generateAPIToken(@RequestBody String userId) {
+		return new ResponseEntity<String>(userService.generateAPIToken(userId), HttpStatus.OK);
+	}
+
+	@Override
 	public void generateUsers() {
 		userService.generateUsers();
 	}
@@ -46,7 +56,6 @@ public class UserController implements UserServiceFeignClient {
 		return new ResponseEntity<>(userDTO, HttpStatus.OK);
 	}
 
-
 	@Override
 	public ResponseEntity<ArrayList<String>> getAllUserIds() {
 		ArrayList<String> userIds = userService.getAllUserIds();
@@ -59,10 +68,8 @@ public class UserController implements UserServiceFeignClient {
 	@Override
 	public ResponseEntity<ArrayList<String>> getConnectionUserIds(@RequestBody String userId) {
 		ArrayList<String> connectionUserIds = userService.getConnectionUserIds(userId);
-		if (connectionUserIds == null) {
-			System.out.println("aaaaaaaaaaaa");
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+		if (connectionUserIds == null)
+			return new ResponseEntity<>(null, HttpStatus.OK);
 		return new ResponseEntity<>(connectionUserIds, HttpStatus.OK);
 	}
 
@@ -76,11 +83,19 @@ public class UserController implements UserServiceFeignClient {
 
 	// @Override
 	// public ResponseEntity<Boolean> updatePrivacy(@PathVariable String userId) {
-	// 	if (userService.updatePrivacy(userId)) {
-	// 		return new ResponseEntity<>(true, HttpStatus.OK);
-	// 	}
-	// 	return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+	// if (userService.updatePrivacy(userId)) {
+	// return new ResponseEntity<>(true, HttpStatus.OK);
 	// }
+	// return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+	// }
+
+	@Override 
+	public ResponseEntity<ArrayList<UserDTO>> getConnectionRequestUserIds(@RequestBody String userId) {
+		ArrayList<UserDTO> connectionRequestUserIds = userService.getConnectionRequestUserIds(userId);
+		if (connectionRequestUserIds == null)
+			return new ResponseEntity<>(null, HttpStatus.OK);
+		return new ResponseEntity<>(connectionRequestUserIds, HttpStatus.OK);
+	}
 
 	@Override
 	public ResponseEntity<Boolean> approveFollow(@RequestBody Map<String, String> userIds) {
@@ -90,7 +105,7 @@ public class UserController implements UserServiceFeignClient {
 		return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
 	}
 
-	@Override	
+	@Override
 	public ResponseEntity<Boolean> followUser(@RequestBody Map<String, String> userIds) {
 		if (userService.followUser(userIds.get("userId"), userIds.get("toFollowUserId"))) {
 			return new ResponseEntity<>(true, HttpStatus.OK);
@@ -107,21 +122,21 @@ public class UserController implements UserServiceFeignClient {
 		return new ResponseEntity<>(userDTO, HttpStatus.OK);
 	}
 
-	@Override 
+	@Override
 	public ResponseEntity<ArrayList<UserDTO>> find(@RequestBody Map<String, String> searchTerm) {
 		ArrayList<UserDTO> users = userService.find(searchTerm.get("firstName"), searchTerm.get("lastName"));
 		if (searchTerm.isEmpty()) {
 			System.out.println("Find - No search term");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		else if (users == null) {
+		} else if (users == null) {
 			System.out.println("No users found");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<ArrayList<UserDTO>>(users, HttpStatus.OK);
 	}
 
-	// e al ovih narednih 5 funkcija se samo ne koristi btw, koristi se samo jedna i to ova iznad
+	// e al ovih narednih 5 funkcija se samo ne koristi btw, koristi se samo jedna i
+	// to ova iznad
 	@Override
 	public ResponseEntity<ArrayList<UserDTO>> findByName(@RequestBody Map<String, String> searchTerm) {
 		ArrayList<UserDTO> users = userService.findByName(searchTerm.get("lastName"), searchTerm.get("lastName"));

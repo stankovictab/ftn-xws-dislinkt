@@ -22,6 +22,12 @@ public interface UserServiceFeignClient {
 	@PostMapping(value = "/user/generateUsers")
 	public void generateUsers();
 
+	@PostMapping("/user/getUserIdByApiToken")
+	public ResponseEntity<String> getUserIdByApiToken(@RequestBody String apiToken);
+
+	@PostMapping(value = "/user/generateApiToken")
+	public ResponseEntity<String> generateAPIToken(@RequestBody String userId);
+
 	@PostMapping(value = "/user/getAllUserIds")
 	public ResponseEntity<ArrayList<String>> getAllUserIds();
 
@@ -36,6 +42,9 @@ public interface UserServiceFeignClient {
 	// public ResponseEntity<Boolean> updatePrivacy(@RequestBody String userId);
 	// @PostMapping(value = "/user/updatePrivacy/{userId}")
 	// public ResponseEntity<Boolean> updatePrivacy(@PathVariable String userId);
+
+	@PostMapping("/user/getPendingRequests")
+	public ResponseEntity<ArrayList<UserDTO>> getConnectionRequestUserIds(@RequestBody String userId);
 
 	@PostMapping(value = "/user/approveFollow")
 	public ResponseEntity<Boolean> approveFollow(@RequestBody Map<String, String> userIds);

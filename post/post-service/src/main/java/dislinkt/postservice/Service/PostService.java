@@ -1,15 +1,12 @@
 package dislinkt.postservice.Service;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import dislinkt.postclient.PostDTO;
-import dislinkt.postservice.Entity.Image;
 import dislinkt.postservice.Entity.Post;
 import dislinkt.postservice.Mapper.PostMapper;
 import dislinkt.postservice.Repository.PostRepository;
@@ -23,37 +20,56 @@ public class PostService {
 
 	private final PostMapper postMapper;
 
-	private final ImageService imageService;
+	// private final ImageService imageService;
+
+
+	public ArrayList<PostDTO> searchOffers(String query, String field) {
+		ArrayList<Post> posts = postRepository.findAllByJobTitle(query);
+		ArrayList<PostDTO> postDTOs = new ArrayList<>();
+		if (posts != null && posts.size() > 0) {
+			for (Post post: posts) {
+				postDTOs.add(postMapper.entityToDto(post));
+			}
+			return postDTOs;
+		}
+		return null;
+	}
 
 	public void generatePosts(ArrayList<String> userIds) {
 
 		// TODO: Moze ove dve funckije u ./up.sh
-		for (int i = 0; i < 33; i++) {
+		for (int i = 0; i < 3; i++) {
 			Post post = new Post();
 			post.setTitle("Post " + i);
 			post.setDescription("Description " + i);
 			post.setUserId(userIds.get(0));
-			create(postMapper.entityToDto(post), null);
+			post.setAuthorName("firstname0 lastname0");
+			create(postMapper.entityToDto(post));
 		}
-		for (int i = 0; i < 33; i++) {
+		for (int i = 0; i < 3; i++) {
 			Post post = new Post();
 			post.setTitle("Post " + i);
 			post.setDescription("Description " + i);
 			post.setUserId(userIds.get(1));
-			create(postMapper.entityToDto(post), null);
+			post.setAuthorName("firstname1 lastname1");
+			create(postMapper.entityToDto(post));
 		}
-		for (int i = 0; i < 33; i++) {
+		for (int i = 0; i < 3; i++) {
 			Post post = new Post();
 			post.setTitle("Post " + i);
 			post.setDescription("Description " + i);
 			post.setUserId(userIds.get(2));
-			create(postMapper.entityToDto(post), null);
+			post.setAuthorName("firstname2 lastname2");
+			create(postMapper.entityToDto(post));
 		}
 	}
 
 	public ArrayList<PostDTO> getFeed(String userId, ArrayList<String> connectionUserIds) {
 		ArrayList<PostDTO> postDTOs = new ArrayList<>();
-
+		if (connectionUserIds == null) {
+			System.out.println("GetFeed: Has no connections.");
+			return null;
+		}
 		for (String followingUserId : connectionUserIds) {
 			ArrayList<Post> posts = postRepository.findAllByUserId(followingUserId);
 			for (Post post : posts) {
@@ -61,7 +77,7 @@ public class PostService {
 			}
 		}
 		if (postDTOs.isEmpty()) {
-			System.out.println("GetFeed: No posts found.");
+			System.out.println("GetFeed: No posts found in followed accounts.");
 			return null;
 		}
 		postDTOs.sort(Comparator.comparing(
@@ -91,7 +107,7 @@ public class PostService {
 		return postDTOs;
 	}
 
-	public PostDTO create(PostDTO postDTO, MultipartFile image) {
+	public PostDTO create(PostDTO postDTO) {
 		Post post = postMapper.dtoToEntity(postDTO);
 		LocalDateTime now = LocalDateTime.now();
 		post.setCreationDate(now);
@@ -99,25 +115,25 @@ public class PostService {
 		post.setDislikes(0);
 		post.setLikedUserIds(null);
 		post.setDislikedUserIds(null);
-		if (image != null)
-		{
-			try {
-				String imageId = imageService.addImage(post.getImageTitle(), image);
-				post.setImageId(imageId);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		// if (image != null)
+		// {
+		// try {
+		// String imageId = imageService.addImage(post.getImageTitle(), image);
+		// post.setImageId(imageId);
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// }
 		post = postRepository.save(post);
 		if (post != null) {
-			if (image != null)
-			{
-				Image image1 = imageService.getImage(post.getImageId());
-				image1.setPostId(post.getId());
-				//TODO: 
-				// imageService.update(image1)
-			}
+			// if (image != null)
+			// {
+			// Image image1 = imageService.getImage(post.getImageId());
+			// image1.setPostId(post.getId());
+			// //TODO:
+			// // imageService.update(image1)
+			// }
 			System.out.println("Create: Post successfully saved.");
 			return postMapper.entityToDto(post);
 		}
@@ -135,6 +151,10 @@ public class PostService {
 			}
 			post.setLikes(post.getLikes() + 1);
 			post.getLikedUserIds().add(userId);
+			if (post.getDislikedUserIds() != null && post.getDislikedUserIds().contains(userId)) {
+				post.setDislikes(post.getDislikes() - 1);
+				post.getDislikedUserIds().remove(userId);
+			}
 			if (postRepository.save(post) != null) {
 				System.out.println("Like: Post successfully liked.");
 			} else {
@@ -158,7 +178,15 @@ public class PostService {
 			post.setDislikes(post.getDislikes() + 1);
 			dislikedUserIds.add(userId);
 			post.setDislikedUserIds(dislikedUserIds);
-			postRepository.save(post);
+			if (post.getLikedUserIds() != null && post.getLikedUserIds().contains(userId)) {
+				post.setLikes(post.getLikes() - 1);
+				post.getLikedUserIds().remove(userId);
+			}
+			if (postRepository.save(post) != null) {
+				System.out.println("Like: Post successfully liked.");
+			} else {
+				System.out.println("Like: Post could not be liked.");
+			}
 		} else {
 			System.out.println("Dislike: No post found.");
 		}

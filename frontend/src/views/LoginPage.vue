@@ -17,7 +17,12 @@
 			</div>
 			<div class="input-div">
 				<label>Password</label>
-				<input id="password" type="password" v-model="password" />
+				<input
+					id="password"
+					type="password"
+					v-model="password"
+					@keyup.enter="login"
+				/>
 			</div>
 			<button @click="login">Log In</button>
 		</div>

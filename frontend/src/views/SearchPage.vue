@@ -1,38 +1,49 @@
 <template>
-	<div>
+	<div style="display: flex">
 		<!-- TODO: Remove header and css if implemented in App.vue -->
-		<header>
-			<p class="mini-logo">Dislinkt</p>
-			<input
-				class="search-input"
-				placeholder="Search Dislinkt"
-				@keyup.enter="search()"
-			/>
-			<!-- TODO: Add v-model to input -->
-			<button @click="logout">
-				{{ isLoggedIn ? "Log Out" : "Go Back" }}
-			</button>
-		</header>
 		<div class="search-results-parent">
 			<p>
-				Search results for
-				<span style="color: var(--yellow3)">{{ searchTerm }}</span>
+				Users matching search
+				<span style="color: var(--yellow3)">{{
+					searchTermDisplay
+				}}</span>
 			</p>
 			<!-- TODO: Add v-if to list -->
 			<p
 				style="margin-top: 50px; color: var(--text2)"
-				v-if="searchResults == null"
+				v-if="!userSearchResults"
 			>
 				No results found.
 			</p>
 			<div class="search-results-child">
-				<div class="search-result" v-for="i in searchResults" :key="i">
+				<div class="search-result" v-for="i in userSearchResults" :key="i">
 					<!-- <p>{{ i }}</p> -->
 					<img src="../assets/placeholder.png" />
 					<h3>{{ i.firstName }} {{ i.lastName }}</h3>
-					<p style="font-size: 20px">@{{ i.username }}</p>
-					<p>{{ i.workExperience }}</p>
-					<button>View Profile</button>
+					<p>@{{ i.username }}</p>
+					<!-- <p>{{ i.workExperience }}</p> -->
+					<button><router-link style="font-size: 20px" :to="`/profile/${i.id}`">View Profile</router-link></button>
+				</div>
+			</div>
+		</div>
+		<div class="search-results-parent" v-if="isLoggedIn">
+			<p>
+				Posts matching search
+				<span style="color: var(--yellow3)">{{
+					searchTermDisplay
+				}}</span>
+			</p>
+			<p
+				style="margin-top: 50px; color: var(--text2)"
+				v-if="!postSearchResults"
+			>
+				No results found.
+			</p>
+			<div class="search-results-child">
+				<div class="search-result" v-for="i in postSearchResults" :key="i">
+					<h3>{{ i.title }} </h3>
+					<h3>{{ i.jobTitle }}</h3>
+					<h3>{{ i.jobDescription }}</h3>
 				</div>
 			</div>
 		</div>
@@ -42,6 +53,7 @@
 <script>
 // import { ref } from "@vue/reactivity";
 import axios from "axios";
+import { mapGetters } from "vuex";
 
 export default {
 	name: "SearchPage",
@@ -49,9 +61,42 @@ export default {
 		searchTerm: String,
 	},
 	methods: {
-		search() {
-			// TODO: Add search functionality
-			alert("TODO");
+		search(searchBy) {
+			var me = this;
+			this.userSearchResults = null;
+			this.searchTermDisplay = searchBy;
+			// TODO: Search only by searchTerm, without splitting?
+			axios
+				.post(
+					"http://localhost:5001/user/find",
+					{
+						firstName: searchBy.split(" ")[0],
+						lastName: searchBy.split(" ")[1],
+					},
+					{
+						headers: { "Content-Type": "application/json" },
+					}
+				)
+				.then(function (response) {
+					me.userSearchResults = response.data;
+				});
+			if(this.isLoggedIn){
+				axios
+					.post(
+						"http://localhost:5002/post/searchOffers",
+						{
+							query: searchBy,
+							field: ""
+						},
+						{
+							headers: { "Content-Type": "application/json" },
+						}
+					)
+					.then(function (response) {
+						console.log("searchOffers", response.data);
+						me.postSearchResults = response.data;
+					});
+			}
 		},
 		logout() {
 			this.$store.commit("setToken", "");
@@ -60,33 +105,18 @@ export default {
 		},
 	},
 	data() {
-		// var searchResults = ref(null);
 		return {
-			searchResults: Object,
+			searchTermDisplay: "",
+			inPlaceSearchTerm: this.searchTerm,
+			userSearchResults: null,
+			postSearchResults: null,
 		};
 	},
+	computed: {
+		...mapGetters(["isLoggedIn", "hasRole"]),
+	},
 	mounted() {
-		var me = this;
-		this.searchResults = null;
-		// TODO: Can we call search() here?
-		// TODO: Search only by searchTerm
-		axios
-			.post(
-				"http://localhost:5001/user/find",
-				{
-					firstName: this.searchTerm.split(" ")[0],
-					lastName: this.searchTerm.split(" ")[1],
-				},
-				{
-					headers: { "Content-Type": "application/json" },
-				}
-			)
-			.then(function (response) {
-				// TODO: Add search results into a list
-				console.log(response.data);
-				console.log(response.data[0].username);
-				me.searchResults = response.data;
-			});
+		this.search(this.searchTerm);
 	},
 };
 import "../style.css";
@@ -115,6 +145,11 @@ header button {
 	display: flex;
 	align-items: center;
 	flex-direction: column;
+
+	min-height: 0px;
+	min-width: 0px;
+	flex-basis: 50%;
+	flex-grow: 1;
 }
 .search-results-parent p {
 	color: var(--text1);
@@ -122,6 +157,8 @@ header button {
 .search-results-child {
 	display: flex;
 	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
 }
 .search-result {
 	height: 250px;
@@ -138,7 +175,7 @@ header button {
 .search-result h3 {
 	color: white;
 	font-weight: 600;
-	font-size: 32px;
+	font-size: 26px;
 }
 .search-result button {
 	width: 200px;

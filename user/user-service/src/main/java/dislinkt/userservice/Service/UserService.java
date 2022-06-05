@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -28,8 +29,51 @@ public class UserService {
 
     private final UserMapper userMapper;
 
+    public String getUserIdByApiToken(String apiToken) {
+        User user = userRepository.findByApiToken(apiToken);
+        if (user != null) {
+            return user.getId();
+        }
+        return null;
+    }
+
+    public String generateAPIToken(String userId) {
+        userId = userId.replace("\n", "");
+        System.out.println("Entered service...");
+        User user = userRepository.getById(userId);
+
+        if (user == null) {
+            System.out.println("User not found when generating API token.");
+            return null;
+        }
+        String upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String lowerAlphabet = "abcdefghijklmnopqrstuvwxyz";
+        String numbers = "0123456789";
+        String alphaNumeric = upperAlphabet + lowerAlphabet + numbers;
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        int length = 48;
+
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(alphaNumeric.length());
+            sb.append(alphaNumeric.charAt(index));
+        }
+        String token = sb.toString();
+        user.setApiToken(token);
+        if (userRepository.save(user) != null) {
+            System.out.println("UserService.generateAPIToken() : " + token);
+            return token;
+        } else {
+            System.out.println("Didn't generate token.");
+            return null;
+        }
+    }
+
+    // TODO: FOR TESTING PURPOSES
+
     public void generateUsers() {
-        for (int i = 0; i < 100; i++) {
+        ArrayList<User> users = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
             User user = new User();
             user.setUsername("user" + i);
             user.setPasswordInput("password" + i);
@@ -56,7 +100,7 @@ public class UserService {
             user.getStudies().add("user: " + i + " studies");
             user.getSkills().add("user: " + i + " skills");
             user.getInterests().add("user: " + i + " interests");
-            
+
             if (i % 3 == 0) {
                 user.setPrivateAccount(true);
             } else {
@@ -68,9 +112,13 @@ public class UserService {
             user.setBlockedUserIds(new ArrayList<String>());
 
             user.setRole("Client");
-
-            register(userMapper.entityToDto(user));
+            users.add(register(userMapper.entityToDto(user)));
         }
+
+        followUser(users.get(0).getId(), users.get(1).getId());
+        followUser(users.get(0).getId(), users.get(2).getId());
+        followUser(users.get(1).getId(), users.get(0).getId());
+        followUser(users.get(0).getId(), users.get(0).getId());
 
     }
 
@@ -96,10 +144,11 @@ public class UserService {
         User user = userRepository.findById(userId).get();
         if (user != null) {
             System.out.println("user found");
-            for (String id : user.getConnectionUserIds()) {
-                System.out.println(id);
+            if (user.getConnectionUserIds() != null) {
+                for (String id : user.getConnectionUserIds())
+                    System.out.println(id);
+                return user.getConnectionUserIds();
             }
-            return user.getConnectionUserIds();
         }
         return null;
     }
@@ -168,6 +217,19 @@ public class UserService {
             }
         }
         return userMapper.entityToDto(toViewUser);
+    }
+
+    public ArrayList<UserDTO> getConnectionRequestUserIds(String userId) {
+        User user = userRepository.getById(userId);
+        if (user.getConnectionRequestUserIds() != null) {
+            ArrayList<UserDTO> users = new ArrayList<>();
+            for (String id : user.getConnectionRequestUserIds()) {
+                UserDTO userDTO = userMapper.entityToDto(userRepository.findById(id).get());
+                users.add(userDTO);
+            }
+            return users;
+        }
+        return null;
     }
 
     public Boolean approveFollow(String userId, String followerUserId) {
@@ -318,6 +380,7 @@ public class UserService {
     }
 
     public ArrayList<UserDTO> findByUsername(String username) {
+        username = username.replace("\n", "");
         ArrayList<User> users = userRepository.findByUsername(username);
         ArrayList<UserDTO> userDTOs = new ArrayList<>();
         if (users == null) {
@@ -335,7 +398,7 @@ public class UserService {
         if (!userDTOs.isEmpty()) {
             return userDTOs;
         }
-        System.out.println("The user with the username : '" + username + "' is private.");
+        System.out.println("No users with the username: " + username + " found.");
         return null;
     }
 
@@ -389,43 +452,43 @@ public class UserService {
             System.out.println("User not found.");
             return null;
         }
-        if (!user.getFirstName().equals(userDTO.getFirstName()) && userDTO.getFirstName() != null) {
+        if (userDTO.getFirstName() != null && !user.getFirstName().equals(userDTO.getFirstName())) {
             user.setFirstName(userDTO.getFirstName());
             System.out.println("First name updated.");
         }
-        if (!user.getLastName().equals(userDTO.getLastName()) && userDTO.getLastName() != null) {
+        if (userDTO.getLastName() != null && !user.getLastName().equals(userDTO.getLastName())) {
             user.setLastName(userDTO.getLastName());
             System.out.println("Last name updated.");
         }
-        if (!user.getEmail().equals(userDTO.getEmail()) && userDTO.getEmail() != null) {
+        if (userDTO.getEmail() != null && !user.getEmail().equals(userDTO.getEmail())) {
             user.setEmail(userDTO.getEmail());
             System.out.println("Email updated.");
         }
-        if (!user.getNumber().equals(userDTO.getNumber()) && userDTO.getNumber() != null) {
+        if (userDTO.getNumber() != null && !user.getNumber().equals(userDTO.getNumber())) {
             user.setNumber(userDTO.getNumber());
             System.out.println("Number updated.");
         }
-        if (!user.getGender().equals(userDTO.getGender()) && userDTO.getGender() != null) {
+        if (userDTO.getGender() != null && !user.getGender().equals(userDTO.getGender())) {
             user.setGender(userDTO.getGender());
             System.out.println("Gender updated.");
         }
-        if (!user.getBiography().equals(userDTO.getBiography()) && userDTO.getBiography() != null) {
+        if (userDTO.getBiography() != null && !user.getBiography().equals(userDTO.getBiography())) {
             user.setBiography(userDTO.getBiography());
             System.out.println("Biography updated.");
         }
-        if (!user.getWorkExperience().equals(userDTO.getWorkExperience()) && userDTO.getWorkExperience() != null) {
+        if (userDTO.getWorkExperience() != null && !user.getWorkExperience().equals(userDTO.getWorkExperience())) {
             user.setWorkExperience(userDTO.getWorkExperience());
             System.out.println("Work experience updated.");
         }
-        if (!user.getStudies().equals(userDTO.getStudies()) && userDTO.getStudies() != null) {
+        if (userDTO.getStudies() != null && !user.getStudies().equals(userDTO.getStudies())) {
             user.setStudies(userDTO.getStudies());
             System.out.println("Studies updated.");
         }
-        if (!user.getSkills().equals(userDTO.getSkills()) && userDTO.getSkills() != null) {
+        if (userDTO.getSkills() != null && !user.getSkills().equals(userDTO.getSkills())) {
             user.setSkills(userDTO.getSkills());
             System.out.println("Skills updated.");
         }
-        if (!user.getInterests().equals(userDTO.getInterests()) && userDTO.getInterests() != null) {
+        if (userDTO.getInterests() != null && !user.getInterests().equals(userDTO.getInterests())) {
             user.setInterests(userDTO.getInterests());
             System.out.println("Interests updated.");
         }
@@ -452,6 +515,7 @@ public class UserService {
         for (User user2 : users) {
             if (user2.getUsername().equals(user.getUsername())) {
                 allegedUser = user2;
+                break;
             }
         }
         if (allegedUser == null) {
@@ -498,14 +562,16 @@ public class UserService {
         // LocalDateTime needs
         // So either convert to LocalDate or append String
 
-        LocalDateTime x;
-        if (incomingUser.getDateOfBirth().length() > 11) {
-            x = LocalDateTime.parse(incomingUser.getDateOfBirth());
-        } else {
-            LocalDate n = LocalDate.parse(incomingUser.getDateOfBirth());
-            x = LocalDateTime.of(n, LocalTime.now());
+        // TODO: imma add another temporary hack
+        LocalDateTime x = null;
+        if (incomingUser.getDateOfBirth() != null) {
+            if (incomingUser.getDateOfBirth().length() > 11) {
+                x = LocalDateTime.parse(incomingUser.getDateOfBirth());
+            } else {
+                LocalDate n = LocalDate.parse(incomingUser.getDateOfBirth());
+                x = LocalDateTime.of(n, LocalTime.now());
+            }
         }
-
         incomingUser.setDateOfBirth(null); // To bypass error
 
         User user = userMapper.dtoToEntity(incomingUser);
@@ -530,7 +596,7 @@ public class UserService {
             try {
                 passwordHash = skf.generateSecret(spec).getEncoded();
                 user.setPasswordHash(passwordHash);
-                user.setPasswordInput("");
+                user.setPasswordInput(null);
                 ArrayList<User> users = userRepository.findByUsername(user.getUsername());
                 for (User user1 : users) {
                     if (user1.getUsername().equalsIgnoreCase(user.getUsername())) {
