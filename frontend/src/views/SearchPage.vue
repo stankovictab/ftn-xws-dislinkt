@@ -35,13 +35,15 @@
 			</p>
 			<p
 				style="margin-top: 50px; color: var(--text2)"
-				v-if="!postsSearchResults"
+				v-if="!postSearchResults"
 			>
 				No results found.
 			</p>
 			<div class="search-results-child">
-				<div class="search-result" v-for="i in postsSearchResults" :key="i">
-					<h3>{{ i.title }} {{ i.description }}</h3>
+				<div class="search-result" v-for="i in postSearchResults" :key="i">
+					<h3>{{ i.title }} </h3>
+					<h3>{{ i.jobTitle }}</h3>
+					<h3>{{ i.jobDescription }}</h3>
 				</div>
 			</div>
 		</div>
@@ -91,6 +93,7 @@ export default {
 						}
 					)
 					.then(function (response) {
+						console.log("searchOffers", response.data);
 						me.postSearchResults = response.data;
 					});
 			}
@@ -106,7 +109,7 @@ export default {
 			searchTermDisplay: "",
 			inPlaceSearchTerm: this.searchTerm,
 			userSearchResults: null,
-			postsSearchResults: null,
+			postSearchResults: null,
 		};
 	},
 	computed: {
