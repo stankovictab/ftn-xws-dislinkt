@@ -6,31 +6,19 @@
 		</div>
 		<textarea
 			class="comment"
-			placeholder="Post Title"
+			placeholder="Job Offer Title"
 			v-model="title"
 		></textarea>
 		<textarea
 			class="comment"
-			placeholder="What's on your mind?"
+			placeholder="Job Offer Details"
 			v-model="description"
 		></textarea>
-		<textarea
-			class="comment"
-			placeholder="Embed link here."
-			v-model="embedLink"
-			v-if="this.embedLinkBool == true"
-		></textarea>
 		<div style="display: flex; justify-content: space-between">
-			<button class="alternate-button" @click="addImage()">
-				Add Image
-			</button>
-			<button
-				class="alternate-button"
-				@click="embedLinkEnable()"
-				v-if="this.embedLinkBool == false"
-			>
-				Embed Link
-			</button>
+			<div>
+				<label for="share-to-dislinkt">Share to dislinkt?	</label>
+				<input id="share-to-dislinkt" type="checkbox" v-model="shareToDislinkt" />
+			</div>
 			<button class="alternate-button" @click="submitPost()">
 				Submit
 			</button>
@@ -40,7 +28,8 @@
 
 <script>
 import { mapState } from "vuex";
-import axios from "axios";
+import { createOffer} from "../services/requests";
+
 export default {
 	name: "StatusInput",
 	components: {},
@@ -50,6 +39,7 @@ export default {
 			description: "",
 			embedLinkBool: false,
 			embedLink: "",
+			shareToDislinkt: false,
 		};
 	},
 	methods: {
@@ -57,29 +47,9 @@ export default {
 			this.embedLinkBool = true;
 		},
 		submitPost() {
-			axios
-				.post(
-					"http://localhost:5002/post/create",
-					{
-						title: this.title,
-						description: this.description,
-						embedLink: this.embedLink,
-						userId: this.user.id,
-						authorName:
-							this.user.firstName + " " + this.user.lastName,
-					},
-					{
-						headers: {
-							// TODO: Auth
-							// Authorization: "Bearer " + this.$store.state.token
-							"Content-Type": "application/json",
-						},
-					}
-				)
-				.then((response) => {
-					console.log(response);
-					alert("Post created!");
-				});
+			createOffer(this.user.firmId, this.title, this.description, this.shareToDislinkt).then((response) => {
+				console.log(response);
+			});
 		},
 	},
 	computed: {

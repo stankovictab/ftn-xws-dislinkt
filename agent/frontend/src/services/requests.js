@@ -58,3 +58,22 @@ export async function getOwnPosts(userId) {
 		);
 	return data;
 }
+
+export async function createOffer(firmId, jobTitle, jobDescription, dislinktShare) {
+	const data = await api("5003").post(
+		'/offer/create',
+		{
+			firmId,
+			jobTitle,
+			jobDescription,
+			dislinktShare
+		},
+		{
+			headers: { "Content-Type": "application/json", },
+		}).then(
+			function (response) {
+				return response.data;
+			}
+		);
+	return data;
+}
