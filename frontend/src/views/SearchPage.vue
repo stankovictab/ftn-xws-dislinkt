@@ -20,9 +20,9 @@
 					<!-- <p>{{ i }}</p> -->
 					<img src="../assets/placeholder.png" />
 					<h3>{{ i.firstName }} {{ i.lastName }}</h3>
-					<router-link style="font-size: 20px" :to="`/profile/${i.id}`">@{{ i.username }}</router-link>
+					<p>@{{ i.username }}</p>
 					<!-- <p>{{ i.workExperience }}</p> -->
-					<button>View Profile</button>
+					<button><router-link style="font-size: 20px" :to="`/profile/${i.id}`">View Profile</router-link></button>
 				</div>
 			</div>
 		</div>
