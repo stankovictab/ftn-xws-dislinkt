@@ -1,17 +1,10 @@
 <template>
 	<div>
 		<p>Your Company</p>
-		<h4>{{ firmName }}</h4>
+		<h4>{{ firm.name }}</h4>
 		<p v-if="returnedApiToken">Your API Token :</p>
-		<p v-if="returnedApiToken">{{ apiToken }}</p>
-		<button
-			style="width: 220px"
-			@click="setApiTokenEnable()"
-			v-if="!setApiTokenBoolean"
-		>
-			Set API Token
-		</button>
-		<div class="set-api-token" v-if="setApiTokenBoolean">
+		<p v-if="returnedApiToken">{{ firm.apiToken }}</p>
+		<div class="set-api-token" v-if="!returnedApiToken">
 			<h4>Enter your API Token :</h4>
 			<input type="text" v-model="apiToken" />
 			<button @click="setApiToken()">Set</button>
@@ -28,16 +21,17 @@ export default {
 	props: {},
 	data() {
 		return {
-			firmName: "",
+			firm: {},
 			apiToken: "",
-			returnedApiToken: "",
-			setApiTokenBoolean: false,
 		};
 	},
 	computed: {
 		...mapState({
 			user: "user",
 		}),
+		returnedApiToken(){
+			return !!this.firm.apiToken;
+		}
 	},
 	mounted() {
 		axios
@@ -47,13 +41,10 @@ export default {
 				},
 			})
 			.then((response) => {
-				this.firmName = response.data.name;
+				this.firm = response.data;
 			});
 	},
 	methods: {
-		setApiTokenEnable() {
-			this.setApiTokenBoolean = true;
-		},
 		setApiToken() {
 			axios
 				.post(
@@ -71,7 +62,7 @@ export default {
 				.then(
 					(response) => {
 						alert("API Token set successfully :\n" + response.data);
-						this.returnedApiToken = response.data;
+						this.firm = response.data;
 					},
 					(error) => {
 						alert(

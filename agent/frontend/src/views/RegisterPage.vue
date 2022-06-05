@@ -121,6 +121,8 @@
 <script>
 import { ref } from "vue";
 import axios from "axios";
+import "../style.css";
+import { mapState } from 'vuex';
 // import ListInputItem from "../components/ListInputItem.vue";
 
 export default {
@@ -274,17 +276,17 @@ export default {
 							alert(
 								"Welcome to Agent App, " + newCompany.name + "!"
 							);
-							response.data.role = "User";
-							me.$store.commit("setToken", response.data.id);
-							me.$store.commit("setUser", response.data);
+							me.$store.commit("setUser", {...me.user, firmId: response.data.id});
 							me.$router.push("/");
 						});
 				}
 			}
 		},
 	},
+	computed:{
+		...mapState(["user"]),
+	}
 };
-import "../style.css";
 </script>
 <style scoped>
 .multiple-input-div {
