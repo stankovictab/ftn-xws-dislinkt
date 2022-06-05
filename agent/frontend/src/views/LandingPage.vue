@@ -13,7 +13,11 @@
 				<router-link
 					:to="{
 						name: 'Register',
-						params: { registrationType: 'user' },
+						params: {
+							registrationType: 'user',
+							ownerId: null,
+							ownerName: null,
+						},
 					}"
 					><button class="cta-large-button" href="#/register">
 						Sign Up

@@ -6,14 +6,15 @@
 import { mapGetters } from "vuex";
 import Home from "./LandingPage.vue";
 import AdminHome from "./AdminHome.vue";
-import ClientHome from "./HomePage.vue";
+import UserHome from "./HomePage.vue";
 
 export default {
 	name: "HomeJuncture",
+	mounted() {},
 	components: {
 		Home,
 		AdminHome,
-		ClientHome,
+		UserHome,
 	},
 	props: {},
 	computed: {

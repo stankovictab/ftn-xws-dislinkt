@@ -17,7 +17,7 @@ public interface AgentServiceFeignClient {
 
 	// Eureka Dashboard redirects to this URL
 	@GetMapping(value = "/actuator/info")
-	public String home(); 
+	public String home();
 
 	@PostMapping("/agent/generateAgents")
 	public void generateAgents();
@@ -43,6 +43,9 @@ public interface AgentServiceFeignClient {
 	@PostMapping("/offer/create")
 	public ResponseEntity<OfferDTO> createOffer(@RequestBody OfferDTO offerDTO);
 
+	@PostMapping("/firm/get")
+	public ResponseEntity<FirmDTO> getFirm(@RequestBody String id);
+
 	@PostMapping("/firm/update")
 	public ResponseEntity<FirmDTO> updateFirm(@RequestBody FirmDTO firmDTO);
 
@@ -67,5 +70,4 @@ public interface AgentServiceFeignClient {
 	@PostMapping("/agent/register")
 	public ResponseEntity<AgentDTO> agentRegister(@RequestBody AgentDTO agentDTO);
 
-	
 }

@@ -2,9 +2,9 @@
 	<div class="register-and-login">
 		<div class="register-and-login-top">
 			<h1>
-				<router-link to="/"> Dislinkt </router-link>
+				<router-link to="/"> Agent App </router-link>
 			</h1>
-			<p>The place to connect.</p>
+			<p>Another place to connect!</p>
 		</div>
 		<div
 			class="register-and-login-bottom"

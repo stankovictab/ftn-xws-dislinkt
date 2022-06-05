@@ -128,6 +128,11 @@ public class AgentController implements AgentServiceFeignClient {
 	}
 
 	@Override
+	public ResponseEntity<FirmDTO> getFirm(String id) {
+		return new ResponseEntity<>(firmMapper.entityToDto(firmService.getFirm(id)), HttpStatus.OK);
+	}
+
+	@Override
 	public ResponseEntity<OfferDTO> createOffer(@RequestBody OfferDTO offerDTO) {
 		Firm firm = firmService.getFirm(offerDTO.getFirmId());
 		// Agent agent =

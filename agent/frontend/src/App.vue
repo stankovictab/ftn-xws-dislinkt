@@ -2,16 +2,16 @@
 	<div>
 		<!-- TODO: Add unregisteredSearch check -->
 		<header v-if="hasRole">
-			<router-link class="mini-logo" :to="{name: 'HomeJuncture'}">
-				Dislinkt
+			<router-link class="mini-logo" :to="{ name: 'HomeJuncture' }">
+				Agent App
 			</router-link>
 			<!-- TODO: Search on Enter -->
-			<input
+			<!-- <input
 				class="search-input"
 				placeholder="Search Job Offers on Dislinkt"
 				@keyup.enter="searchJobOffers"
 				v-model="searchTerm"
-			/>
+			/> -->
 			<button @click="logout">
 				{{ isLoggedIn ? "Log Out" : "Sign Up" }}
 			</button>
@@ -22,7 +22,7 @@
 			href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,700;0,800;1,900&display=swap"
 			rel="stylesheet"
 		/>
-		<router-view :key="$route.fullPath"/>
+		<router-view :key="$route.fullPath" />
 	</div>
 </template>
 

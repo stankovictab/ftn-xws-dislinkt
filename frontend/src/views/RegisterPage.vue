@@ -13,14 +13,6 @@
 			<h4>Welcome to Dislinkt!</h4>
 			<h5>General Information</h5>
 
-			<!-- 
-
-
-			TODO:
-
-
-
-			Registration type -->
 			<div class="multiple-input-div">
 				<div class="input-div">
 					<label>Username</label>
@@ -240,11 +232,6 @@ export default {
 					)
 					.then(function (response) {
 						usernameCheck.value = response.data;
-						// if (response.data == false) {
-						// 	usernameCheck.value = false;
-						// } else {
-						// 	usernameCheck.value = true;
-						// }
 					});
 			},
 

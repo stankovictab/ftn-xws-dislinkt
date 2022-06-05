@@ -2,26 +2,36 @@
 	<div class="register-and-login">
 		<div class="register-and-login-top">
 			<h1>
-				<router-link to="/"> Dislinkt </router-link>
+				<router-link to="/"> Agent App </router-link>
 			</h1>
-			<p>The place to connect.</p>
+			<p>Another place to connect!</p>
 		</div>
 		<div
 			class="register-and-login-bottom"
 			style="display: flex; flex-direction: column; align-items: center"
 		>
-			<h4>Welcome to Dislinkt!</h4>
+			<h4 v-if="registrationType == 'user'">Welcome to Agent App!</h4>
+			<h4 v-if="registrationType == 'company'">
+				Register a company to your account!
+			</h4>
 			<h5>General Information</h5>
-
-			<!-- 
-
-
-			TODO:
-
-
-
-			Registration type -->
-			<div class="multiple-input-div">
+			<div class="input-div-large" v-if="registrationType == 'company'">
+				<div class="input-div">
+					<label>Company Owner</label>
+					<p>{{ ownerName }}</p>
+				</div>
+			</div>
+			<div class="input-div-large" v-if="registrationType == 'company'">
+				<div class="input-div">
+					<label>Company Name</label>
+					<input
+						id="name"
+						placeholder="Company, Inc."
+						v-model="name"
+					/>
+				</div>
+			</div>
+			<div class="multiple-input-div" v-if="registrationType == 'user'">
 				<div class="input-div">
 					<label>Username</label>
 					<input
@@ -45,16 +55,6 @@
 				<p style="color: #ff6a6a; font-size: 20px">
 					Username already exists, please choose another one.
 				</p>
-			</div>
-			<div class="input-div-large" v-if="registrationType == 'company'">
-				<div class="input-div">
-					<label>Company Name</label>
-					<input
-						id="firstName"
-						placeholder="John"
-						v-model="firstName"
-					/>
-				</div>
 			</div>
 			<div class="multiple-input-div" v-if="registrationType == 'user'">
 				<div class="input-div">
@@ -94,86 +94,24 @@
 					/>
 				</div>
 			</div>
-			<div class="multiple-input-div" v-if="registrationType == 'user'">
+			<div class="input-div-large" v-if="registrationType == 'company'">
 				<div class="input-div">
-					<label>Gender</label>
-					<select id="gender" v-model="gender">
-						<!-- <option value="" selected></option> -->
-						<option value="male">Male</option>
-						<option value="female">Female</option>
-					</select>
-				</div>
-				<div class="input-div">
-					<label>Date of Birth</label>
-					<input id="dateofbirth" type="date" v-model="dateOfBirth" />
+					<label>Description</label>
+					<input
+						id="description"
+						placeholder="Something about the company..."
+						v-model="description"
+					/>
 				</div>
 			</div>
-			<h5 v-if="registrationType == 'user'">
-				Biography & Work Experience
-			</h5>
-			<div class="input-div-large">
-				<label v-if="registrationType == 'user'">Biography</label>
-				<label v-if="registrationType == 'company'">Description</label>
-				<textarea
-					id="biography"
-					cols="20"
-					rows="3"
-					v-model="biography"
-				></textarea>
-			</div>
-			<div class="input-div-large" v-if="registrationType == 'user'">
-				<label>Work Experience</label>
-				<list-input-item
-					v-for="(expItem, index) in workExperience"
-					:key="'workExpItem' + index"
-					v-model="workExperience[index]"
-					:showPlus="index == workExperience.length - 1"
-					@lengthen="workExperience.push('')"
-				>
-				</list-input-item>
-			</div>
-			<div class="input-div-large" v-if="registrationType == 'user'">
-				<label>Studies</label>
-				<list-input-item
-					v-for="(studiesItem, index) in studies"
-					:key="'studiesItem' + index"
-					v-model="studies[index]"
-					:showPlus="index == studies.length - 1"
-					@lengthen="studies.push('')"
-				>
-				</list-input-item>
-			</div>
-			<div class="input-div-large" v-if="registrationType == 'user'">
-				<label>Skills</label>
-				<list-input-item
-					v-for="(skillsItem, index) in skills"
-					:key="'skillsItem' + index"
-					v-model="skills[index]"
-					:showPlus="index == skills.length - 1"
-					@lengthen="skills.push('')"
-				>
-				</list-input-item>
-			</div>
-			<div class="input-div-large" v-if="registrationType == 'user'">
-				<label>Interests</label>
-				<list-input-item
-					v-for="(interestsItem, index) in interests"
-					:key="'interestsItem' + index"
-					v-model="interests[index]"
-					:showPlus="index == interests.length - 1"
-					@lengthen="interests.push('')"
-				>
-				</list-input-item>
-			</div>
-			<h5 v-if="registrationType == 'user'">Privacy</h5>
-			<div
-				id="privacy-radio-buttons"
-				class="input-div-large"
-				v-if="registrationType == 'user'"
-			>
-				<div class="checkbox-div">
-					<input type="checkbox" v-model="privateAccount" />
-					<label for="public">Private Account</label>
+			<div class="input-div-large" v-if="registrationType == 'company'">
+				<div class="input-div">
+					<label>Culture</label>
+					<input
+						id="culture"
+						placeholder="Something about the culture..."
+						v-model="culture"
+					/>
 				</div>
 			</div>
 			<button @click="register">Sign Up</button>
@@ -183,16 +121,16 @@
 <script>
 import { ref } from "vue";
 import axios from "axios";
-import ListInputItem from "../components/ListInputItem.vue";
+// import ListInputItem from "../components/ListInputItem.vue";
 
 export default {
 	name: "RegisterPage",
-	components: {
-		ListInputItem,
-	},
 	props: {
 		registrationType: String,
+		ownerId: String,
+		ownerName: String,
 	},
+	mounted() {},
 	setup() {
 		localStorage.clear();
 
@@ -202,14 +140,10 @@ export default {
 		var lastName = ref(null);
 		var email = ref(null);
 		var number = ref(null);
-		var gender = ref(null);
-		var dateOfBirth = ref(null);
-		var biography = ref(null);
-		var workExperience = ref([""]);
-		var studies = ref([""]);
-		var skills = ref([""]);
-		var interests = ref([""]);
-		var privateAccount = ref(false);
+
+		var name = ref(null);
+		var description = ref(null);
+		var culture = ref(null);
 
 		var usernameCheck = ref(true);
 
@@ -220,31 +154,22 @@ export default {
 			lastName,
 			email,
 			number,
-			gender,
-			dateOfBirth,
-			biography,
-			workExperience,
-			studies,
-			skills,
-			interests,
-			privateAccount,
+
+			name,
+			description,
+			culture,
 
 			usernameCheck,
 
 			checkUsername() {
 				axios
 					.post(
-						"http://localhost:5001/user/checkUsername",
+						"http://localhost:5003/agent/checkUsername",
 						this.username,
 						{ headers: { "Content-Type": "text/plain" } }
 					)
 					.then(function (response) {
 						usernameCheck.value = response.data;
-						// if (response.data == false) {
-						// 	usernameCheck.value = false;
-						// } else {
-						// 	usernameCheck.value = true;
-						// }
 					});
 			},
 
@@ -256,13 +181,13 @@ export default {
 					email.indexOf(".") != email.length - 1 &&
 					email.indexOf("@") + 1 != email.indexOf(".")
 				)
-					// email is in correct form !!!
 					return true;
 			},
 		};
 	},
 	methods: {
 		register() {
+			// TODO: IF za registrationType
 			if (this.registrationType == "user") {
 				if (
 					this.username == null ||
@@ -270,14 +195,7 @@ export default {
 					this.firstName == null ||
 					this.lastName == null ||
 					this.email == null ||
-					this.number == null ||
-					this.gender == null ||
-					this.dateOfBirth == null ||
-					this.biography == null ||
-					!this.workExperience ||
-					!this.studies ||
-					!this.skills ||
-					!this.interests
+					this.number == null
 				) {
 					alert("All fields need to be filled, try again.");
 				} else if (!this.checkEmail(this.email)) {
@@ -291,34 +209,26 @@ export default {
 					);
 					return;
 				} else {
-					var newUser = {
+					var newAgent = {
 						username: this.username,
 						passwordInput: this.passwordInput,
 						firstName: this.firstName,
 						lastName: this.lastName,
 						email: this.email,
 						number: this.number,
-						gender: this.gender,
-						dateOfBirth: this.dateOfBirth,
-						biography: this.biography,
-						workExperience: this.workExperience,
-						studies: this.studies,
-						skills: this.skills,
-						interests: this.interests,
-						privateAccount: this.privateAccount,
 					};
 
 					const me = this;
 
 					axios
-						.post("http://localhost:5001/user/register/", newUser)
+						.post("http://localhost:5003/agent/register/", newAgent)
 						.then(function (response) {
 							alert(
-								"Welcome to Dislinkt, " +
-									newUser.firstName +
+								"Welcome to Agent App, " +
+									newAgent.firstName +
 									"!"
 							);
-							response.data.role = "Client";
+							response.data.role = "User";
 							me.$store.commit("setToken", response.data.id);
 							me.$store.commit("setUser", response.data);
 							me.$router.push("/");
@@ -326,12 +236,11 @@ export default {
 				}
 			} else {
 				if (
-					this.username == null ||
-					this.passwordInput == null ||
-					this.firstName == null ||
+					this.name == null ||
 					this.email == null ||
 					this.number == null ||
-					this.biography == null
+					this.description == null ||
+					this.culture == null
 				) {
 					alert("All fields need to be filled, try again.");
 				} else if (!this.checkEmail(this.email)) {
@@ -346,29 +255,26 @@ export default {
 					return;
 				} else {
 					var newCompany = {
-						username: this.username,
-						passwordInput: this.passwordInput,
-						firstName: this.firstName,
+						ownerId: this.ownerId,
+						name: this.name,
 						email: this.email,
 						number: this.number,
-						biography: this.biography,
-						privateAccount: false,
+						description: this.description,
+						culture: this.culture,
 					};
 
 					const me = this;
 
 					axios
 						.post(
-							"http://localhost:5001/user/register/",
+							"http://localhost:5003/firm/register/",
 							newCompany
 						)
 						.then(function (response) {
 							alert(
-								"Welcome to Dislinkt, " +
-									newCompany.firstName +
-									"!"
+								"Welcome to Agent App, " + newCompany.name + "!"
 							);
-							response.data.role = "Client";
+							response.data.role = "User";
 							me.$store.commit("setToken", response.data.id);
 							me.$store.commit("setUser", response.data);
 							me.$router.push("/");

@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import org.springframework.stereotype.Service;
 
 import dislinkt.agentclient.FirmDTO;
+import dislinkt.agentservice.Entity.Agent;
 import dislinkt.agentservice.Entity.Firm;
 import dislinkt.agentservice.Mapper.FirmMapper;
+import dislinkt.agentservice.Repository.AgentRepository;
 import dislinkt.agentservice.Repository.FirmRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -17,6 +19,8 @@ public class FirmService {
     private final FirmRepository firmRepository;
 
     private final FirmMapper firmMapper;
+
+    private final AgentRepository agentRepository;
 
     // TODO: FOR TESTING PURPOSES ONLY
     public Firm generateFirm(String agentId) {
@@ -36,8 +40,8 @@ public class FirmService {
             System.out.println("FirmService.getByName: name is null");
             return null;
         }
-        Firm firm = firmRepository.findByName(name);
-        if (firm == null) {
+        ArrayList<Firm> firm = firmRepository.findByName(name);
+        if (firm == null || firm.isEmpty()) {
             System.out.println("FirmService.getByName: firm is null");
             return null;
         }
@@ -58,7 +62,7 @@ public class FirmService {
         return null;
     }
 
-    public FirmDTO updateFirm(FirmDTO firmDTO) { 
+    public FirmDTO updateFirm(FirmDTO firmDTO) {
         Firm firm = firmRepository.findById(firmDTO.getId()).get();
         if (firm == null) {
             System.out.println("Firm not found");
@@ -131,23 +135,23 @@ public class FirmService {
         firm.setOfferIds(null);
         firm.setFirmCommentIds(null);
         firm.setApproved(false);
-        
+
         ArrayList<Firm> firms = firmRepository.findByName(firm.getName());
         if (!firms.isEmpty()) {
-            System.out.println("Firm with name: '" + firm.getName() +  "' already exists.");
+            System.out.println("Firm with name: '" + firm.getName() + "' already exists.");
             return null;
         }
-        
+
         if (firmRepository.save(firm) != null) {
-            System.out.println("Firm with name: '" + firm.getName() +  "' successfully saved.");
+            System.out.println("Firm with name: '" + firm.getName() + "' successfully saved.");
             System.out.println("Administrator will be able to approve it.");
             Agent agent = agentRepository.findById(firm.getOwnerId()).get();
             agent.setFirmId(firm.getId());
             agentRepository.save(agent);
             return firmMapper.entityToDto(firm);
         }
-        System.out.println("Firm with name: '" + firm.getName() +  "' could not be saved.");
+        System.out.println("Firm with name: '" + firm.getName() + "' could not be saved.");
         return null;
     }
-    
+
 }

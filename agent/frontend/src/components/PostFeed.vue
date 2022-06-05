@@ -13,20 +13,19 @@
 <script>
 import UserPost from "../components/UserPost.vue";
 import { mapState } from "vuex";
-// import { ref } from "vue";
 export default {
 	name: "PostFeed",
 	components: { UserPost },
 	props: {
 		posts: Array,
 	},
-	
+
 	computed: {
 		...mapState({
 			user: "user",
 		}),
 	},
-	
+
 	methods: {
 		applyVote(postId, newVotes) {
 			this.posts.find((post) => post.id === postId).votes = newVotes;
