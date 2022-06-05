@@ -37,6 +37,9 @@ public interface AgentServiceFeignClient {
 	@PostMapping("/agent/setAdmin")
 	public void setAdmin();
 
+	@PostMapping("/comment/getByUserIdAndFirmId")
+	public ResponseEntity<CommentDTO> getCommentByUserIdAndFirmId(@RequestBody Map<String, String> json);
+
 	@PostMapping("/comment/create")
 	public ResponseEntity<CommentDTO> createComment(@RequestBody CommentDTO commentDTO);
 
@@ -45,6 +48,9 @@ public interface AgentServiceFeignClient {
 
 	@PostMapping("/firm/get")
 	public ResponseEntity<FirmDTO> getFirm(@RequestBody String id);
+
+	@PostMapping("/firm/getAll")
+	public ResponseEntity<ArrayList<FirmDTO>> getAllFirms();
 
 	@PostMapping("/firm/update")
 	public ResponseEntity<FirmDTO> updateFirm(@RequestBody FirmDTO firmDTO);

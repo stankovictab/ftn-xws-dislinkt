@@ -10,5 +10,7 @@ import dislinkt.agentservice.Entity.Comment;
 @Repository
 public interface CommentRepository extends MongoRepository<Comment, String> {
 
-    ArrayList<Comment> findByFirmId(String firmId);
+	ArrayList<Comment> findByFirmId(String firmId);
+
+	Comment findByFirmIdAndUserId(String firmId, String userId);
 }

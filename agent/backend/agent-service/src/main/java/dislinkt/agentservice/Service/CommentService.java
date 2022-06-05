@@ -19,7 +19,9 @@ public class CommentService {
 
     private final CommentMapper commentMapper;
 
-
+    public Comment getAllCommentsByFirmIdAndUserId(String firmId, String userId) {
+        return commentRepository.findByFirmIdAndUserId(firmId, userId);
+    }
 
     public ArrayList<CommentDTO> getAllCommentsByFirmId(String firmId) {
         ArrayList<Comment> comments = commentRepository.findByFirmId(firmId);
@@ -43,5 +45,5 @@ public class CommentService {
         System.out.println("Comment not created");
         return null;
     }
-    
+
 }

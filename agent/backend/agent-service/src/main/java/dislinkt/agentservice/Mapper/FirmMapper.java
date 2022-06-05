@@ -10,10 +10,12 @@ import dislinkt.agentservice.Entity.Firm;
 @Mapper(componentModel = "spring")
 public interface FirmMapper {
 
-    FirmDTO entityToDto(Firm firm);
+	FirmDTO entityToDto(Firm firm);
 
-    Firm dtoToEntity(FirmDTO firmDTO);
+	ArrayList<FirmDTO> entityListToDtoList(ArrayList<Firm> firmList);
 
-    ArrayList<FirmDTO> toFirmDTOList(ArrayList<FirmDTO> findByFirstName);
-    
+	Firm dtoToEntity(FirmDTO firmDTO);
+
+	ArrayList<FirmDTO> toFirmDTOList(ArrayList<FirmDTO> findByFirstName);
+
 }

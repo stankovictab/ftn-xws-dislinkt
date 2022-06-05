@@ -52,6 +52,10 @@ public class FirmService {
         return firmRepository.findById(firmId).orElse(null);
     }
 
+    public ArrayList<Firm> getAllFirms() {
+        return firmRepository.findAll();
+    }
+
     public Firm setApiToken(String firmId, String apiToken) {
         Firm firm = firmRepository.getById(firmId);
         if (firm != null) {

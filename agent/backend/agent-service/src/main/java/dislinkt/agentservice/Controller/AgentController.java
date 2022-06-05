@@ -16,9 +16,11 @@ import dislinkt.agentclient.CommentDTO;
 import dislinkt.agentclient.FirmDTO;
 import dislinkt.agentclient.OfferDTO;
 import dislinkt.agentservice.Entity.Agent;
+import dislinkt.agentservice.Entity.Comment;
 import dislinkt.agentservice.Entity.Firm;
 import dislinkt.agentservice.Entity.Offer;
 import dislinkt.agentservice.Mapper.AgentMapper;
+import dislinkt.agentservice.Mapper.CommentMapper;
 import dislinkt.agentservice.Mapper.FirmMapper;
 import dislinkt.agentservice.Service.AgentService;
 import dislinkt.agentservice.Service.CommentService;
@@ -46,6 +48,8 @@ public class AgentController implements AgentServiceFeignClient {
 	private final FirmMapper firmMapper;
 
 	private final PostServiceFeignClient postServiceFeignClient;
+
+	private final CommentMapper commentMapper;
 
 	@GetMapping(value = "/actuator/info")
 	@Override
@@ -128,8 +132,34 @@ public class AgentController implements AgentServiceFeignClient {
 	}
 
 	@Override
+	public ResponseEntity<CommentDTO> getCommentByUserIdAndFirmId(Map<String, String> json) {
+		System.out.println("Usao");
+		System.out.println(json);
+		String userId = json.get("userId");
+		String firmId = json.get("firmId");
+		System.out.println(userId);
+		System.out.println(firmId);
+
+		if (userId == null || firmId == null) {
+			System.out.println("Nije dobar.");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		Comment comment = commentService.getAllCommentsByFirmIdAndUserId(firmId, userId);
+		if (comment != null) {
+			return new ResponseEntity<>(commentMapper.entityToDto(comment), HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+
+	@Override
 	public ResponseEntity<FirmDTO> getFirm(String id) {
 		return new ResponseEntity<>(firmMapper.entityToDto(firmService.getFirm(id)), HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<ArrayList<FirmDTO>> getAllFirms() {
+		return new ResponseEntity<>(firmMapper.entityListToDtoList(firmService.getAllFirms()), HttpStatus.OK);
 	}
 
 	@Override

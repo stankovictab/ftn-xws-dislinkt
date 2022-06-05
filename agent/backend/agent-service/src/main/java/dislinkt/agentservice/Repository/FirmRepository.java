@@ -11,7 +11,6 @@ import dislinkt.agentservice.Entity.Firm;
 @Repository
 public interface FirmRepository extends MongoRepository<Firm, String> {
 
-    
     @Query("{'name': {$regex: ?0, $options: 'i'}}")
     ArrayList<Firm> findByName(String name);
 
@@ -20,4 +19,6 @@ public interface FirmRepository extends MongoRepository<Firm, String> {
     Firm findByOwnerId(String ownerId);
 
     Firm getById(String id);
+
+    ArrayList<Firm> findAll();
 }

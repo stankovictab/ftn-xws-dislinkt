@@ -8,10 +8,14 @@
 			</div>
 		</section>
 		<main>
-			<status-input></status-input>
+			<status-input v-if="user.firmId"></status-input>
+			<h4 v-if="!user.firmId">
+				Register a company to create job offers!
+			</h4>
 			<!-- <post-feed :posts="posts"></post-feed> -->
 		</main>
 		<section>
+			<companies-list v-if="!user.firmId"></companies-list>
 			<!-- <chat-links></chat-links> -->
 		</section>
 	</div>
@@ -21,6 +25,7 @@
 import RegisterCompany from "../components/RegisterCompany.vue";
 import CompanyInfo from "../components/CompanyInfo.vue";
 import StatusInput from "../components/StatusInput.vue";
+import CompaniesList from "../components/CompaniesList.vue";
 // import ChatLinks from "../components/ChatLinks.vue";
 // import PostFeed from "../components/PostFeed.vue";
 // import { getFeed } from "../services/requests";
@@ -33,6 +38,7 @@ export default {
 		RegisterCompany,
 		CompanyInfo,
 		StatusInput,
+		CompaniesList,
 		// ChatLinks,
 		// PostFeed,
 	},
