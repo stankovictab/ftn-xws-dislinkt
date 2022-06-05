@@ -208,6 +208,9 @@ public class AgentController implements AgentServiceFeignClient {
 		if (firmDTO1 == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+		if (firmDTO1.getId() == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<>(firmDTO1, HttpStatus.OK);
 	}
 

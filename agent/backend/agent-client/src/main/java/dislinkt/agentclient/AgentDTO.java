@@ -19,5 +19,7 @@ public class AgentDTO {
 
     private String apiToken;
 
+    private String firmId;
+
     private String role;
 }

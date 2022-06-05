@@ -32,6 +32,8 @@ public class Agent {
 
     private String apiToken;
 
+    private String firmId;
+
     // 3 roles: Admin, Owner, User
     private String role;
 

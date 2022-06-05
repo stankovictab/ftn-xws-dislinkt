@@ -36,12 +36,12 @@ public class FirmService {
             System.out.println("FirmService.getByName: name is null");
             return null;
         }
-        Firm firm = firmRepository.findByName(name).get(0);
+        Firm firm = firmRepository.findByName(name);
         if (firm == null) {
             System.out.println("FirmService.getByName: firm is null");
             return null;
         }
-        return firm;
+        return firm.get(0);
     }
 
     public Firm getFirm(String firmId) {
@@ -126,21 +126,24 @@ public class FirmService {
         Firm firm = firmMapper.dtoToEntity(firmDTO);
         if (firmRepository.findByOwnerId(firm.getOwnerId()) != null) {
             System.out.println("User already has firm");
-            return null;
+            return firmDTO;
         }
         firm.setOfferIds(null);
         firm.setFirmCommentIds(null);
         firm.setApproved(false);
-
+        
         ArrayList<Firm> firms = firmRepository.findByName(firm.getName());
         if (!firms.isEmpty()) {
             System.out.println("Firm with name: '" + firm.getName() +  "' already exists.");
             return null;
         }
-
+        
         if (firmRepository.save(firm) != null) {
             System.out.println("Firm with name: '" + firm.getName() +  "' successfully saved.");
             System.out.println("Administrator will be able to approve it.");
+            Agent agent = agentRepository.findById(firm.getOwnerId()).get();
+            agent.setFirmId(firm.getId());
+            agentRepository.save(agent);
             return firmMapper.entityToDto(firm);
         }
         System.out.println("Firm with name: '" + firm.getName() +  "' could not be saved.");
