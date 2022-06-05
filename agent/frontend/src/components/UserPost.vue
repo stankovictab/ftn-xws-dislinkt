@@ -1,54 +1,20 @@
 <template>
 	<article class="user-post">
 		<!-- <router-link to="/profile/id">{{ post.username }}</router-link> -->
-		<p>{{ post.authorName }}</p>
 		<p style="font-weight: 600; font-size: 25px">
-			{{ post.title }}
+			{{ post.jobTitle }}
 		</p>
 		<p>
-			{{ post.description }}
+			{{ post.jobDescription }}
 		</p>
-		<div>
-			<button @click="changeVote(1)" :class="{ active: myVote == 1 }">
-				👍
-			</button>
-			{{ post.likes }}
-			<button @click="changeVote(-1)" :class="{ active: myVote == -1 }">
-				👎
-			</button>
-			{{ post.likes }}
-		</div>
-		<div class="comment-container">
-			<comment-on-post
-				v-for="comment in post.comments"
-				:key="comment.id"
-				:comment="comment"
-			/>
-		</div>
-		<div class="comment-input" v-if="isCommenting">
-			<img
-				class="commenting-avatar"
-				:src="require('../assets/' + avatar)"
-			/>
-			<input type="text" v-model="commentText" />
-			<button @click="postComment">Post comment</button>
-		</div>
-		<div class="comment-control">
-			{{ post.comments?.length }}
-			<button @click="toggleCommenting">💬</button>
-		</div>
 	</article>
 </template>
 
 <script>
-// import CommentOnPost from './CommentOnPost.vue';
 import { mapState } from "vuex";
 
 export default {
 	name: "UserPost",
-	components: {
-		// CommentOnPost
-	},
 	props: {
 		post: Object,
 	},

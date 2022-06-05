@@ -35,11 +35,8 @@ export async function getFriends() {
 	// );
 }
 
-export async function getFeed(userId) {
-	const data = await api("5002").post('post/getFeed', userId,
-		{
-			headers: { "Content-Type": "plain/text" },
-		}).then(
+export async function getFeed() {
+	const data = await api("5003").post('offer/getAll').then(
 			function (response) {
 				return response.data;
 			}

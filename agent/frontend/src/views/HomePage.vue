@@ -8,8 +8,8 @@
 			</div>
 		</section>
 		<main>
-			<status-input></status-input>
-			<!-- <post-feed :posts="posts"></post-feed> -->
+			<status-input @reloadPosts="reloadPosts"></status-input>
+			<post-feed :posts="posts"></post-feed>
 		</main>
 		<section>
 			<!-- <chat-links></chat-links> -->
@@ -22,8 +22,8 @@ import RegisterCompany from "../components/RegisterCompany.vue";
 import CompanyInfo from "../components/CompanyInfo.vue";
 import StatusInput from "../components/StatusInput.vue";
 // import ChatLinks from "../components/ChatLinks.vue";
-// import PostFeed from "../components/PostFeed.vue";
-// import { getFeed } from "../services/requests";
+import PostFeed from "../components/PostFeed.vue";
+import { getFeed } from "../services/requests";
 import { mapState } from "vuex";
 
 export default {
@@ -34,23 +34,28 @@ export default {
 		CompanyInfo,
 		StatusInput,
 		// ChatLinks,
-		// PostFeed,
+		PostFeed,
 	},
 	computed: {
 		...mapState({
 			user: "user",
 		}),
 	},
+	mounted() {
+		this.reloadPosts()
+	},
 	data: function () {
 		return {
-			// posts: [],
+			posts: [],
 		};
 	},
-	mounted() {
-		// getFeed(this.user.id).then((response) => {
-		// 	this.posts = response;
-		// });
-	},
+	methods:{
+		reloadPosts(){
+			getFeed().then((response) => {
+			this.posts = response;
+		});
+		}
+	}
 };
 import "../style.css";
 </script>

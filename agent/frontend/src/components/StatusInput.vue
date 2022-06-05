@@ -49,6 +49,7 @@ export default {
 		submitPost() {
 			createOffer(this.user.firmId, this.title, this.description, this.shareToDislinkt).then((response) => {
 				console.log(response);
+				this.$emit('reloadPosts');
 			});
 		},
 	},
