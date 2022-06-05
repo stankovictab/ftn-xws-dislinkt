@@ -8,11 +8,14 @@
 			</div>
 		</section>
 		<main>
-			<status-input v-if="user.firmId"></status-input>
+			<status-input
+				v-if="user.firmId"
+				@reloadPosts="reloadPosts"
+			></status-input>
 			<h4 v-if="!user.firmId">
 				Register a company to create job offers!
 			</h4>
-			<!-- <post-feed :posts="posts"></post-feed> -->
+			<post-feed :posts="posts"></post-feed>
 		</main>
 		<section>
 			<companies-list v-if="!user.firmId"></companies-list>
@@ -27,8 +30,8 @@ import CompanyInfo from "../components/CompanyInfo.vue";
 import StatusInput from "../components/StatusInput.vue";
 import CompaniesList from "../components/CompaniesList.vue";
 // import ChatLinks from "../components/ChatLinks.vue";
-// import PostFeed from "../components/PostFeed.vue";
-// import { getFeed } from "../services/requests";
+import PostFeed from "../components/PostFeed.vue";
+import { getFeed } from "../services/requests";
 import { mapState } from "vuex";
 
 export default {
@@ -40,22 +43,27 @@ export default {
 		StatusInput,
 		CompaniesList,
 		// ChatLinks,
-		// PostFeed,
+		PostFeed,
 	},
 	computed: {
 		...mapState({
 			user: "user",
 		}),
 	},
+	mounted() {
+		this.reloadPosts();
+	},
 	data: function () {
 		return {
-			// posts: [],
+			posts: [],
 		};
 	},
-	mounted() {
-		// getFeed(this.user.id).then((response) => {
-		// 	this.posts = response;
-		// });
+	methods: {
+		reloadPosts() {
+			getFeed().then((response) => {
+				this.posts = response;
+			});
+		},
 	},
 };
 import "../style.css";

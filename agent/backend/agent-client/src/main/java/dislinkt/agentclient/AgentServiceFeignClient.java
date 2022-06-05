@@ -19,6 +19,9 @@ public interface AgentServiceFeignClient {
 	@GetMapping(value = "/actuator/info")
 	public String home();
 
+	@PostMapping("/offer/getAll")
+	public ResponseEntity<ArrayList<OfferDTO>> getAllOffers();
+
 	@PostMapping("/agent/generateAgents")
 	public void generateAgents();
 
