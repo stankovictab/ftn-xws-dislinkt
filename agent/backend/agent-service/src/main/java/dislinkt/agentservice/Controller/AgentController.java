@@ -61,6 +61,17 @@ public class AgentController implements AgentServiceFeignClient {
 	}
 
 	@Override
+	public ResponseEntity<ArrayList<OfferDTO>> getAllOffers() {
+		ArrayList<OfferDTO> offers = offerService.getAllOffers();
+
+		if (offers == null || offers.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<>(offers, HttpStatus.OK);
+	}
+
+	@Override
 	public ResponseEntity<FirmDTO> findByName(String name) {
 
 		Firm firm = firmService.getByName(name);

@@ -55,6 +55,15 @@ public class OfferService {
         return offerRepository.save(offer);
     }
 
+    public ArrayList<OfferDTO> getAllOffers() {
+        ArrayList<Offer> offers = offerRepository.findAll();
+        ArrayList<OfferDTO> offerDTOs = new ArrayList<>();
+        for (Offer offer : offers) {
+            offerDTOs.add(offerMapper.entityToDto(offer));
+        }
+        return offerDTOs;
+    }
+
 
     public OfferDTO createOffer(OfferDTO offerDTO, Firm firm) {
         Offer offer = offerMapper.dtoToEntity(offerDTO);
