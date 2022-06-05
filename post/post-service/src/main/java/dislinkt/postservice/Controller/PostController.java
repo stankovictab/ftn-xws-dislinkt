@@ -61,7 +61,15 @@ public class PostController implements PostServiceFeignClient {
 	@Override
 	public ResponseEntity<ArrayList<PostDTO>> getFeed(@RequestBody String userId) {
 		ArrayList<String> connectionUserIds = userServiceFeignClient.getConnectionUserIds(userId).getBody();
-		return new ResponseEntity<>(postService.getFeed(userId, connectionUserIds), HttpStatus.OK);
+		ArrayList<PostDTO> postDTOs = postService.getFeed(userId, connectionUserIds);
+
+		for (PostDTO postdto: postDTOs) {
+			ArrayList<CommentDTO> commentDTOs = commentService.getAllByPostId(postdto.getId());
+			postdto.setComments(new ArrayList<>());
+			postdto.setComments(commentDTOs);
+		}
+
+		return new ResponseEntity<>(postDTOs, HttpStatus.OK);
 	}
 
 	@Override
@@ -79,13 +87,25 @@ public class PostController implements PostServiceFeignClient {
 			if (isPrivate) {
 				UserDTO userDTO = userServiceFeignClient.findById(userId).getBody();
 				if (userDTO.getConnectionUserIds().contains(userPostsId)) {
-					return new ResponseEntity<>(postService.getAllByUser(userPostsId), HttpStatus.OK);
+					ArrayList<PostDTO> postDTOs = postService.getAllByUser(userPostsId);
+					for (PostDTO postdto: postDTOs) {
+						ArrayList<CommentDTO> commentDTOs = commentService.getAllByPostId(postdto.getId());
+						postdto.setComments(new ArrayList<>());
+						postdto.setComments(commentDTOs);
+					}
+
+					return new ResponseEntity<>(postDTOs, HttpStatus.OK);
 				} else {
 					return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 				}
 			}
 		}
 		ArrayList<PostDTO> postDTOs = postService.getAllByUser(userPostsId);
+		for (PostDTO postdto: postDTOs) {
+			ArrayList<CommentDTO> commentDTOs = commentService.getAllByPostId(postdto.getId());
+			postdto.setComments(new ArrayList<>());
+			postdto.setComments(commentDTOs);
+		}
 		if (postDTOs == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

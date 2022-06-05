@@ -38,6 +38,7 @@ public class UserService {
     }
 
     public String generateAPIToken(String userId) {
+        userId = userId.replace("\n", "");
         System.out.println("Entered service...");
         User user = userRepository.getById(userId);
 
@@ -68,8 +69,11 @@ public class UserService {
         }
     }
 
+    // TODO: FOR TESTING PURPOSES
+
     public void generateUsers() {
-        for (int i = 0; i < 100; i++) {
+        ArrayList<User> users = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
             User user = new User();
             user.setUsername("user" + i);
             user.setPasswordInput("password" + i);
@@ -108,9 +112,13 @@ public class UserService {
             user.setBlockedUserIds(new ArrayList<String>());
 
             user.setRole("Client");
-
-            register(userMapper.entityToDto(user));
+            users.add(register(userMapper.entityToDto(user)));
         }
+
+        followUser(users.get(0).getId(), users.get(1).getId());
+        followUser(users.get(0).getId(), users.get(2).getId());
+        followUser(users.get(1).getId(), users.get(0).getId());
+        followUser(users.get(0).getId(), users.get(0).getId());
 
     }
 
@@ -372,6 +380,7 @@ public class UserService {
     }
 
     public ArrayList<UserDTO> findByUsername(String username) {
+        username = username.replace("\n", "");
         ArrayList<User> users = userRepository.findByUsername(username);
         ArrayList<UserDTO> userDTOs = new ArrayList<>();
         if (users == null) {
@@ -389,7 +398,7 @@ public class UserService {
         if (!userDTOs.isEmpty()) {
             return userDTOs;
         }
-        System.out.println("The user with the username : '" + username + "' is private.");
+        System.out.println("No users with the username: " + username + " found.");
         return null;
     }
 

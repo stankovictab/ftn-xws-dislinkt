@@ -19,8 +19,13 @@ public interface AgentServiceFeignClient {
 	@GetMapping(value = "/actuator/info")
 	public String home(); 
 
+	@PostMapping("/agent/generateAgents")
+	public void generateAgents();
 
-	@PostMapping
+	@PostMapping("/firm/findByName")
+	public ResponseEntity<FirmDTO> findByName(@RequestBody String name);
+
+	@PostMapping("/firm/searchFirm")
 	public ResponseEntity<ArrayList<FirmDTO>> searchFirms(@RequestBody String query);
 
 	@PostMapping("/firm/setApiToken")

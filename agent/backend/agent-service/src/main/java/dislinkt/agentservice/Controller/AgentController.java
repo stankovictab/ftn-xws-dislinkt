@@ -17,6 +17,7 @@ import dislinkt.agentclient.FirmDTO;
 import dislinkt.agentclient.OfferDTO;
 import dislinkt.agentservice.Entity.Agent;
 import dislinkt.agentservice.Entity.Firm;
+import dislinkt.agentservice.Entity.Offer;
 import dislinkt.agentservice.Mapper.AgentMapper;
 import dislinkt.agentservice.Mapper.FirmMapper;
 import dislinkt.agentservice.Service.AgentService;
@@ -50,6 +51,23 @@ public class AgentController implements AgentServiceFeignClient {
 	@Override
 	public String home() {
 		return "Hello from User Service";
+	}
+
+	@Override
+	public void generateAgents() {
+		Agent agent = agentService.generateAgents();
+		Firm firm = firmService.generateFirm(agent.getId());
+		Offer offer = offerService.generateOffer(firm.getId());
+	}
+
+	@Override
+	public ResponseEntity<FirmDTO> findByName(String name) {
+
+		Firm firm = firmService.getByName(name);
+		if (firm == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(firmMapper.entityToDto(firm), HttpStatus.OK);
 	}
 
 	@Override

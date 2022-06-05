@@ -18,6 +18,32 @@ public class FirmService {
 
     private final FirmMapper firmMapper;
 
+    // TODO: FOR TESTING PURPOSES ONLY
+    public Firm generateFirm(String agentId) {
+        Firm firm = new Firm();
+        firm.setOwnerId(agentId);
+        firm.setEmail("email@email.email");
+        firm.setNumber("1");
+        firm.setName("FirmName");
+        firm.setDescription("FirmDescription");
+        firm.setCulture("FirmCulture");
+
+        return firmRepository.save(firm);
+    }
+
+    public Firm getByName(String name) {
+        if (name == null) {
+            System.out.println("FirmService.getByName: name is null");
+            return null;
+        }
+        Firm firm = firmRepository.findByName(name).get(0);
+        if (firm == null) {
+            System.out.println("FirmService.getByName: firm is null");
+            return null;
+        }
+        return firm;
+    }
+
     public Firm getFirm(String firmId) {
         return firmRepository.findById(firmId).orElse(null);
     }

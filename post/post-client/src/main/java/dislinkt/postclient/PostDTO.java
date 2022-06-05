@@ -35,5 +35,7 @@ public class PostDTO {
 
     private ArrayList<String> likedUserIds;
     private ArrayList<String> dislikedUserIds;
+
+	private ArrayList<CommentDTO> comments;
     
 }

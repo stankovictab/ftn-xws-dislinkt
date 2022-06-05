@@ -1,6 +1,7 @@
 package dislinkt.agentservice.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,41 @@ public class OfferService {
     private final OfferRepository offerRepository;
 
     private final OfferMapper offerMapper;
+
+    // TODO: FOR TESTING PURPOSES ONLY
+    public Offer generateOffer(String firmId) {
+        Offer offer = new Offer();
+        offer.setFirmId(firmId);
+        offer.setJobTitle("JobTitle");
+        offer.setJobDescription("JobDescription");
+        offer.setJobLocation("JobLocation");
+        offer.setJobSeniority("Medior");
+        offer.setJobField("Backend");
+
+        ArrayList<String> tech = new ArrayList<String>();
+        tech.add("Java");
+        tech.add("C++");
+        offer.setJobTechnologies(tech);
+
+        ArrayList<String> resp = new ArrayList<String>();
+        resp.add("Resp1");
+        resp.add("Resp2");
+        offer.setJobResponsibilities(resp);
+
+        ArrayList<String> req = new ArrayList<String>();
+        req.add("Req1");
+        req.add("Req2");
+        offer.setJobRequirements(req);
+
+        ArrayList<String> bon = new ArrayList<String>();
+        bon.add("Bon1");
+        bon.add("Bon2");
+        offer.setJobBonuses(bon);
+
+        offer.setDislinktShare(true);
+
+        return offerRepository.save(offer);
+    }
 
 
     public OfferDTO createOffer(OfferDTO offerDTO, Firm firm) {

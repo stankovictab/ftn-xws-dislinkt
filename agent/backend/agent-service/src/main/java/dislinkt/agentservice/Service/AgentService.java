@@ -25,6 +25,28 @@ public class AgentService {
 
     private final AgentMapper agentMapper;
 
+    // TODO: FOR TESTING PURPOSES ONLY
+    public Agent generateAgents() {
+        ArrayList<Agent> agents = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            Agent agent = new Agent();
+            
+            agent.setUsername("username" + i);
+            agent.setPasswordInput("password");
+            agent.setEmail("agent" + i + "@gmail.com");
+            agent.setNumber("" + i);
+            agent.setFirstName("AgentFirstName " + i);
+            agent.setLastName("AgentLastName " + i);
+            
+            if (i == 3) {
+                agent.setRole("Admin");
+            } 
+            Agent agent2 = register(agentMapper.entityToDto(agent));
+            agents.add(agent2); 
+        }
+        return agents.get(0);
+    }
+
     public Agent setApiToken(String userId, String apiToken) {
         Agent agent = agentRepository.findById(userId).get();
         agent.setApiToken(apiToken);
@@ -124,10 +146,9 @@ public class AgentService {
 
     public Agent register(AgentDTO incomingAgent) {        
         Agent agent = agentMapper.dtoToEntity(incomingAgent);
-        agent.setRole("User");
-
-        if (agent.getUsername().equals("agent3")) {
-            agent.setRole("Admin");
+        
+        if (agent.getRole() == null) {
+            agent.setRole("User");
         }
 
         // password handling
